@@ -19,7 +19,7 @@ const hrefFor = (post: { id: string; data: { section: string } }) =>
   post.data.section === "guide" ? `/resources/packaging-guide/${post.id}` : post.data.section === "exhibition" ? `/news/exhibitions/${post.id}` : `/resources/blog/${post.id}`;
 const homeFaqs = faqs.slice(0, 6);
 ---
-<Base title="EHON Packaging — Custom Cosmetic Packaging Manufacturer" description="EHON Packaging manufactures custom cosmetic packaging in Shantou, China. OEM and ODM for lipstick, mascara, gloss, compacts and jars since 1992." path="/" jsonLd={[faqJsonLd(homeFaqs), breadcrumbJsonLd([{ name: "Home", path: "/" }])]}>
+<Base title="Cosmetic Packaging Manufacturer | Custom Makeup Packaging | EHON" description="Cosmetic packaging manufacturer for custom makeup packaging. EHON designs and produces lipstick, mascara, gloss, compacts and jars in Shantou since 1992." path="/" jsonLd={[faqJsonLd(homeFaqs), breadcrumbJsonLd([{ name: "Home", path: "/" }])]}>
   <main>
     <section class="home-video" aria-label="EHON packaging film">
       <video class="home-video-player" autoplay muted loop playsinline preload="auto" poster="/hero-poster.jpg">
@@ -29,8 +29,9 @@ const homeFaqs = faqs.slice(0, 6);
     <section class="hero">
       <div class="wrap hero-grid">
         <div class="hero-copy">
-          <div class="eyebrow">Cosmetic Packaging Manufacturer · Since 1992</div>
-          <h1>Packaging made to become part of your brand.</h1>
+          <div class="eyebrow">Since 1992 · Shantou, China</div>
+          <h1>Custom Cosmetic Packaging Manufacturer</h1>
+          <p class="hero-line">Packaging made to become part of your brand.</p>
           <p class="sub">From packaging design and material selection to molding, decoration, assembly and quality control — EHON helps beauty brands turn ideas into scalable, production-ready packaging.</p>
           <div class="hero-actions">
             <a class="btn primary" href="/products">Explore Packaging <span>↗</span></a>
