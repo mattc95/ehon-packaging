@@ -1,0 +1,259 @@
+---
+import { getCollection } from "astro:content";
+import ContentPage from "../../components/ContentPage.astro";
+import ArticleView from "../../components/ArticleView.astro";
+import QuoteForm from "../../components/QuoteForm.astro";
+import Base from "../../layouts/Base.astro";
+import { products, getProduct } from "../../../lib/products";
+import { getCustom, getCapability, getAbout } from "../../../lib/company";
+import { site } from "../../../lib/site";
+import { applyPage } from "../../i18n/apply";
+import { getArticleCopy, getFaqs, getModelCopy, getUi } from "../../i18n";
+import { breadcrumbJsonLd, contactPageJsonLd, faqJsonLd, productJsonLd } from "../../data/seo";
+import { isTranslatedLocale, localizePath, translatedLocaleIds, type TranslatedLocale } from "../../../lib/i18n";
+
+export async function getStaticPaths() {
+  const models = await getCollection("products", ({ data }) => !data.draft);
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  const slugs = new Set<string>([
+    "products",
+    "resources/blog",
+    "resources/packaging-guide",
+    "resources/faq",
+    "news/exhibitions",
+    "contact/request-a-quote",
+    "privacy",
+    "terms",
+    "sitemap",
+  ]);
+  for (const page of products) slugs.add(`products/${page.slug}`);
+  for (const model of models) slugs.add(`products/${model.data.category}/${model.id}`);
+  for (const page of (await import("../../../lib/company")).customPages) slugs.add(page.path.slice(1));
+  for (const page of (await import("../../../lib/company")).capabilityPages) slugs.add(page.path.slice(1));
+  for (const page of (await import("../../../lib/company")).aboutPages) slugs.add(page.path.slice(1));
+  for (const post of posts) {
+    const base = post.data.section === "guide" ? "resources/packaging-guide" : post.data.section === "exhibition" ? "news/exhibitions" : "resources/blog";
+    slugs.add(`${base}/${post.id}`);
+  }
+  return translatedLocaleIds.flatMap((locale) => [...slugs].map((slug) => ({ params: { locale, slug } })));
+}
+
+const localeParam = Astro.params.locale;
+const slug = Astro.params.slug || "";
+if (!isTranslatedLocale(localeParam)) return Astro.redirect("/");
+const locale: TranslatedLocale = localeParam;
+const ui = getUi(locale);
+const href = (path: string) => localizePath(path, locale);
+const models = await getCollection("products", ({ data }) => !data.draft);
+const posts = await getCollection("blog", ({ data }) => !data.draft);
+const modelCopy = (id: string) => getModelCopy(locale, id);
+
+const category = slug.startsWith("products/") ? getProduct(slug.split("/")[1] || "") : undefined;
+const model = slug.split("/").length === 3 && slug.startsWith("products/") ? models.find((item) => item.id === slug.split("/")[2] && item.data.category === slug.split("/")[1]) : undefined;
+const custom = slug.startsWith("custom-packaging/") ? getCustom(slug.split("/")[1] || "") : undefined;
+const capability = slug.startsWith("capabilities/") ? getCapability(slug.split("/")[1] || "") : undefined;
+const about = slug.startsWith("about/") ? getAbout(slug.split("/")[1] || "") : undefined;
+const articleBase = slug.startsWith("resources/blog/") ? "insights" : slug.startsWith("resources/packaging-guide/") ? "guide" : slug.startsWith("news/exhibitions/") ? "exhibition" : "";
+const article = articleBase ? posts.find((post) => post.id === slug.split("/").at(-1) && post.data.section === articleBase) : undefined;
+---
+{slug === "products" && (
+  <Base title={ui.listings.productsTitle} description={ui.listings.productsDescription} path="/products" locale={locale} jsonLd={[breadcrumbJsonLd([{ name: ui.chrome.home, path: href("/") }, { name: ui.chrome.products, path: href("/products") }])]}>
+    <main class="section">
+      <div class="wrap">
+        <nav class="crumb"><a href={href("/")}>{ui.chrome.home}</a><span>/</span><span>{ui.chrome.products}</span></nav>
+        <div class="eyebrow">{ui.nav.products}</div>
+        <h1>{ui.listings.productsH}</h1>
+        <p class="lead">{ui.listings.productsLead}</p>
+        <div class="category-grid" style="margin-top:36px">
+          {products.map((item) => (
+            <a class="cat small" href={href(item.path)}>
+              <div class="cat-media"><img src={item.image} alt={applyPage(item, locale).imageAlt} /></div>
+              <div class="cat-copy">
+                <strong>{applyPage(item, locale).navLabel}</strong><span>↗</span>
+                <p>{models.filter((model) => model.data.category === item.slug).length} {ui.chrome.models}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </main>
+  </Base>
+)}
+{category && !model && (
+  <ContentPage page={applyPage(category, locale)} crumbs={[{ name: ui.chrome.home, path: href("/") }, { name: ui.chrome.products, path: href("/products") }, { name: applyPage(category, locale).navLabel, path: href(category.path) }]} locale={locale}>
+    <div class="card-grid" style="margin-top:28px">
+      {models.filter((item) => item.data.category === category.slug).map((item) => (
+        <a class="card" href={href(`/products/${category.slug}/${item.id}`)}>
+          <img src={item.data.image} alt={modelCopy(item.id)?.imageAlt || item.data.imageAlt} style="height:160px;width:100%;object-fit:contain;margin-bottom:12px" />
+          <h3>{modelCopy(item.id)?.title || item.data.title}</h3>
+          <p>{modelCopy(item.id)?.summary || item.data.summary}</p>
+        </a>
+      ))}
+    </div>
+  </ContentPage>
+)}
+{model && category && (
+  <Base title={modelCopy(model.id)?.title || model.data.title} description={modelCopy(model.id)?.description || model.data.description} path={`/products/${model.data.category}/${model.id}`} image={model.data.image} locale={locale} jsonLd={[
+    breadcrumbJsonLd([
+      { name: ui.chrome.home, path: href("/") },
+      { name: ui.chrome.products, path: href("/products") },
+      { name: applyPage(category, locale).navLabel, path: href(category.path) },
+      { name: modelCopy(model.id)?.title || model.data.title, path: href(`/products/${model.data.category}/${model.id}`) },
+    ]),
+    productJsonLd({ name: modelCopy(model.id)?.title || model.data.title, description: modelCopy(model.id)?.description || model.data.description, path: href(`/products/${model.data.category}/${model.id}`), image: model.data.image, category: applyPage(category, locale).navLabel }),
+    faqJsonLd(applyPage(category, locale).faqs.slice(0, 2)),
+  ]}>
+    <main>
+      <section class="hero inner-hero">
+        <div class="wrap hero-grid">
+          <div class="hero-copy">
+            <nav class="crumb" aria-label="Breadcrumb">
+              <a href={href("/")}>{ui.chrome.home}</a><span>/</span>
+              <a href={href("/products")}>{ui.chrome.products}</a><span>/</span>
+              <a href={href(category.path)}>{applyPage(category, locale).navLabel}</a><span>/</span>
+              <span>{modelCopy(model.id)?.title || model.data.title}</span>
+            </nav>
+            <div class="eyebrow">{applyPage(category, locale).navLabel}</div>
+            <h1>{modelCopy(model.id)?.title || model.data.title}</h1>
+            <p class="sub">{modelCopy(model.id)?.summary || model.data.summary}</p>
+            <a class="btn primary" href={href("/contact/request-a-quote")}>{ui.chrome.quote} <span>↗</span></a>
+          </div>
+          <div class="hero-visual"><img src={model.data.image} alt={modelCopy(model.id)?.imageAlt || model.data.imageAlt} /></div>
+        </div>
+      </section>
+      <section class="section compact white">
+        <div class="wrap">
+          <p class="answer">{modelCopy(model.id)?.description || model.data.description}</p>
+          <div class="specs" style="margin-top:28px">
+            {(modelCopy(model.id)?.specs || model.data.specs).map((spec) => <div><strong>{spec.label}</strong><span>{spec.value}</span></div>)}
+          </div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="wrap article-body prose">
+          {(modelCopy(model.id)?.paragraphs || []).map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+      </section>
+      <section class="section compact white">
+        <div class="wrap">
+          <div class="eyebrow">{ui.chrome.faq}</div>
+          <h2>{ui.chrome.aboutPack}</h2>
+          <div class="faq">
+            {applyPage(category, locale).faqs.slice(0, 2).map((faq) => (
+              <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="wrap"><div class="cta"><div><h2>{ui.chrome.quoteModel}</h2><p>{ui.chrome.quoteModelLead}</p></div><QuoteForm locale={locale} /></div></div>
+      </section>
+    </main>
+  </Base>
+)}
+{custom && <ContentPage page={applyPage(custom, locale)} locale={locale} crumbs={[{ name: ui.chrome.home, path: href("/") }, { name: ui.nav.custom, path: href("/custom-packaging/oem-odm") }, { name: applyPage(custom, locale).navLabel, path: href(custom.path) }]} />}
+{capability && <ContentPage page={applyPage(capability, locale)} locale={locale} crumbs={[{ name: ui.chrome.home, path: href("/") }, { name: ui.nav.capabilities, path: href("/capabilities/manufacturing") }, { name: applyPage(capability, locale).navLabel, path: href(capability.path) }]} />}
+{about && <ContentPage page={applyPage(about, locale)} locale={locale} crumbs={[{ name: ui.chrome.home, path: href("/") }, { name: ui.crumbs.about, path: href("/about/our-story") }, { name: applyPage(about, locale).navLabel, path: href(about.path) }]} />}
+{article && <ArticleView post={article} locale={locale} />}
+{slug === "resources/blog" && (
+  <Base title={ui.listings.blogTitle} description={ui.listings.blogDescription} path="/resources/blog" locale={locale} jsonLd={[breadcrumbJsonLd([{ name: ui.chrome.home, path: href("/") }, { name: ui.crumbs.blog, path: href("/resources/blog") }])]}>
+    <main class="section"><div class="wrap">
+      <nav class="crumb"><a href={href("/")}>{ui.chrome.home}</a><span>/</span><span>{ui.crumbs.blog}</span></nav>
+      <div class="eyebrow">{ui.listings.blogEyebrow}</div>
+      <h1>{ui.listings.blogH}</h1>
+      <div class="article-list" style="margin-top:28px">
+        {posts.filter((post) => post.data.section === "insights").map((post) => (
+          <a class="article-mini" href={href(`/resources/blog/${post.id}`)}>
+            <img src={post.data.image} alt={getArticleCopy(locale, post.id)?.imageAlt || post.data.imageAlt} />
+            <div><span class="tag">{post.data.date}</span><strong>{getArticleCopy(locale, post.id)?.title || post.data.title}</strong></div>
+          </a>
+        ))}
+      </div>
+    </div></main>
+  </Base>
+)}
+{slug === "resources/packaging-guide" && (
+  <Base title={ui.listings.guideTitle} description={ui.listings.guideDescription} path="/resources/packaging-guide" locale={locale} jsonLd={[breadcrumbJsonLd([{ name: ui.chrome.home, path: href("/") }, { name: ui.crumbs.guide, path: href("/resources/packaging-guide") }])]}>
+    <main class="section"><div class="wrap">
+      <nav class="crumb"><a href={href("/")}>{ui.chrome.home}</a><span>/</span><span>{ui.crumbs.guide}</span></nav>
+      <div class="eyebrow">{ui.listings.guideEyebrow}</div>
+      <h1>{ui.listings.guideH}</h1>
+      <div class="article-list" style="margin-top:28px">
+        {posts.filter((post) => post.data.section === "guide").map((post) => (
+          <a class="article-mini" href={href(`/resources/packaging-guide/${post.id}`)}>
+            <img src={post.data.image} alt={getArticleCopy(locale, post.id)?.imageAlt || post.data.imageAlt} />
+            <div><span class="tag">{ui.listings.guideTag}</span><strong>{getArticleCopy(locale, post.id)?.title || post.data.title}</strong></div>
+          </a>
+        ))}
+      </div>
+    </div></main>
+  </Base>
+)}
+{slug === "news/exhibitions" && (
+  <Base title={ui.listings.newsTitle} description={ui.listings.newsDescription} path="/news/exhibitions" locale={locale} jsonLd={[breadcrumbJsonLd([{ name: ui.chrome.home, path: href("/") }, { name: ui.crumbs.exhibitions, path: href("/news/exhibitions") }])]}>
+    <main class="section"><div class="wrap">
+      <nav class="crumb"><a href={href("/")}>{ui.chrome.home}</a><span>/</span><span>{ui.crumbs.exhibitions}</span></nav>
+      <div class="eyebrow">{ui.listings.newsEyebrow}</div>
+      <h1>{ui.listings.newsH}</h1>
+      <div class="insights" style="margin-top:28px">
+        {posts.filter((post) => post.data.section === "exhibition").map((post) => (
+          <article class="article">
+            <a href={href(`/news/exhibitions/${post.id}`)}><img src={post.data.image} alt={getArticleCopy(locale, post.id)?.imageAlt || post.data.imageAlt} /></a>
+            <div class="article-copy"><span class="tag">{post.data.date}</span><h3><a href={href(`/news/exhibitions/${post.id}`)}>{getArticleCopy(locale, post.id)?.title || post.data.title}</a></h3><p>{getArticleCopy(locale, post.id)?.description || post.data.description}</p></div>
+          </article>
+        ))}
+      </div>
+    </div></main>
+  </Base>
+)}
+{slug === "resources/faq" && (
+  <Base title={ui.listings.faqTitle} description={ui.listings.faqDescription} path="/resources/faq" locale={locale} jsonLd={[faqJsonLd(getFaqs(locale)), breadcrumbJsonLd([{ name: ui.chrome.home, path: href("/") }, { name: ui.nav.faq, path: href("/resources/faq") }])]}>
+    <main class="section"><div class="wrap">
+      <nav class="crumb"><a href={href("/")}>{ui.chrome.home}</a><span>/</span><span>{ui.nav.faq}</span></nav>
+      <div class="eyebrow">{ui.nav.faq}</div>
+      <h1>{ui.listings.faqH}</h1>
+      <p class="answer">{ui.listings.faqLead}</p>
+      <div class="faq" style="margin-top:28px">
+        {getFaqs(locale).map((faq) => <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}
+      </div>
+    </div></main>
+  </Base>
+)}
+{slug === "contact/request-a-quote" && (
+  <Base title={ui.nav.quote} description={ui.listings.contactP} path="/contact/request-a-quote" locale={locale} jsonLd={[contactPageJsonLd(locale, ui.listings.contactH, ui.listings.contactP, href("/contact/request-a-quote")), breadcrumbJsonLd([{ name: ui.chrome.home, path: href("/") }, { name: ui.nav.quote, path: href("/contact/request-a-quote") }])]}>
+    <main class="section"><div class="wrap"><div class="cta"><div>
+      <div class="eyebrow" style="color:#938c84">{ui.listings.contactEyebrow}</div>
+      <h1>{ui.listings.contactH}</h1>
+      <p>{ui.listings.contactP} {site.email}.</p>
+      <div class="hero-trust" style="border-color:#2d2d2d;margin-top:28px">
+        <div class="trust-item"><b>WhatsApp</b><span>{site.whatsappDisplay}</span></div>
+        <div class="trust-item"><b>WeChat</b><span>{site.wechatId}</span></div>
+        <div class="trust-item"><b>Line</b><span>{site.lineId}</span></div>
+      </div>
+    </div><QuoteForm locale={locale} /></div></div></main>
+  </Base>
+)}
+{slug === "privacy" && (
+  <Base title={ui.listings.privacyTitle} description={ui.listings.privacyDescription} path="/privacy" locale={locale} jsonLd={[breadcrumbJsonLd([{ name: ui.chrome.home, path: href("/") }, { name: ui.listings.privacyH, path: href("/privacy") }])]}>
+    <main class="section"><div class="wrap prose"><h1>{ui.listings.privacyH}</h1>{ui.listings.privacy.map((paragraph) => <p>{paragraph}</p>)}</div></main>
+  </Base>
+)}
+{slug === "terms" && (
+  <Base title={ui.listings.termsTitle} description={ui.listings.termsDescription} path="/terms" locale={locale} jsonLd={[breadcrumbJsonLd([{ name: ui.chrome.home, path: href("/") }, { name: ui.listings.termsH, path: href("/terms") }])]}>
+    <main class="section"><div class="wrap prose"><h1>{ui.listings.termsH}</h1>{ui.listings.terms.map((paragraph) => <p>{paragraph}</p>)}</div></main>
+  </Base>
+)}
+{slug === "sitemap" && (
+  <Base title={ui.listings.sitemapTitle} description={ui.listings.sitemapDescription} path="/sitemap" locale={locale} jsonLd={[breadcrumbJsonLd([{ name: ui.chrome.home, path: href("/") }, { name: ui.listings.sitemapH, path: href("/sitemap") }])]}>
+    <main class="section"><div class="wrap">
+      <h1>{ui.listings.sitemapH}</h1>
+      <div class="card-grid">
+        <div class="card"><h3>{ui.footer.products}</h3><a href={href("/products")}>{ui.chrome.products}</a>{products.map((item) => <a href={href(item.path)}>{applyPage(item, locale).navLabel}</a>)}</div>
+        <div class="card"><h3>{ui.listings.custom}</h3><a href={href("/custom-packaging/oem-odm")}>OEM / ODM</a><a href={href("/custom-packaging/custom-design")}>{applyPage(getCustom("custom-design")!, locale).navLabel}</a><a href={href("/custom-packaging/decoration-finishing")}>{applyPage(getCustom("decoration-finishing")!, locale).navLabel}</a><a href={href("/custom-packaging/materials")}>{applyPage(getCustom("materials")!, locale).navLabel}</a><a href={href("/custom-packaging/sustainable-packaging")}>{applyPage(getCustom("sustainable-packaging")!, locale).navLabel}</a></div>
+        <div class="card"><h3>{ui.listings.capabilities}</h3><a href={href("/capabilities/manufacturing")}>{applyPage(getCapability("manufacturing")!, locale).navLabel}</a><a href={href("/capabilities/quality-control")}>{applyPage(getCapability("quality-control")!, locale).navLabel}</a><a href={href("/capabilities/rd-tooling")}>{applyPage(getCapability("rd-tooling")!, locale).navLabel}</a></div>
+        <div class="card"><h3>{ui.listings.about}</h3><a href={href("/about/our-story")}>{applyPage(getAbout("our-story")!, locale).navLabel}</a><a href={href("/about/factory")}>{applyPage(getAbout("factory")!, locale).navLabel}</a><a href={href("/about/certificates")}>{applyPage(getAbout("certificates")!, locale).navLabel}</a><a href={href("/about/patents-innovation")}>{applyPage(getAbout("patents-innovation")!, locale).navLabel}</a></div>
+        <div class="card"><h3>{ui.listings.resources}</h3><a href={href("/resources/blog")}>{ui.nav.blog}</a><a href={href("/resources/packaging-guide")}>{ui.nav.guide}</a><a href={href("/resources/faq")}>{ui.nav.faq}</a><a href={href("/news/exhibitions")}>{ui.nav.exhibitions}</a><a href={href("/contact/request-a-quote")}>{ui.nav.quote}</a></div>
+      </div>
+    </div></main>
+  </Base>
+)}

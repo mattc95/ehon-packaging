@@ -1,80 +1,102 @@
 ---
 import { products } from "../../lib/products";
 import { customPages, capabilityPages, aboutPages } from "../../lib/company";
-const custom = customPages;
-const caps = capabilityPages;
-const about = aboutPages;
+import { localizePath, locales, localeIds, type Locale } from "../../lib/i18n";
+import { getUi, getPageCopy } from "../i18n";
+
+interface Props {
+  locale?: Locale;
+  path?: string;
+}
+const { locale = "en", path = "/" } = Astro.props;
+const ui = getUi(locale);
+const href = (value: string) => localizePath(value, locale);
+const label = (slug: string, fallback: string) => getPageCopy(locale, slug)?.navLabel || fallback;
+const current = locales[locale];
 ---
 <nav class="nav">
   <div class="wrap nav-inner">
-    <a class="brand" href="/" aria-label="EHON Packaging"><img src="/assets/logo.png" alt="EHON Packaging" /></a>
+    <a class="brand" href={href("/")} aria-label="EHON Packaging"><img src="/assets/logo.png" alt="EHON Packaging" /></a>
     <div class="nav-links">
       <div class="nav-item">
-        <a href="/products">Products</a>
+        <a href={href("/products")}>{ui.nav.products}</a>
         <div class="dropdown wide">
           <div class="dropdown-panel">
-            {products.map((item) => <a href={item.path}>{item.navLabel}</a>)}
+            {products.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
           </div>
         </div>
       </div>
       <div class="nav-item">
-        <a href="/custom-packaging/oem-odm">Custom Packaging</a>
+        <a href={href("/custom-packaging/oem-odm")}>{ui.nav.custom}</a>
         <div class="dropdown">
           <div class="dropdown-panel">
-            {custom.map((item) => <a href={item.path}>{item.navLabel}</a>)}
+            {customPages.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
           </div>
         </div>
       </div>
       <div class="nav-item">
-        <a href="/capabilities/manufacturing">Capabilities</a>
+        <a href={href("/capabilities/manufacturing")}>{ui.nav.capabilities}</a>
         <div class="dropdown">
           <div class="dropdown-panel">
-            {caps.map((item) => <a href={item.path}>{item.navLabel}</a>)}
+            {capabilityPages.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
           </div>
         </div>
       </div>
       <div class="nav-item">
-        <a href="/about/our-story">About EHON</a>
+        <a href={href("/about/our-story")}>{ui.nav.about}</a>
         <div class="dropdown">
           <div class="dropdown-panel">
-            {about.map((item) => <a href={item.path}>{item.navLabel}</a>)}
+            {aboutPages.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
           </div>
         </div>
       </div>
       <div class="nav-item">
-        <a href="/resources/blog">Resources</a>
+        <a href={href("/resources/blog")}>{ui.nav.resources}</a>
         <div class="dropdown">
           <div class="dropdown-panel">
-            <a href="/resources/blog">Blog / Insights</a>
-            <a href="/resources/packaging-guide">Packaging Guide</a>
-            <a href="/resources/faq">FAQ</a>
+            <a href={href("/resources/blog")}>{ui.nav.blog}</a>
+            <a href={href("/resources/packaging-guide")}>{ui.nav.guide}</a>
+            <a href={href("/resources/faq")}>{ui.nav.faq}</a>
           </div>
         </div>
       </div>
-      <a href="/news/exhibitions">News</a>
+      <a href={href("/news/exhibitions")}>{ui.nav.news}</a>
     </div>
     <div class="nav-actions">
-      <span class="lang">EN · Global</span>
-      <a class="btn primary" href="/contact/request-a-quote">Request a Quote <span>↗</span></a>
-      <button class="menu" id="menu-btn" aria-label="Open menu" aria-expanded="false">☰</button>
+      <div class="nav-item lang-switch">
+        <a href={localizePath(path, locale)} hrefLang={current.htmlLang} lang={current.htmlLang} aria-haspopup="true" aria-label={ui.nav.language}>{current.short}</a>
+        <div class="dropdown lang-menu">
+          <div class="dropdown-panel">
+            {localeIds.map((id) => (
+              <a href={localizePath(path, id)} hrefLang={locales[id].htmlLang} lang={locales[id].htmlLang} aria-current={id === locale ? "true" : undefined}>{locales[id].switcher}</a>
+            ))}
+          </div>
+        </div>
+      </div>
+      <a class="btn primary" href={href("/contact/request-a-quote")}>{ui.nav.quote} <span>↗</span></a>
+      <button class="menu" id="menu-btn" aria-label={ui.nav.openMenu} aria-expanded="false">☰</button>
     </div>
   </div>
   <div class="mobile-panel" id="mobile-panel">
     <div class="wrap">
-      <div class="group">Products</div>
-      {products.map((item) => <a href={item.path}>{item.navLabel}</a>)}
-      <div class="group">Custom Packaging</div>
-      {custom.map((item) => <a href={item.path}>{item.navLabel}</a>)}
-      <div class="group">Capabilities</div>
-      {caps.map((item) => <a href={item.path}>{item.navLabel}</a>)}
-      <div class="group">About</div>
-      {about.map((item) => <a href={item.path}>{item.navLabel}</a>)}
-      <div class="group">Resources</div>
-      <a href="/resources/blog">Blog / Insights</a>
-      <a href="/resources/packaging-guide">Packaging Guide</a>
-      <a href="/resources/faq">FAQ</a>
-      <a href="/news/exhibitions">Exhibitions</a>
-      <a href="/contact/request-a-quote">Request a Quote</a>
+      <div class="group">{ui.nav.language}</div>
+      {localeIds.map((id) => (
+        <a href={localizePath(path, id)} hrefLang={locales[id].htmlLang} lang={locales[id].htmlLang}>{locales[id].switcher}</a>
+      ))}
+      <div class="group">{ui.nav.products}</div>
+      {products.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
+      <div class="group">{ui.nav.custom}</div>
+      {customPages.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
+      <div class="group">{ui.nav.capabilities}</div>
+      {capabilityPages.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
+      <div class="group">{ui.nav.about}</div>
+      {aboutPages.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
+      <div class="group">{ui.nav.resources}</div>
+      <a href={href("/resources/blog")}>{ui.nav.blog}</a>
+      <a href={href("/resources/packaging-guide")}>{ui.nav.guide}</a>
+      <a href={href("/resources/faq")}>{ui.nav.faq}</a>
+      <a href={href("/news/exhibitions")}>{ui.nav.exhibitions}</a>
+      <a href={href("/contact/request-a-quote")}>{ui.nav.quote}</a>
     </div>
   </div>
 </nav>

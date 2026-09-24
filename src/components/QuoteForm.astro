@@ -1,48 +1,57 @@
 ---
 import { products } from "../../lib/products";
 import { site, whatsappHref } from "../../lib/site";
+import type { Locale } from "../../lib/i18n";
+import { getPageCopy, getUi } from "../i18n";
+
+interface Props {
+  locale?: Locale;
+}
+const { locale = "en" } = Astro.props;
+const ui = getUi(locale);
+const form = ui.form;
 ---
 <form class="rfq" id="quote-form">
   <div class="rfq-grid">
-    <input name="name" aria-label="Name" placeholder="Your name" required />
-    <input name="email" aria-label="Business email" placeholder="Business email" type="email" required />
-    <input name="company" aria-label="Company" placeholder="Company" />
-    <select name="product" aria-label="Product type">
-      <option value="">Product type</option>
-      {products.map((item) => <option value={item.navLabel}>{item.navLabel}</option>)}
+    <input name="name" aria-label={form.name} placeholder={form.name} required />
+    <input name="email" aria-label={form.email} placeholder={form.email} type="email" required />
+    <input name="company" aria-label={form.company} placeholder={form.company} />
+    <select name="product" aria-label={form.product}>
+      <option value="">{form.product}</option>
+      {products.map((item) => <option value={getPageCopy(locale, item.slug)?.navLabel || item.navLabel}>{getPageCopy(locale, item.slug)?.navLabel || item.navLabel}</option>)}
     </select>
-    <input name="quantity" aria-label="Estimated quantity" placeholder="Estimated quantity" />
-    <input name="launch" aria-label="Target launch" placeholder="Target launch date" />
-    <textarea name="details" aria-label="Project details" placeholder="Size, material, color, logo, finish, artwork or sample needs..."></textarea>
+    <input name="quantity" aria-label={form.quantity} placeholder={form.quantity} />
+    <input name="launch" aria-label={form.launch} placeholder={form.launch} />
+    <textarea name="details" aria-label={form.details} placeholder={form.details}></textarea>
     <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
-    <button class="btn primary" type="submit">Submit Project <span>↗</span></button>
+    <button class="btn primary" type="submit">{form.submit} <span>↗</span></button>
   </div>
-  <p class="fine" id="quote-note">This static site sends your brief on WhatsApp or email. It is not stored on a server.</p>
+  <p class="fine" id="quote-note">{form.note}</p>
   <div class="success" id="quote-success" hidden>
-    <strong>Your brief is ready.</strong>
-    <p>WhatsApp should open in a new tab. If it does not, use the links below.</p>
-    <p><a id="wa-link" href={whatsappHref()}>Continue on WhatsApp</a><br /><a id="mail-link" href={`mailto:${site.email}`}>Email {site.email}</a></p>
+    <strong>{form.ready}</strong>
+    <p>{form.readyLead}</p>
+    <p><a id="wa-link" href={whatsappHref()}>{form.whatsapp}</a><br /><a id="mail-link" href={`mailto:${site.email}`}>{form.emailLink} {site.email}</a></p>
   </div>
 </form>
-<script define:vars={{ whatsapp: site.whatsappE164, email: site.email }}>
+<script define:vars={{ whatsapp: site.whatsappE164, email: site.email, labels: { enquiry: form.enquiry, subject: form.subject, name: form.name, email: form.email, company: form.company, product: form.product, quantity: form.quantity, launch: form.launch, details: form.details } }}>
   const form = document.querySelector("#quote-form");
   form?.addEventListener("submit", (event) => {
     event.preventDefault();
     const data = new FormData(form);
     if (String(data.get("website") || "")) return;
     const lines = [
-      "EHON packaging enquiry",
-      `Name: ${data.get("name") || ""}`,
-      `Email: ${data.get("email") || ""}`,
-      `Company: ${data.get("company") || ""}`,
-      `Product: ${data.get("product") || ""}`,
-      `Quantity: ${data.get("quantity") || ""}`,
-      `Launch: ${data.get("launch") || ""}`,
-      `Details: ${data.get("details") || ""}`,
+      labels.enquiry,
+      `${labels.name}: ${data.get("name") || ""}`,
+      `${labels.email}: ${data.get("email") || ""}`,
+      `${labels.company}: ${data.get("company") || ""}`,
+      `${labels.product}: ${data.get("product") || ""}`,
+      `${labels.quantity}: ${data.get("quantity") || ""}`,
+      `${labels.launch}: ${data.get("launch") || ""}`,
+      `${labels.details}: ${data.get("details") || ""}`,
     ];
     const text = lines.join("\n");
     const wa = `https://wa.me/${whatsapp}?text=${encodeURIComponent(text)}`;
-    const mail = `mailto:${email}?subject=${encodeURIComponent("EHON packaging enquiry")}&body=${encodeURIComponent(text)}`;
+    const mail = `mailto:${email}?subject=${encodeURIComponent(labels.subject)}&body=${encodeURIComponent(text)}`;
     const waLink = document.querySelector("#wa-link");
     const mailLink = document.querySelector("#mail-link");
     if (waLink) waLink.setAttribute("href", wa);

@@ -1,38 +1,48 @@
 ---
 import { products } from "../../lib/products";
 import { site } from "../../lib/site";
+import { localizePath, type Locale } from "../../lib/i18n";
+import { getPageCopy, getUi } from "../i18n";
+
+interface Props {
+  locale?: Locale;
+}
+const { locale = "en" } = Astro.props;
+const ui = getUi(locale);
+const href = (path: string) => localizePath(path, locale);
+const label = (slug: string, fallback: string) => getPageCopy(locale, slug)?.navLabel || fallback;
 ---
 <footer>
   <div class="wrap">
     <div class="footer-grid">
       <div class="footer-brand">
         <img src="/assets/logo.png" alt="EHON Packaging" />
-        <p>{site.legalName} — a cosmetic packaging supplier integrating design, R&D, manufacturing and sales since 1992.</p>
+        <p>{site.legalName} — {ui.footer.blurb}</p>
       </div>
       <div class="foot-col">
-        <strong>Products</strong>
-        {products.slice(0, 6).map((item) => <a href={item.path}>{item.navLabel}</a>)}
+        <strong>{ui.footer.products}</strong>
+        {products.slice(0, 6).map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
       </div>
       <div class="foot-col">
-        <strong>Company</strong>
-        <a href="/custom-packaging/oem-odm">OEM / ODM</a>
-        <a href="/custom-packaging/decoration-finishing">Decoration & Finishing</a>
-        <a href="/capabilities/manufacturing">Manufacturing</a>
-        <a href="/capabilities/quality-control">Quality Control</a>
-        <a href="/about/factory">Factory</a>
-        <a href="/resources/faq">FAQ</a>
+        <strong>{ui.footer.company}</strong>
+        <a href={href("/custom-packaging/oem-odm")}>{ui.footer.oem}</a>
+        <a href={href("/custom-packaging/decoration-finishing")}>{ui.footer.decoration}</a>
+        <a href={href("/capabilities/manufacturing")}>{ui.footer.manufacturing}</a>
+        <a href={href("/capabilities/quality-control")}>{ui.footer.quality}</a>
+        <a href={href("/about/factory")}>{ui.footer.factory}</a>
+        <a href={href("/resources/faq")}>{ui.footer.faq}</a>
       </div>
       <div class="foot-col">
-        <strong>Contact</strong>
+        <strong>{ui.footer.contact}</strong>
         <span>{site.address.full}</span>
         <a href={site.phoneHref}>{site.phone}</a>
         <a href={`mailto:${site.email}`}>{site.email}</a>
-        <a href="/contact/request-a-quote">Request a Quote</a>
+        <a href={href("/contact/request-a-quote")}>{ui.footer.quote}</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© {new Date().getFullYear()} EHON Packaging. {site.legalName}.</span>
-      <span><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/sitemap">Sitemap</a></span>
+      <span>© {new Date().getFullYear()} {ui.footer.rights} {site.legalName}.</span>
+      <span><a href={href("/privacy")}>{ui.footer.privacy}</a> · <a href={href("/terms")}>{ui.footer.terms}</a> · <a href={href("/sitemap")}>{ui.footer.sitemap}</a></span>
     </div>
   </div>
 </footer>

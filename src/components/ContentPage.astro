@@ -1,21 +1,27 @@
 ---
 import type { SeoPage } from "../../lib/types";
+import type { Locale } from "../../lib/i18n";
+import { localizePath } from "../../lib/i18n";
 import Base from "../layouts/Base.astro";
 import QuoteForm from "./QuoteForm.astro";
 import { breadcrumbJsonLd, faqJsonLd, serviceJsonLd } from "../data/seo";
+import { getUi } from "../i18n";
 
 interface Props {
   page: SeoPage;
   crumbs: { name: string; path: string }[];
+  locale?: Locale;
 }
-const { page, crumbs } = Astro.props;
+const { page, crumbs, locale = "en" } = Astro.props;
+const ui = getUi(locale);
+const href = (path: string) => localizePath(path, locale);
 const jsonLd = [
   breadcrumbJsonLd(crumbs),
   faqJsonLd(page.faqs),
   serviceJsonLd(page.navLabel, page.description, page.path),
 ];
 ---
-<Base title={page.title} description={page.description} path={page.path} image={page.image} jsonLd={jsonLd}>
+<Base title={page.title} description={page.description} path={page.path} image={page.image} jsonLd={jsonLd} locale={locale}>
   <main>
     <section class="hero inner-hero">
       <div class="wrap hero-grid">
@@ -32,8 +38,8 @@ const jsonLd = [
           <h1>{page.h1}</h1>
           <p class="sub">{page.lead}</p>
           <div class="hero-actions">
-            <a class="btn primary" href="/contact/request-a-quote">Request a Quote <span>↗</span></a>
-            <a class="btn ghost" href="/products">Browse products</a>
+            <a class="btn primary" href={href("/contact/request-a-quote")}>{ui.chrome.quote} <span>↗</span></a>
+            <a class="btn ghost" href={href("/products")}>{ui.chrome.browse}</a>
           </div>
         </div>
         <div class="hero-visual">
@@ -55,8 +61,8 @@ const jsonLd = [
     {page.specs && (
       <section class="section compact">
         <div class="wrap">
-          <div class="eyebrow">Specifications</div>
-          <h2>What to confirm in the brief.</h2>
+          <div class="eyebrow">{ui.chrome.specs}</div>
+          <h2>{ui.chrome.specsLead}</h2>
           <div class="specs">
             {page.specs.map((spec) => (
               <div><strong>{spec.label}</strong><span>{spec.value}</span></div>
@@ -78,25 +84,25 @@ const jsonLd = [
     {page.slug === "certificates" && (
       <section class="section compact">
         <div class="wrap cert-cards">
-          <article class="cert"><img src="/assets/cert-9001.jpg" alt="ISO 9001 certificate" /><p><b>ISO 9001:2015</b><br />Quality Management</p></article>
-          <article class="cert"><img src="/assets/cert-14001.jpg" alt="ISO 14001 certificate" /><p><b>ISO 14001:2015</b><br />Environmental Management</p></article>
-          <article class="cert"><img src="/assets/cert-45001.jpg" alt="ISO 45001 certificate" /><p><b>ISO 45001:2018</b><br />Occupational Health & Safety</p></article>
+          <article class="cert"><img src="/assets/cert-9001.jpg" alt={ui.chrome.iso9001} /><p><b>ISO 9001:2015</b><br />{ui.chrome.quality}</p></article>
+          <article class="cert"><img src="/assets/cert-14001.jpg" alt={ui.chrome.iso14001} /><p><b>ISO 14001:2015</b><br />{ui.chrome.environment}</p></article>
+          <article class="cert"><img src="/assets/cert-45001.jpg" alt={ui.chrome.iso45001} /><p><b>ISO 45001:2018</b><br />{ui.chrome.safety}</p></article>
         </div>
       </section>
     )}
     {(page.slug === "factory" || page.slug === "manufacturing") && (
       <section class="section compact">
         <div class="wrap factory-gallery">
-          <img src="/assets/production.jpg" alt="EHON production equipment" />
-          <img src="/assets/showroom.jpg" alt="EHON showroom" />
-          <img src="/assets/meeting.jpg" alt="EHON meeting room" />
+          <img src="/assets/production.jpg" alt={ui.chrome.productionAlt} />
+          <img src="/assets/showroom.jpg" alt={ui.chrome.showroomAlt} />
+          <img src="/assets/meeting.jpg" alt={ui.chrome.meetingAlt} />
         </div>
       </section>
     )}
     <section class="section compact">
       <div class="wrap">
-        <div class="eyebrow">Questions buyers ask</div>
-        <h2>FAQ</h2>
+        <div class="eyebrow">{ui.chrome.questions}</div>
+        <h2>{ui.chrome.faq}</h2>
         <div class="faq">
           {page.faqs.map((faq) => (
             <details>
@@ -120,11 +126,11 @@ const jsonLd = [
       <div class="wrap">
         <div class="cta">
           <div>
-            <div class="eyebrow" style="color:#938c84">Start a packaging project</div>
-            <h2>Tell us what you want to create.</h2>
-            <p>Send the product type, quantity and finish. The brief opens in WhatsApp so the Shantou team can reply.</p>
+            <div class="eyebrow" style="color:#938c84">{ui.chrome.start}</div>
+            <h2>{ui.chrome.tell}</h2>
+            <p>{ui.chrome.sendBrief}</p>
           </div>
-          <QuoteForm />
+          <QuoteForm locale={locale} />
         </div>
       </div>
     </section>

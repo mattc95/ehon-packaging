@@ -1,42 +1,58 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { render } from "astro:content";
+import type { Locale } from "../../lib/i18n";
+import { localizePath } from "../../lib/i18n";
 import Base from "../layouts/Base.astro";
 import { breadcrumbJsonLd, articleJsonLd } from "../data/seo";
+import { getArticleCopy, getUi } from "../i18n";
 
 interface Props {
   post: CollectionEntry<"blog">;
+  locale?: Locale;
 }
-const { post } = Astro.props;
+const { post, locale = "en" } = Astro.props;
 const { Content } = await render(post);
+const copy = getArticleCopy(locale, post.id);
+const ui = getUi(locale);
+const title = copy?.title || post.data.title;
+const description = copy?.description || post.data.description;
+const imageAlt = copy?.imageAlt || post.data.imageAlt;
 const section = post.data.section;
-const base = section === "guide"
-  ? { name: "Packaging Guide", path: "/resources/packaging-guide" }
+const baseBare = section === "guide"
+  ? { name: ui.crumbs.guide, path: "/resources/packaging-guide" }
   : section === "exhibition"
-    ? { name: "Exhibitions", path: "/news/exhibitions" }
-    : { name: "Blog", path: "/resources/blog" };
-const path = `${base.path}/${post.id}`;
+    ? { name: ui.crumbs.exhibitions, path: "/news/exhibitions" }
+    : { name: ui.crumbs.blog, path: "/resources/blog" };
+const path = `${baseBare.path}/${post.id}`;
+const base = { name: baseBare.name, path: localizePath(baseBare.path, locale) };
 const articleLd = articleJsonLd({
-  title: post.data.title,
-  description: post.data.description,
-  path,
+  title,
+  description,
+  path: localizePath(path, locale),
   image: post.data.image,
   date: post.data.date,
+  locale,
 });
 ---
-<Base title={post.data.title} description={post.data.description} path={path} image={post.data.image} jsonLd={[breadcrumbJsonLd([{ name: "Home", path: "/" }, base, { name: post.data.title, path }]), articleLd]}>
+<Base title={title} description={description} path={path} image={post.data.image} locale={locale} jsonLd={[breadcrumbJsonLd([{ name: ui.chrome.home, path: localizePath("/", locale) }, base, { name: title, path: localizePath(path, locale) }]), articleLd]}>
   <main class="section">
     <div class="wrap article-layout">
       <div>
-        <nav class="crumb"><a href="/">Home</a><span>/</span><a href={base.path}>{base.name}</a><span>/</span><span>{post.data.title}</span></nav>
+        <nav class="crumb"><a href={localizePath("/", locale)}>{ui.chrome.home}</a><span>/</span><a href={base.path}>{base.name}</a><span>/</span><span>{title}</span></nav>
         <div class="eyebrow">{post.data.date}</div>
-        <h1>{post.data.title}</h1>
-        <p class="lead">{post.data.description}</p>
+        <h1>{title}</h1>
+        <p class="lead">{description}</p>
       </div>
       <article class="article-body prose">
-        <img src={post.data.image} alt={post.data.imageAlt} style="border-radius:16px;margin:20px 0;width:100%;max-height:420px;object-fit:cover" />
-        <Content />
-        <p><a class="btn primary" href="/contact/request-a-quote">Request a Quote <span>↗</span></a></p>
+        <img src={post.data.image} alt={imageAlt} style="border-radius:16px;margin:20px 0;width:100%;max-height:420px;object-fit:cover" />
+        {copy ? copy.blocks.map((block) => (
+          <>
+            {block.heading && <h2>{block.heading}</h2>}
+            {block.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+          </>
+        )) : <Content />}
+        <p><a class="btn primary" href={localizePath("/contact/request-a-quote", locale)}>{ui.chrome.quote} <span>↗</span></a></p>
       </article>
     </div>
   </main>

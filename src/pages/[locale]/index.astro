@@ -1,0 +1,11 @@
+---
+import HomeMain from "../../components/HomeMain.astro";
+import { isTranslatedLocale, translatedLocaleIds } from "../../../lib/i18n";
+
+export function getStaticPaths() {
+  return translatedLocaleIds.map((locale) => ({ params: { locale } }));
+}
+const locale = Astro.params.locale;
+if (!isTranslatedLocale(locale)) return Astro.redirect("/");
+---
+<HomeMain locale={locale} />

@@ -5,6 +5,7 @@ import Footer from "../components/Footer.astro";
 import FloatingContact from "../components/FloatingContact.astro";
 import { site, organizationJsonLd } from "../../lib/site";
 import { webPageJsonLd, websiteJsonLd } from "../data/seo";
+import { barePath, hreflangLinks, localizePath, locales, type Locale } from "../../lib/i18n";
 
 interface Props {
   title: string;
@@ -13,14 +14,19 @@ interface Props {
   image?: string;
   jsonLd?: unknown[];
   noindex?: boolean;
+  locale?: Locale;
 }
-const { title, description, path = Astro.url.pathname, image = site.ogImage, jsonLd = [], noindex = false } = Astro.props;
-const canonical = new URL(path, site.url).toString();
+const { title, description, path = barePath(Astro.url.pathname), image = site.ogImage, jsonLd = [], noindex = false, locale = "en" } = Astro.props;
+const meta = locales[locale];
+const localized = localizePath(path, locale);
+const canonical = new URL(localized, site.url).toString();
 const fullTitle = title.includes("EHON") ? title : `${title} | EHON Packaging`;
-const blocks = [webPageJsonLd(fullTitle, description, path), path === "/" ? websiteJsonLd() : null, ...jsonLd].filter(Boolean);
+const alternates = hreflangLinks(path, site.url);
+const blocks = [webPageJsonLd(fullTitle, description, localized, locale), path === "/" ? websiteJsonLd(locale, description) : null, ...jsonLd].filter(Boolean);
+const ogAlternates = (Object.keys(locales) as Locale[]).filter((id) => id !== locale).map((id) => locales[id].ogLocale);
 ---
 <!doctype html>
-<html lang="en">
+<html lang={meta.htmlLang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -28,9 +34,12 @@ const blocks = [webPageJsonLd(fullTitle, description, path), path === "/" ? webs
     <meta name="description" content={description} />
     <meta name="robots" content={noindex ? "noindex,nofollow" : "index,follow,max-image-preview:large"} />
     <link rel="canonical" href={canonical} />
+    {alternates.map((link) => <link rel="alternate" hreflang={link.hreflang} href={link.href} />)}
     <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
     <meta name="theme-color" content="#111111" />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content={meta.ogLocale} />
+    {ogAlternates.map((value) => <meta property="og:locale:alternate" content={value} />)}
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
@@ -43,13 +52,15 @@ const blocks = [webPageJsonLd(fullTitle, description, path), path === "/" ? webs
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    {locale === "ja" && <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />}
+    {locale === "zh" && <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />}
     <script type="application/ld+json" set:html={JSON.stringify(organizationJsonLd)} />
     {blocks.map((block) => <script type="application/ld+json" set:html={JSON.stringify(block)} />)}
   </head>
   <body>
-    <Header />
+    <Header locale={locale} path={path} />
     <slot />
-    <Footer />
-    <FloatingContact />
+    <Footer locale={locale} />
+    <FloatingContact locale={locale} />
   </body>
 </html>

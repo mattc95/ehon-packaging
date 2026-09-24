@@ -1,0 +1,245 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+import QuoteForm from "./QuoteForm.astro";
+import { products } from "../../lib/products";
+import { site } from "../../lib/site";
+import { faqJsonLd, breadcrumbJsonLd } from "../data/seo";
+import { localizePath, type Locale } from "../../lib/i18n";
+import { getArticleCopy, getFaqs, getModelCopy, getPageCopy, getUi } from "../i18n";
+
+interface Props {
+  locale?: Locale;
+}
+const { locale = "en" } = Astro.props;
+const h = getUi(locale).home;
+const href = (path: string) => localizePath(path, locale);
+const models = (await getCollection("products", ({ data }) => !data.draft && data.featured)).sort((a, b) => a.data.order - b.data.order);
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort((a, b) => b.data.date.localeCompare(a.data.date));
+const sizes = ["large", "large", "small", "small", "small", "small", "third", "third", "third"];
+const heroSeries = models.find((item) => item.id === "transparent-series");
+const pink = models.find((item) => item.id === "bump-pink-series");
+const brush = models.find((item) => item.id === "big-brush-series");
+const exhibition = posts.find((item) => item.data.section === "exhibition");
+const guides = posts.filter((item) => item.data.section === "guide").slice(0, 3);
+const hrefFor = (post: { id: string; data: { section: string } }) =>
+  href(post.data.section === "guide" ? `/resources/packaging-guide/${post.id}` : post.data.section === "exhibition" ? `/news/exhibitions/${post.id}` : `/resources/blog/${post.id}`);
+const homeFaqs = getFaqs(locale).slice(0, 6);
+const modelText = (id: string, field: "title" | "imageAlt", fallback: string) => getModelCopy(locale, id)?.[field] || fallback;
+const postText = (id: string, field: "title" | "description" | "imageAlt", fallback: string) => getArticleCopy(locale, id)?.[field] || fallback;
+---
+<Base title={h.title} description={h.description} path="/" locale={locale} jsonLd={[faqJsonLd(homeFaqs), breadcrumbJsonLd([{ name: getUi(locale).chrome.home, path: href("/") }])]}>
+  <main>
+    <section class="home-video" aria-label={h.videoLabel}>
+      <video class="home-video-player" autoplay muted loop playsinline preload="auto" poster="/hero-poster.jpg">
+        <source src="/hero.webm" type="video/webm" />
+      </video>
+    </section>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">{h.eyebrow}</div>
+          <h1>{h.h1}</h1>
+          <p class="hero-line">{h.line}</p>
+          <p class="sub">{h.sub}</p>
+          <div class="hero-actions">
+            <a class="btn primary" href={href("/products")}>{h.explore} <span>↗</span></a>
+            <a class="btn ghost" href={href("/contact/request-a-quote")}>{h.start}</a>
+          </div>
+          <div class="hero-trust">
+            <div class="trust-item"><b>1992</b><span>{h.founded}</span></div>
+            <div class="trust-item"><b>40,000㎡+</b><span>{h.factory}</span></div>
+            <div class="trust-item"><b>1,000+</b><span>{h.designs}</span></div>
+            <div class="trust-item"><b>ISO</b><span>9001 · 14001 · 45001</span></div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <img class="main-img" src="/assets/hero-series.jpg" alt={h.heroAlt} />
+          <div class="hero-badge">
+            <b>{h.badge}</b>
+            <span>{h.badgeSub}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="signal">
+      <div class="wrap signal-inner">
+        <div class="signal-item"><div class="signal-num">{h.years}</div><div class="signal-label">{h.yearsLabel}</div></div>
+        <div class="signal-item"><div class="signal-num">14</div><div class="signal-label">{h.patentsLabel}</div></div>
+        <div class="signal-item"><div class="signal-num">8</div><div class="signal-label">{h.trademarksLabel}</div></div>
+        <div class="signal-item"><div class="signal-num">{h.global}</div><div class="signal-label">{h.globalLabel}</div></div>
+      </div>
+    </div>
+    <section class="section white">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="copy"><div class="eyebrow">{h.portfolio}</div><h2>{h.portfolioH}</h2></div>
+          <div class="side">{h.portfolioSide}</div>
+        </div>
+        <div class="category-grid">
+          {products.map((item, index) => (
+            <a class={`cat ${sizes[index] || "small"}`} href={href(item.path)}>
+              <div class="cat-media"><img src={item.image} alt={getPageCopy(locale, item.slug)?.imageAlt || item.imageAlt} /></div>
+              <div class="cat-copy"><strong>{getPageCopy(locale, item.slug)?.navLabel || item.navLabel}</strong><span>↗</span><p>{getPageCopy(locale, item.slug)?.lead || item.lead}</p></div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="copy"><div class="eyebrow">{h.collections}</div><h2>{h.collectionsH}</h2></div>
+          <a class="btn ghost" href={href("/products")}>{h.viewProducts} <span>↗</span></a>
+        </div>
+        <div class="series-grid">
+          {heroSeries && <a class="series-main" href={href(`/products/${heroSeries.data.category}/${heroSeries.id}`)}><img src={heroSeries.data.image} alt={modelText(heroSeries.id, "imageAlt", heroSeries.data.imageAlt)} /><div class="series-overlay"><div class="mini">Collection 079</div><strong>{modelText(heroSeries.id, "title", "Transparent Series")}</strong></div></a>}
+          <div class="series-side">
+            {pink && <a class="tile" href={href(`/products/${pink.data.category}/${pink.id}`)}><img src={pink.data.image} alt={modelText(pink.id, "imageAlt", pink.data.imageAlt)} /><div class="series-overlay"><div class="mini">Collection 077</div><strong>{modelText(pink.id, "title", "Bump Pink Series")}</strong></div></a>}
+            {brush && <a class="tile" href={href(`/products/${brush.data.category}/${brush.id}`)}><img src={brush.data.image} alt={modelText(brush.id, "imageAlt", brush.data.imageAlt)} /><div class="series-overlay"><div class="mini">Collection 078</div><strong>{modelText(brush.id, "title", "Big Brush Series")}</strong></div></a>}
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section white">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="copy"><div class="eyebrow">{h.custom}</div><h2>{h.customH}</h2><p class="lead">{h.customLead}</p></div>
+        </div>
+        <div class="process">
+          {h.steps.map((step, index) => (
+            <div class="step"><div class="num">{String(index + 1).padStart(2, "0")}</div><strong>{step.title}</strong><p>{step.text}</p></div>
+          ))}
+        </div>
+        <p style="margin-top:22px"><a class="btn ghost" href={href("/custom-packaging/oem-odm")}>OEM / ODM <span>↗</span></a></p>
+      </div>
+    </section>
+    <section class="section compact">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="copy"><div class="eyebrow">{h.finishesEyebrow}</div><h2>{h.finishesH}</h2></div>
+          <a class="btn ghost" href={href("/custom-packaging/decoration-finishing")}>{h.allFinishes} <span>↗</span></a>
+        </div>
+        <div class="finish-grid">
+          {h.finishes.map((name, index) => (
+            <div class="finish"><div class="code">F{String(index + 1).padStart(2, "0")}</div><strong>{name}</strong></div>
+          ))}
+        </div>
+      </div>
+    </section>
+    <section class="section dark">
+      <div class="wrap">
+        <div class="factory-hero">
+          <img src="/assets/factory-building.jpg" alt={h.factoryAlt} />
+          <div class="factory-copy">
+            <div class="eyebrow">{h.factoryEyebrow}</div>
+            <h2>{h.factoryH}</h2>
+            <p>{h.factoryP}</p>
+            <div class="capabilities">{h.caps.map((cap) => <span>{cap}</span>)}</div>
+            <a class="btn light" href={href("/about/factory")}>{h.factoryCta} <span>↗</span></a>
+          </div>
+        </div>
+        <div class="factory-gallery">
+          <img src="/assets/production.jpg" alt={getUi(locale).chrome.productionAlt} />
+          <img src="/assets/showroom.jpg" alt={getUi(locale).chrome.showroomAlt} />
+          <img src="/assets/meeting.jpg" alt={getUi(locale).chrome.meetingAlt} />
+        </div>
+      </div>
+    </section>
+    <section class="section white">
+      <div class="wrap sustain-grid">
+        <div class="sustain-visual"><img src="/assets/hero-violet.jpg" alt={h.sustainAlt} /></div>
+        <div>
+          <span class="pill">{h.sustainPill}</span>
+          <div class="eyebrow">{h.sustainEyebrow}</div>
+          <h2>{h.sustainH}</h2>
+          <p class="lead">{h.sustainLead}</p>
+          <div class="sustain-list">
+            <div class="sustain-row"><strong>{h.pcr}</strong><span>{h.pcrSub}</span></div>
+            <div class="sustain-row"><strong>{h.rpet}</strong><span>{h.rpetSub}</span></div>
+            <div class="sustain-row"><strong>{h.consult}</strong><span>{h.consultSub}</span></div>
+          </div>
+          <p><a class="btn ghost" href={href("/custom-packaging/sustainable-packaging")}>{h.sustainCta} <span>↗</span></a></p>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="wrap cert-layout">
+        <div>
+          <div class="eyebrow">{h.certEyebrow}</div>
+          <h2>{h.certH}</h2>
+          <p class="lead">{h.certLead}</p>
+          <div class="proof"><div><strong>14</strong><span>{h.patents}</span></div><div><strong>8</strong><span>{h.trademarks}</span></div></div>
+          <p><a class="btn ghost" href={href("/about/certificates")}>{h.certCta} <span>↗</span></a></p>
+        </div>
+        <div class="cert-cards">
+          <article class="cert"><img src="/assets/cert-9001.jpg" alt={getUi(locale).chrome.iso9001} /><p><b>ISO 9001:2015</b><br />{getUi(locale).chrome.quality}</p></article>
+          <article class="cert"><img src="/assets/cert-14001.jpg" alt={getUi(locale).chrome.iso14001} /><p><b>ISO 14001:2015</b><br />{getUi(locale).chrome.environment}</p></article>
+          <article class="cert"><img src="/assets/cert-45001.jpg" alt={getUi(locale).chrome.iso45001} /><p><b>ISO 45001:2018</b><br />{getUi(locale).chrome.safety}</p></article>
+        </div>
+      </div>
+    </section>
+    <section class="section white">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="copy"><div class="eyebrow">{h.resourcesEyebrow}</div><h2>{h.resourcesH}</h2></div>
+          <div class="side">{h.resourcesSide}</div>
+        </div>
+        <div class="insights">
+          {exhibition && (
+            <article class="article">
+              <a href={hrefFor(exhibition)}><img src={exhibition.data.image} alt={postText(exhibition.id, "imageAlt", exhibition.data.imageAlt)} /></a>
+              <div class="article-copy"><span class="tag">{h.exhibitionTag}</span><h3><a href={hrefFor(exhibition)}>{postText(exhibition.id, "title", exhibition.data.title)}</a></h3><p>{postText(exhibition.id, "description", exhibition.data.description)}</p></div>
+            </article>
+          )}
+          <div class="article-list">
+            {guides.map((post) => (
+              <a class="article-mini" href={hrefFor(post)}>
+                <img src={post.data.image} alt={postText(post.id, "imageAlt", post.data.imageAlt)} />
+                <div><span class="tag">{h.guideTag}</span><strong>{postText(post.id, "title", post.data.title)}</strong></div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section compact white">
+      <div class="wrap">
+        <div class="eyebrow">{h.faqEyebrow}</div>
+        <h2>{h.faqH}</h2>
+        <div class="faq">
+          {homeFaqs.map((faq) => (
+            <details>
+              <summary>{faq.question}</summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+        <p style="margin-top:18px"><a class="btn ghost" href={href("/resources/faq")}>{h.allFaq} <span>↗</span></a></p>
+      </div>
+    </section>
+    <section class="section" id="rfq">
+      <div class="wrap">
+        <div class="cta">
+          <div>
+            <div class="eyebrow" style="color:#938c84">{h.ctaEyebrow}</div>
+            <h2>{h.ctaH}</h2>
+            <p>{h.ctaP}</p>
+            <div class="hero-trust" style="border-color:#2d2d2d;margin-top:35px">
+              <div class="trust-item"><b>WhatsApp</b><span>{site.whatsappDisplay}</span></div>
+              <div class="trust-item"><b>Email</b><span>{site.email}</span></div>
+            </div>
+          </div>
+          <QuoteForm locale={locale} />
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    const hero = document.querySelector(".home-video-player");
+    if (hero instanceof HTMLVideoElement && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      hero.removeAttribute("autoplay");
+      hero.pause();
+    }
+  </script>
+</Base>
