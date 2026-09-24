@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: ehonpackaging/ehon-website
+  repo: mattc95/ehon-packaging
   branch: main
 local_backend: true
 site_url: https://www.ehonpackaging.com
