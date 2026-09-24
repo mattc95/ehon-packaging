@@ -1,0 +1,38 @@
+---
+import { products } from "../../lib/products";
+import { site } from "../../lib/site";
+---
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="/assets/logo.png" alt="EHON Packaging" />
+        <p>{site.legalName} — a cosmetic packaging supplier integrating design, R&D, manufacturing and sales since 1992.</p>
+      </div>
+      <div class="foot-col">
+        <strong>Products</strong>
+        {products.slice(0, 6).map((item) => <a href={item.path}>{item.navLabel}</a>)}
+      </div>
+      <div class="foot-col">
+        <strong>Company</strong>
+        <a href="/custom-packaging/oem-odm">OEM / ODM</a>
+        <a href="/custom-packaging/decoration-finishing">Decoration & Finishing</a>
+        <a href="/capabilities/manufacturing">Manufacturing</a>
+        <a href="/capabilities/quality-control">Quality Control</a>
+        <a href="/about/factory">Factory</a>
+        <a href="/resources/faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <strong>Contact</strong>
+        <span>{site.address.full}</span>
+        <a href={site.phoneHref}>{site.phone}</a>
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+        <a href="/contact/request-a-quote">Request a Quote</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© {new Date().getFullYear()} EHON Packaging. {site.legalName}.</span>
+      <span><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/sitemap">Sitemap</a></span>
+    </div>
+  </div>
+</footer>

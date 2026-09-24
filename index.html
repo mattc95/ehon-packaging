@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EHON Packaging — Custom Cosmetic Packaging Manufacturer</title>
+  <meta name="description" content="EHON Packaging is a cosmetic packaging manufacturer founded in 1992, providing custom packaging design, manufacturing, decoration and finishing for global beauty brands." />
+  <meta name="theme-color" content="#111111" />
+  <style>
+    :root{
+      --ink:#131313;
+      --muted:#696660;
+      --paper:#f7f5f1;
+      --white:#ffffff;
+      --line:#dfdcd6;
+      --sand:#b99e82;
+      --sand-soft:#e8dfd6;
+      --rose:#d9b4af;
+      --green:#315c53;
+      --shadow:0 24px 60px rgba(29,25,21,.10);
+      --radius:22px;
+      --radius-sm:14px;
+      --max:1280px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,"Helvetica Neue",Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+    button,input,textarea,select{font:inherit}
+    .wrap{width:min(calc(100% - 48px),var(--max));margin:auto}
+    .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:#837b71}
+    h1,h2,h3,p{margin-top:0}
+    h1{font-size:clamp(48px,6vw,86px);line-height:.98;letter-spacing:-.055em;font-weight:640;margin-bottom:28px}
+    h2{font-size:clamp(36px,4.3vw,60px);line-height:1.02;letter-spacing:-.045em;font-weight:620;margin-bottom:22px}
+    h3{font-size:24px;letter-spacing:-.025em;margin-bottom:10px}
+    .lead{font-size:clamp(18px,2vw,22px);line-height:1.55;color:#5f5b55;max-width:710px}
+    .section{padding:110px 0}
+    .section.compact{padding:80px 0}
+    .section.white{background:#fff}
+    .section.dark{background:#101010;color:white}
+    .section-head{display:flex;justify-content:space-between;gap:36px;align-items:flex-end;margin-bottom:48px}
+    .section-head .copy{max-width:760px}
+    .section-head .side{max-width:390px;color:var(--muted);font-size:15px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 20px;border-radius:999px;border:1px solid #1b1b1b;font-size:14px;font-weight:650;transition:.25s ease;cursor:pointer}
+    .btn.primary{background:#111;color:#fff}
+    .btn.primary:hover{background:#333;transform:translateY(-1px)}
+    .btn.light{background:#fff;border-color:#fff;color:#111}
+    .btn.ghost{background:transparent}
+    .btn.ghost:hover{background:#111;color:#fff}
+    .arrow{font-size:16px;line-height:1}
+
+    /* nav */
+    .nav{position:sticky;top:0;z-index:50;background:rgba(247,245,241,.88);backdrop-filter:blur(18px);border-bottom:1px solid rgba(0,0,0,.06)}
+    .nav-inner{height:78px;display:flex;align-items:center;justify-content:space-between;gap:28px}
+    .brand img{height:38px;width:auto}
+    .nav-links{display:flex;align-items:center;gap:30px;font-size:14px;font-weight:620}
+    .nav-links a{position:relative}
+    .nav-links a:after{content:"";position:absolute;left:0;right:100%;bottom:-8px;height:1px;background:#111;transition:.25s}
+    .nav-links a:hover:after{right:0}
+    .nav-actions{display:flex;align-items:center;gap:10px}
+    .lang{font-size:13px;color:#666}
+    .menu{display:none;background:none;border:0;font-size:26px;padding:4px}
+
+    /* hero */
+    .hero{padding:46px 0 90px}
+    .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:34px;align-items:stretch;min-height:690px}
+    .hero-copy{display:flex;flex-direction:column;justify-content:center;padding:40px 0 40px 8px}
+    .hero-copy .eyebrow{margin-bottom:20px}
+    .hero-copy .sub{font-size:18px;line-height:1.65;color:#5f5b55;max-width:620px;margin-bottom:32px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:46px}
+    .hero-trust{display:flex;gap:30px;flex-wrap:wrap;padding-top:26px;border-top:1px solid var(--line)}
+    .trust-item b{display:block;font-size:18px;margin-bottom:3px}
+    .trust-item span{font-size:12px;color:#7d776f;text-transform:uppercase;letter-spacing:.09em}
+    .hero-visual{position:relative;border-radius:30px;overflow:hidden;background:#ece9e4;box-shadow:var(--shadow);min-height:650px}
+    .hero-visual .main-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% center;transform:scale(1.18)}
+    .hero-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(0,0,0,.08))}
+    .hero-badge{position:absolute;z-index:2;left:24px;bottom:24px;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-radius:18px;padding:18px 20px;width:min(330px,calc(100% - 48px));box-shadow:0 10px 30px rgba(0,0,0,.10)}
+    .hero-badge b{font-size:15px;display:block;margin-bottom:5px}
+    .hero-badge span{font-size:12px;color:#666}
+
+    /* logo trust line */
+    .signal{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fbfaf8}
+    .signal-inner{display:grid;grid-template-columns:repeat(4,1fr);padding:28px 0}
+    .signal-item{padding:0 24px;border-right:1px solid var(--line)}
+    .signal-item:first-child{padding-left:0}.signal-item:last-child{border-right:0}
+    .signal-num{font-size:30px;letter-spacing:-.04em;font-weight:650}
+    .signal-label{font-size:13px;color:#77716a;margin-top:3px}
+
+    /* category cards */
+    .category-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+    .cat{position:relative;background:#fff;border-radius:var(--radius);overflow:hidden;min-height:360px;border:1px solid #ebe8e2;transition:.28s ease}
+    .cat:hover{transform:translateY(-4px);box-shadow:0 20px 42px rgba(0,0,0,.09)}
+    .cat.large{grid-column:span 6}.cat.small{grid-column:span 3}
+    .cat-media{height:270px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#fff,#f6f4f0);padding:22px}
+    .cat-media img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+    .cat-copy{padding:20px 22px 23px}
+    .cat-copy strong{font-size:19px;letter-spacing:-.02em}
+    .cat-copy span{float:right;font-size:18px}
+    .cat-copy p{margin:6px 0 0;color:#7a756d;font-size:13px}
+
+    /* featured series */
+    .series-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+    .series-main,.series-side{border-radius:26px;overflow:hidden;position:relative;min-height:570px;background:#ddd}
+    .series-main img,.series-side img{width:100%;height:100%;object-fit:cover}
+    .series-side{display:grid;grid-template-rows:1fr 1fr;gap:18px;background:transparent;overflow:visible}
+    .series-side .tile{position:relative;border-radius:26px;overflow:hidden;min-height:276px;background:#ddd}
+    .series-overlay{position:absolute;inset:auto 22px 22px 22px;background:rgba(20,20,20,.84);color:#fff;border-radius:18px;padding:18px 20px;backdrop-filter:blur(9px)}
+    .series-overlay .mini{font-size:12px;opacity:.68;text-transform:uppercase;letter-spacing:.11em}
+    .series-overlay strong{display:block;font-size:22px;margin-top:4px}
+
+    /* process */
+    .process{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .step{padding:28px 18px 30px;border-right:1px solid var(--line);min-height:210px}
+    .step:first-child{padding-left:0}.step:last-child{border-right:0}
+    .step .num{font-size:12px;color:#958b80;font-weight:700;letter-spacing:.12em;margin-bottom:58px}
+    .step strong{font-size:18px;display:block;margin-bottom:7px}
+    .step p{font-size:13px;color:#77716a;margin:0}
+
+    /* customization */
+    .finish-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .finish{border:1px solid var(--line);border-radius:20px;padding:24px;background:#fbfaf8;min-height:160px;position:relative;overflow:hidden}
+    .finish:before{content:"";position:absolute;width:76px;height:76px;border-radius:50%;right:-8px;top:-12px;background:linear-gradient(145deg,#e9e1d8,#a88f75);opacity:.55}
+    .finish:nth-child(2):before{background:linear-gradient(145deg,#f3d6cb,#c2a09b)}
+    .finish:nth-child(3):before{background:linear-gradient(145deg,#d8d8d8,#737373)}
+    .finish:nth-child(4):before{background:linear-gradient(145deg,#d7e5e2,#769b92)}
+    .finish:nth-child(5):before{background:linear-gradient(145deg,#e7e7e7,#c7b59b)}
+    .finish:nth-child(6):before{background:linear-gradient(145deg,#eed8ed,#8ab2c9)}
+    .finish:nth-child(7):before{background:linear-gradient(145deg,#dac6ae,#917559)}
+    .finish:nth-child(8):before{background:linear-gradient(145deg,#dadada,#9d9d9d)}
+    .finish .code{font-size:11px;letter-spacing:.12em;color:#9b9289;margin-bottom:52px}
+    .finish strong{font-size:16px}
+
+    /* factory */
+    .factory-hero{position:relative;border-radius:30px;overflow:hidden;min-height:610px}
+    .factory-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .factory-hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.65),rgba(0,0,0,.12) 65%,rgba(0,0,0,.02))}
+    .factory-copy{position:relative;z-index:2;color:#fff;padding:70px;max-width:650px}
+    .factory-copy .eyebrow{color:rgba(255,255,255,.65)}
+    .factory-copy h2{margin-top:12px}
+    .factory-copy p{color:rgba(255,255,255,.76);font-size:17px;max-width:560px}
+    .capabilities{display:flex;flex-wrap:wrap;gap:8px;margin:28px 0 34px}
+    .capabilities span{border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:8px 12px;font-size:12px;background:rgba(255,255,255,.06)}
+    .factory-gallery{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:14px}
+    .factory-gallery img{width:100%;height:240px;object-fit:cover;border-radius:20px}
+
+    /* sustainability */
+    .sustain-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+    .sustain-visual{border-radius:28px;overflow:hidden;background:#dce9e5;min-height:540px;position:relative}
+    .sustain-visual img{width:100%;height:100%;min-height:540px;object-fit:cover}
+    .sustain-copy .pill{display:inline-block;background:#e2ece8;color:#2d5d52;border-radius:999px;padding:8px 11px;font-size:12px;font-weight:700;margin-bottom:20px}
+    .sustain-list{display:grid;gap:0;border-top:1px solid var(--line);margin-top:34px}
+    .sustain-row{display:flex;justify-content:space-between;gap:20px;padding:18px 0;border-bottom:1px solid var(--line);font-size:14px}
+    .sustain-row span:last-child{color:#77716a;text-align:right}
+
+    /* certs */
+    .cert-layout{display:grid;grid-template-columns:1fr 1fr;gap:42px;align-items:center}
+    .cert-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .cert{background:#fff;border-radius:20px;border:1px solid var(--line);padding:12px}
+    .cert img{width:100%;aspect-ratio:1/1.36;object-fit:contain;background:#f4f4f4;border-radius:12px}
+    .cert p{font-size:12px;margin:10px 4px 4px;color:#625e59}
+    .proof{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:26px}
+    .proof div{background:#111;color:#fff;border-radius:18px;padding:22px}
+    .proof strong{display:block;font-size:30px;letter-spacing:-.04em}
+    .proof span{font-size:12px;color:#bdb7b0;text-transform:uppercase;letter-spacing:.08em}
+
+    /* insight */
+    .insights{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
+    .article{background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden}
+    .article img{width:100%;height:330px;object-fit:cover}
+    .article-copy{padding:24px}
+    .article-copy .tag{font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:#8d8278}
+    .article-copy h3{margin:8px 0 12px}
+    .article-copy p{color:#706b64;font-size:14px;margin-bottom:0}
+    .article-list{display:grid;gap:12px}
+    .article-mini{display:grid;grid-template-columns:150px 1fr;gap:18px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:12px;align-items:center}
+    .article-mini img{width:150px;height:125px;object-fit:cover;border-radius:13px}
+    .article-mini .tag{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#8d8278}
+    .article-mini strong{display:block;font-size:17px;line-height:1.28;margin-top:6px}
+
+    /* CTA */
+    .cta{background:#111;color:white;border-radius:32px;padding:70px;display:grid;grid-template-columns:1fr .72fr;gap:60px;align-items:center}
+    .cta h2{font-size:clamp(42px,5vw,70px);margin-bottom:18px}
+    .cta p{color:#b9b6b1;max-width:650px;font-size:17px}
+    .rfq{background:#fff;color:#111;border-radius:24px;padding:28px}
+    .rfq-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .rfq input,.rfq select,.rfq textarea{width:100%;border:1px solid #dedbd6;border-radius:12px;background:#faf9f7;padding:12px 13px;outline:none}
+    .rfq textarea{grid-column:1/-1;min-height:95px;resize:vertical}
+    .rfq input:focus,.rfq select:focus,.rfq textarea:focus{border-color:#777}
+    .rfq button{width:100%;grid-column:1/-1;margin-top:2px}
+    .fine{font-size:11px;color:#8d8881;margin:10px 2px 0}
+
+    /* footer */
+    footer{padding:72px 0 30px}
+    .footer-grid{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:50px;padding-bottom:48px;border-bottom:1px solid var(--line)}
+    .footer-brand img{height:42px;margin-bottom:18px}
+    .footer-brand p{font-size:14px;color:#716c65;max-width:390px}
+    .foot-col strong{font-size:13px;display:block;margin-bottom:15px}
+    .foot-col a,.foot-col span{display:block;font-size:13px;color:#736e67;margin:9px 0}
+    .footer-bottom{padding-top:22px;display:flex;justify-content:space-between;gap:20px;font-size:12px;color:#8b857e}
+    .whatsapp{position:fixed;right:20px;bottom:20px;z-index:40;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:#111;color:#fff;font-size:20px;box-shadow:0 12px 30px rgba(0,0,0,.25)}
+
+    .reveal{opacity:0;transform:translateY(18px);transition:.65s ease}
+    .reveal.show{opacity:1;transform:none}
+
+    @media(max-width:1050px){
+      .nav-links{display:none}.menu{display:block}.lang{display:none}
+      .hero-grid,.sustain-grid,.cert-layout,.cta{grid-template-columns:1fr}
+      .hero-grid{min-height:auto}.hero-visual{min-height:560px}
+      .cat.large{grid-column:span 6}.cat.small{grid-column:span 6}
+      .process{grid-template-columns:repeat(3,1fr)}
+      .step:nth-child(3){border-right:0}.step:nth-child(-n+3){border-bottom:1px solid var(--line)}
+      .finish-grid{grid-template-columns:repeat(2,1fr)}
+      .series-grid{grid-template-columns:1fr}
+      .series-main{min-height:480px}
+      .insights{grid-template-columns:1fr}
+      .footer-grid{grid-template-columns:1.4fr 1fr 1fr}
+      .footer-grid .foot-col:last-child{grid-column:2/4}
+    }
+    @media(max-width:720px){
+      .wrap{width:min(calc(100% - 28px),var(--max))}
+      .section{padding:76px 0}.section.compact{padding:60px 0}
+      .nav-inner{height:68px}.brand img{height:33px}.nav-actions .btn{display:none}
+      .hero{padding:20px 0 60px}.hero-copy{padding:22px 0}.hero-copy .sub{font-size:16px}.hero-visual{min-height:470px;border-radius:22px}
+      .hero-trust{gap:18px}.trust-item{width:calc(50% - 12px)}
+      .signal-inner{grid-template-columns:1fr 1fr}.signal-item{padding:16px}.signal-item:nth-child(2){border-right:0}.signal-item:nth-child(-n+2){border-bottom:1px solid var(--line)}
+      .section-head{display:block}.section-head .side{margin-top:18px}
+      .cat.large,.cat.small{grid-column:span 12}.cat-media{height:250px}
+      .series-main{min-height:410px}.series-side{grid-template-rows:auto}.series-side .tile{min-height:300px}
+      .process{grid-template-columns:1fr 1fr}.step{min-height:170px}.step:nth-child(3){border-right:1px solid var(--line)}.step:nth-child(even){border-right:0}.step:nth-child(-n+4){border-bottom:1px solid var(--line)}
+      .finish-grid{grid-template-columns:1fr}
+      .factory-copy{padding:42px 26px}.factory-gallery{grid-template-columns:1fr}.factory-gallery img{height:220px}
+      .cert-cards{gap:8px}.cert{padding:7px}.cert p{font-size:10px}
+      .proof{grid-template-columns:1fr 1fr}
+      .article-mini{grid-template-columns:105px 1fr}.article-mini img{width:105px;height:100px}.article-mini strong{font-size:14px}
+      .cta{padding:40px 24px;border-radius:24px;gap:32px}.rfq-grid{grid-template-columns:1fr}.rfq textarea,.rfq button{grid-column:auto}
+      .footer-grid{grid-template-columns:1fr 1fr;gap:30px}.footer-brand{grid-column:1/-1}.footer-grid .foot-col:last-child{grid-column:auto}.footer-bottom{display:block}.footer-bottom span{display:block;margin-top:8px}
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top" aria-label="EHON Packaging"><img src="assets/logo.png" alt="EHON Packaging" /></a>
+      <div class="nav-links">
+        <a href="#products">Products</a>
+        <a href="#custom">Custom Packaging</a>
+        <a href="#factory">Capabilities</a>
+        <a href="#about">About EHON</a>
+        <a href="#resources">Resources</a>
+      </div>
+      <div class="nav-actions">
+        <span class="lang">EN · Global</span>
+        <a class="btn primary" href="#rfq">Request a Quote <span class="arrow">↗</span></a>
+        <button class="menu" aria-label="Open menu">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy reveal">
+          <div class="eyebrow">Cosmetic Packaging Manufacturer · Since 1992</div>
+          <h1>Packaging made to become part of your brand.</h1>
+          <p class="sub">From packaging design and material selection to molding, decoration, assembly and quality control — EHON helps beauty brands turn ideas into scalable, production-ready packaging.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#products">Explore Packaging <span class="arrow">↗</span></a>
+            <a class="btn ghost" href="#rfq">Start a Project</a>
+          </div>
+          <div class="hero-trust">
+            <div class="trust-item"><b>1992</b><span>Founded</span></div>
+            <div class="trust-item"><b>40,000㎡+</b><span>Factory</span></div>
+            <div class="trust-item"><b>1,000+</b><span>Packaging Designs</span></div>
+            <div class="trust-item"><b>ISO</b><span>9001 · 14001 · 45001</span></div>
+          </div>
+        </div>
+        <div class="hero-visual reveal">
+          <img class="main-img" src="assets/hero-series.jpg" alt="EHON cosmetic packaging collection" />
+          <div class="hero-badge">
+            <b>Custom finish, color, logo and component combinations.</b>
+            <span>Built for lipstick, lip gloss, mascara, eyeliner, powder, skincare and more.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="signal">
+      <div class="wrap signal-inner">
+        <div class="signal-item"><div class="signal-num">30+ yrs</div><div class="signal-label">Packaging manufacturing experience</div></div>
+        <div class="signal-item"><div class="signal-num">14</div><div class="signal-label">Patents across packaging innovation</div></div>
+        <div class="signal-item"><div class="signal-num">8</div><div class="signal-label">Registered trademarks</div></div>
+        <div class="signal-item"><div class="signal-num">Global</div><div class="signal-label">Exports across major beauty markets</div></div>
+      </div>
+    </div>
+
+    <section id="products" class="section white">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="copy">
+            <div class="eyebrow">Product portfolio</div>
+            <h2>Packaging for every beauty idea.</h2>
+          </div>
+          <div class="side">Browse by application first. Each category can expand into SEO landing pages, product families and individual model pages later.</div>
+        </div>
+        <div class="category-grid">
+          <a class="cat large reveal" href="#"><div class="cat-media"><img src="assets/set-gun.jpg" alt="Full cosmetic packaging sets" /></div><div class="cat-copy"><strong>Complete Sets</strong><span>↗</span><p>Coordinated packaging systems for full product lines.</p></div></a>
+          <a class="cat large reveal" href="#"><div class="cat-media"><img src="assets/lipstick.jpg" alt="Lipstick packaging" /></div><div class="cat-copy"><strong>Lipstick Packaging</strong><span>↗</span><p>Cases, shells and custom finishes for lip collections.</p></div></a>
+          <a class="cat small reveal" href="#"><div class="cat-media"><img src="assets/mascara.jpg" alt="Mascara and eyeliner tubes" /></div><div class="cat-copy"><strong>Mascara & Eyeliner</strong><span>↗</span><p>Tubes, wands and applicator systems.</p></div></a>
+          <a class="cat small reveal" href="#"><div class="cat-media"><img src="assets/lipgloss.jpg" alt="Lip gloss tubes" /></div><div class="cat-copy"><strong>Lip Gloss Tubes</strong><span>↗</span><p>Clear, frosted and decorated tubes.</p></div></a>
+          <a class="cat small reveal" href="#"><div class="cat-media"><img src="assets/powder.jpg" alt="Powder compact packaging" /></div><div class="cat-copy"><strong>Powder Compacts</strong><span>↗</span><p>Compact systems for pressed face products.</p></div></a>
+          <a class="cat small reveal" href="#"><div class="cat-media"><img src="assets/jar.jpg" alt="Cream jars and lotion bottles" /></div><div class="cat-copy"><strong>Jars & Bottles</strong><span>↗</span><p>Skincare and hybrid beauty packaging.</p></div></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="copy"><div class="eyebrow">Featured collections</div><h2>Built as a system, not just a single component.</h2></div>
+          <a class="btn ghost" href="#">View New & Hot <span class="arrow">↗</span></a>
+        </div>
+        <div class="series-grid">
+          <div class="series-main reveal"><img src="assets/series-transparent.jpg" alt="Transparent cosmetic packaging series" /><div class="series-overlay"><div class="mini">Collection 079</div><strong>Transparent Series</strong></div></div>
+          <div class="series-side">
+            <div class="tile reveal"><img src="assets/series-pink.png" alt="Pink cosmetic packaging series" /><div class="series-overlay"><div class="mini">Collection 077</div><strong>Bump Pink Series</strong></div></div>
+            <div class="tile reveal"><img src="assets/series-brush.png" alt="Big brush cosmetic packaging series" /><div class="series-overlay"><div class="mini">Collection 078</div><strong>Big Brush Series</strong></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="custom" class="section white">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="copy"><div class="eyebrow">Custom packaging</div><h2>From concept to production.</h2><p class="lead">A clearer workflow makes OEM/ODM capability tangible — and gives overseas buyers confidence before they ever send the first RFQ.</p></div>
+        </div>
+        <div class="process reveal">
+          <div class="step"><div class="num">01</div><strong>Brief</strong><p>Product type, market, target cost and launch timing.</p></div>
+          <div class="step"><div class="num">02</div><strong>Design</strong><p>Shape, component, color and functional direction.</p></div>
+          <div class="step"><div class="num">03</div><strong>Material</strong><p>Select suitable resins, finishes and applicators.</p></div>
+          <div class="step"><div class="num">04</div><strong>Sampling</strong><p>Prototype and confirm visual and functional details.</p></div>
+          <div class="step"><div class="num">05</div><strong>Production</strong><p>Molding, decoration, printing and automated assembly.</p></div>
+          <div class="step"><div class="num">06</div><strong>QC & Delivery</strong><p>Inspection, packing and preparation for export.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="copy"><div class="eyebrow">Decoration & finishing</div><h2>Make it unmistakably yours.</h2></div>
+          <div class="side">Each process can later become its own SEO landing page with technical examples, compatible materials, MOQ guidance and FAQs.</div>
+        </div>
+        <div class="finish-grid">
+          <div class="finish reveal"><div class="code">F01</div><strong>Hot Stamping</strong></div>
+          <div class="finish reveal"><div class="code">F02</div><strong>Silk Screen Printing</strong></div>
+          <div class="finish reveal"><div class="code">F03</div><strong>UV Metallizing</strong></div>
+          <div class="finish reveal"><div class="code">F04</div><strong>Matte Finishing</strong></div>
+          <div class="finish reveal"><div class="code">F05</div><strong>UV Coating</strong></div>
+          <div class="finish reveal"><div class="code">F06</div><strong>Gradient / Iridescent</strong></div>
+          <div class="finish reveal"><div class="code">F07</div><strong>Heat / Water Transfer</strong></div>
+          <div class="finish reveal"><div class="code">F08</div><strong>Laser Engraving</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="factory" class="section dark">
+      <div class="wrap">
+        <div class="factory-hero reveal">
+          <img src="assets/factory-building.jpg" alt="EHON Packaging factory in Shantou, Guangdong" />
+          <div class="factory-copy">
+            <div class="eyebrow">Manufacturing capability</div>
+            <h2>Where ideas become production-ready packaging.</h2>
+            <p>EHON operates a modern manufacturing facility in Shantou, Guangdong with injection molding, blow molding, automated assembly, printing, decoration and supporting production equipment.</p>
+            <div class="capabilities"><span>Injection Molding</span><span>Blow Molding</span><span>Automatic Assembly</span><span>Printing</span><span>Robotic Handling</span><span>Decoration</span></div>
+            <a class="btn light" href="#rfq">Discuss Your Project <span class="arrow">↗</span></a>
+          </div>
+        </div>
+        <div class="factory-gallery">
+          <img class="reveal" src="assets/production.jpg" alt="EHON production equipment" />
+          <img class="reveal" src="assets/showroom.jpg" alt="EHON showroom" />
+          <img class="reveal" src="assets/meeting.jpg" alt="EHON meeting room" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section white">
+      <div class="wrap sustain-grid">
+        <div class="sustain-visual reveal"><img src="assets/hero-violet.jpg" alt="Cosmetic packaging collection" /></div>
+        <div class="sustain-copy reveal">
+          <span class="pill">Sustainability direction</span>
+          <div class="eyebrow">Responsible materials</div>
+          <h2>Beauty packaging with better material choices.</h2>
+          <p class="lead">EHON has incorporated PCR and recycled PET materials into its product range, supporting brands that want to explore more resource-conscious packaging options.</p>
+          <div class="sustain-list">
+            <div class="sustain-row"><strong>PCR Materials</strong><span>Post-consumer recycled options</span></div>
+            <div class="sustain-row"><strong>Recycled PET</strong><span>Available within selected packaging programs</span></div>
+            <div class="sustain-row"><strong>Design Consultation</strong><span>Material and finish selection based on project needs</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="wrap cert-layout">
+        <div class="reveal">
+          <div class="eyebrow">Quality you can verify</div>
+          <h2>Certified systems. Documented manufacturing.</h2>
+          <p class="lead">Use certifications as proof, not decoration. The page should surface the management system clearly, with the original certificate available one click deeper.</p>
+          <div class="proof"><div><strong>14</strong><span>Patents</span></div><div><strong>8</strong><span>Trademarks</span></div></div>
+        </div>
+        <div class="cert-cards reveal">
+          <div class="cert"><img src="assets/cert-9001.jpg" alt="ISO 9001 certificate" /><p><b>ISO 9001:2015</b><br/>Quality Management</p></div>
+          <div class="cert"><img src="assets/cert-14001.jpg" alt="ISO 14001 certificate" /><p><b>ISO 14001:2015</b><br/>Environmental Management</p></div>
+          <div class="cert"><img src="assets/cert-45001.jpg" alt="ISO 45001 certificate" /><p><b>ISO 45001:2018</b><br/>Occupational Health & Safety</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="resources" class="section white">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="copy"><div class="eyebrow">Resources & activity</div><h2>Useful content buyers can actually search for.</h2></div>
+          <div class="side">The production site should combine exhibition news with evergreen packaging guides to build topical authority for Google and AI search.</div>
+        </div>
+        <div class="insights">
+          <article class="article reveal"><img src="assets/news-cbe.jpg" alt="EHON at China Beauty Expo 2026" /><div class="article-copy"><span class="tag">Exhibition · 2026</span><h3>Meet EHON at China Beauty Expo, Shanghai</h3><p>Exhibition pages can include booth details, featured packaging, meeting booking and post-show media.</p></div></article>
+          <div class="article-list">
+            <article class="article-mini reveal"><img src="assets/new-jar.jpg" alt="Cream jar packaging" /><div><span class="tag">Packaging guide</span><strong>How to choose the right cosmetic jar for a premium skincare line</strong></div></article>
+            <article class="article-mini reveal"><img src="assets/lipgloss.jpg" alt="Lip gloss packaging" /><div><span class="tag">Buyer guide</span><strong>Custom lip gloss tubes: material, applicator, decoration and sampling</strong></div></article>
+            <article class="article-mini reveal"><img src="assets/accessory.jpg" alt="Cosmetic packaging pump" /><div><span class="tag">Technical</span><strong>What beauty brands should confirm before approving packaging components</strong></div></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="rfq" class="section">
+      <div class="wrap">
+        <div class="cta reveal">
+          <div>
+            <div class="eyebrow" style="color:#938c84">Start a packaging project</div>
+            <h2>Tell us what you want to create.</h2>
+            <p>Turn the final CTA into a qualified RFQ rather than a generic contact form. Ask for the information the sales team actually needs.</p>
+            <div class="hero-trust" style="border-color:#2d2d2d;margin-top:35px">
+              <div class="trust-item"><b>WhatsApp</b><span>+86 135 0297 8512</span></div>
+              <div class="trust-item"><b>Email</b><span>yh@styihong.com</span></div>
+            </div>
+          </div>
+          <form class="rfq" onsubmit="event.preventDefault(); alert('Style preview only — connect this form to your CRM or email service in production.');">
+            <div class="rfq-grid">
+              <input aria-label="Name" placeholder="Your name" required />
+              <input aria-label="Business email" placeholder="Business email" type="email" required />
+              <input aria-label="Company" placeholder="Company" />
+              <select aria-label="Product type"><option>Product type</option><option>Lipstick Packaging</option><option>Lip Gloss Packaging</option><option>Mascara / Eyeliner</option><option>Powder Compact</option><option>Jar / Bottle</option><option>Complete Set</option></select>
+              <input aria-label="Estimated quantity" placeholder="Estimated quantity" />
+              <input aria-label="Target launch" placeholder="Target launch date" />
+              <textarea aria-label="Project details" placeholder="Tell us about size, material, color, logo, finish, artwork or sample needs..."></textarea>
+              <button class="btn primary" type="submit">Submit Project <span class="arrow">↗</span></button>
+            </div>
+            <p class="fine">Style prototype: submission is not connected to a live endpoint.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand"><img src="assets/logo.png" alt="EHON Packaging" /><p>Guangdong EHON Technology Co., Ltd. — a cosmetic packaging supplier integrating design, R&D, manufacturing and sales since 1992.</p></div>
+        <div class="foot-col"><strong>Products</strong><a href="#">Lipstick Packaging</a><a href="#">Lip Gloss Tubes</a><a href="#">Mascara & Eyeliner</a><a href="#">Powder Compacts</a><a href="#">Jars & Bottles</a></div>
+        <div class="foot-col"><strong>Capabilities</strong><a href="#">OEM / ODM</a><a href="#">Decoration & Finishing</a><a href="#">Manufacturing</a><a href="#">Quality Control</a><a href="#">Sustainable Materials</a></div>
+        <div class="foot-col"><strong>Contact</strong><span>EHON Industrial Zone, No.2 ZhuJinYiHeng Road, LongHu District, Shantou, Guangdong, China</span><span>+86-754-88608623</span><span>yh@styihong.com</span></div>
+      </div>
+      <div class="footer-bottom"><span>© 2026 EHON Packaging. Style direction prototype.</span><span>Privacy · Terms · Sitemap</span></div>
+    </div>
+  </footer>
+
+  <a class="whatsapp" href="#rfq" title="Contact EHON">↗</a>
+
+  <script>
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}})
+    },{threshold:.08});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "name":"Guangdong EHON Technology Co., Ltd.",
+    "brand":"EHON Packaging",
+    "foundingDate":"1992",
+    "description":"Cosmetic packaging supplier integrating design, R&D, production and sales.",
+    "address":{"@type":"PostalAddress","streetAddress":"EHON Industrial Zone, No.2 ZhuJinYiHeng Road, ZhuJin Industrial Park","addressLocality":"Shantou","addressRegion":"Guangdong","addressCountry":"CN"},
+    "email":"yh@styihong.com",
+    "telephone":"+86-754-88608623"
+  }
+  </script>
+</body>
+</html>

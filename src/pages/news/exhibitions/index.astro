@@ -1,0 +1,24 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../../layouts/Base.astro";
+import { breadcrumbJsonLd } from "../../../data/seo";
+
+const posts = await getCollection("blog", ({ data }) => !data.draft && data.section === "exhibition");
+---
+<Base title="Exhibitions" description="Meet EHON Packaging at China Beauty Expo in Shanghai and continue the project with the Shantou factory." path="/news/exhibitions" jsonLd={[breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Exhibitions", path: "/news/exhibitions" }])]}>
+  <main class="section">
+    <div class="wrap">
+      <nav class="crumb"><a href="/">Home</a><span>/</span><span>Exhibitions</span></nav>
+      <div class="eyebrow">News</div>
+      <h1>Where EHON meets buyers.</h1>
+      <div class="insights" style="margin-top:28px">
+        {posts.map((post) => (
+          <article class="article">
+            <a href={`/news/exhibitions/${post.id}`}><img src={post.data.image} alt={post.data.imageAlt} /></a>
+            <div class="article-copy"><span class="tag">{post.data.date}</span><h3><a href={`/news/exhibitions/${post.id}`}>{post.data.title}</a></h3><p>{post.data.description}</p></div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </main>
+</Base>

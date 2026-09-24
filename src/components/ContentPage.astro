@@ -1,0 +1,132 @@
+---
+import type { SeoPage } from "../../lib/types";
+import Base from "../layouts/Base.astro";
+import QuoteForm from "./QuoteForm.astro";
+import { breadcrumbJsonLd, faqJsonLd, serviceJsonLd } from "../data/seo";
+
+interface Props {
+  page: SeoPage;
+  crumbs: { name: string; path: string }[];
+}
+const { page, crumbs } = Astro.props;
+const jsonLd = [
+  breadcrumbJsonLd(crumbs),
+  faqJsonLd(page.faqs),
+  serviceJsonLd(page.navLabel, page.description, page.path),
+];
+---
+<Base title={page.title} description={page.description} path={page.path} image={page.image} jsonLd={jsonLd}>
+  <main>
+    <section class="hero inner-hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <nav class="crumb" aria-label="Breadcrumb">
+            {crumbs.map((crumb, i) => (
+              <>
+                {i > 0 && <span>/</span>}
+                {i < crumbs.length - 1 ? <a href={crumb.path}>{crumb.name}</a> : <span>{crumb.name}</span>}
+              </>
+            ))}
+          </nav>
+          <div class="eyebrow">{page.eyebrow}</div>
+          <h1>{page.h1}</h1>
+          <p class="sub">{page.lead}</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="/contact/request-a-quote">Request a Quote <span>↗</span></a>
+            <a class="btn ghost" href="/products">Browse products</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <img src={page.image} alt={page.imageAlt} />
+        </div>
+      </div>
+    </section>
+    <section class="section compact white">
+      <div class="wrap">
+        <p class="answer">{page.answer}</p>
+        <div class="card-grid" style="margin-top:22px">
+          {page.highlights.map((item) => (
+            <article class="card"><h3>{item.title}</h3><p>{item.text}</p></article>
+          ))}
+        </div>
+        <slot />
+      </div>
+    </section>
+    {page.specs && (
+      <section class="section compact">
+        <div class="wrap">
+          <div class="eyebrow">Specifications</div>
+          <h2>What to confirm in the brief.</h2>
+          <div class="specs">
+            {page.specs.map((spec) => (
+              <div><strong>{spec.label}</strong><span>{spec.value}</span></div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+    <section class="section white">
+      <div class="wrap prose">
+        {page.body.map((block) => (
+          <>
+            <h2>{block.heading}</h2>
+            {block.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+          </>
+        ))}
+      </div>
+    </section>
+    {page.slug === "certificates" && (
+      <section class="section compact">
+        <div class="wrap cert-cards">
+          <article class="cert"><img src="/assets/cert-9001.jpg" alt="ISO 9001 certificate" /><p><b>ISO 9001:2015</b><br />Quality Management</p></article>
+          <article class="cert"><img src="/assets/cert-14001.jpg" alt="ISO 14001 certificate" /><p><b>ISO 14001:2015</b><br />Environmental Management</p></article>
+          <article class="cert"><img src="/assets/cert-45001.jpg" alt="ISO 45001 certificate" /><p><b>ISO 45001:2018</b><br />Occupational Health & Safety</p></article>
+        </div>
+      </section>
+    )}
+    {(page.slug === "factory" || page.slug === "manufacturing") && (
+      <section class="section compact">
+        <div class="wrap factory-gallery">
+          <img src="/assets/production.jpg" alt="EHON production equipment" />
+          <img src="/assets/showroom.jpg" alt="EHON showroom" />
+          <img src="/assets/meeting.jpg" alt="EHON meeting room" />
+        </div>
+      </section>
+    )}
+    <section class="section compact">
+      <div class="wrap">
+        <div class="eyebrow">Questions buyers ask</div>
+        <h2>FAQ</h2>
+        <div class="faq">
+          {page.faqs.map((faq) => (
+            <details>
+              <summary>{faq.question}</summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+    <section class="section white">
+      <div class="wrap">
+        <div class="related">
+          {page.related.map((item) => (
+            <a href={item.href}><strong>{item.label}</strong><span>{item.text}</span></a>
+          ))}
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="wrap">
+        <div class="cta">
+          <div>
+            <div class="eyebrow" style="color:#938c84">Start a packaging project</div>
+            <h2>Tell us what you want to create.</h2>
+            <p>Send the product type, quantity and finish. The brief opens in WhatsApp so the Shantou team can reply.</p>
+          </div>
+          <QuoteForm />
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>

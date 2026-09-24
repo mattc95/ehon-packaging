@@ -1,0 +1,243 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+import QuoteForm from "../components/QuoteForm.astro";
+import { products } from "../../lib/products";
+import { site } from "../../lib/site";
+import { faqs } from "../data/faq";
+import { faqJsonLd, breadcrumbJsonLd } from "../data/seo";
+
+const models = (await getCollection("products", ({ data }) => !data.draft && data.featured)).sort((a, b) => a.data.order - b.data.order);
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort((a, b) => b.data.date.localeCompare(a.data.date));
+const sizes = ["large", "large", "small", "small", "small", "small", "third", "third", "third"];
+const heroSeries = models.find((item) => item.id === "transparent-series");
+const pink = models.find((item) => item.id === "bump-pink-series");
+const brush = models.find((item) => item.id === "big-brush-series");
+const exhibition = posts.find((item) => item.data.section === "exhibition");
+const guides = posts.filter((item) => item.data.section === "guide").slice(0, 3);
+const hrefFor = (post: { id: string; data: { section: string } }) =>
+  post.data.section === "guide" ? `/resources/packaging-guide/${post.id}` : post.data.section === "exhibition" ? `/news/exhibitions/${post.id}` : `/resources/blog/${post.id}`;
+const homeFaqs = faqs.slice(0, 6);
+---
+<Base title="EHON Packaging — Custom Cosmetic Packaging Manufacturer" description="EHON Packaging manufactures custom cosmetic packaging in Shantou, China. OEM and ODM for lipstick, mascara, gloss, compacts and jars since 1992." path="/" jsonLd={[faqJsonLd(homeFaqs), breadcrumbJsonLd([{ name: "Home", path: "/" }])]}>
+  <main>
+    <section class="home-video" aria-label="EHON packaging film">
+      <video class="home-video-player" autoplay muted loop playsinline preload="auto" poster="/hero-poster.jpg">
+        <source src="/hero.webm" type="video/webm" />
+      </video>
+    </section>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">Cosmetic Packaging Manufacturer · Since 1992</div>
+          <h1>Packaging made to become part of your brand.</h1>
+          <p class="sub">From packaging design and material selection to molding, decoration, assembly and quality control — EHON helps beauty brands turn ideas into scalable, production-ready packaging.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="/products">Explore Packaging <span>↗</span></a>
+            <a class="btn ghost" href="/contact/request-a-quote">Start a Project</a>
+          </div>
+          <div class="hero-trust">
+            <div class="trust-item"><b>1992</b><span>Founded</span></div>
+            <div class="trust-item"><b>40,000㎡+</b><span>Factory</span></div>
+            <div class="trust-item"><b>1,000+</b><span>Packaging Designs</span></div>
+            <div class="trust-item"><b>ISO</b><span>9001 · 14001 · 45001</span></div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <img class="main-img" src="/assets/hero-series.jpg" alt="EHON cosmetic packaging collection" />
+          <div class="hero-badge">
+            <b>Custom finish, color, logo and component combinations.</b>
+            <span>Built for lipstick, lip gloss, mascara, eyeliner, powder, skincare and more.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="signal">
+      <div class="wrap signal-inner">
+        <div class="signal-item"><div class="signal-num">30+ yrs</div><div class="signal-label">Packaging manufacturing experience</div></div>
+        <div class="signal-item"><div class="signal-num">14</div><div class="signal-label">Patents across packaging innovation</div></div>
+        <div class="signal-item"><div class="signal-num">8</div><div class="signal-label">Registered trademarks</div></div>
+        <div class="signal-item"><div class="signal-num">Global</div><div class="signal-label">Exports across major beauty markets</div></div>
+      </div>
+    </div>
+    <section class="section white">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="copy"><div class="eyebrow">Product portfolio</div><h2>Packaging for every beauty idea.</h2></div>
+          <div class="side">Nine category pages for search, each with individual product details your team can quote.</div>
+        </div>
+        <div class="category-grid">
+          {products.map((item, index) => (
+            <a class={`cat ${sizes[index] || "small"}`} href={item.path}>
+              <div class="cat-media"><img src={item.image} alt={item.imageAlt} /></div>
+              <div class="cat-copy"><strong>{item.navLabel}</strong><span>↗</span><p>{item.lead}</p></div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="copy"><div class="eyebrow">Featured collections</div><h2>Built as a system, not just a single component.</h2></div>
+          <a class="btn ghost" href="/products">View products <span>↗</span></a>
+        </div>
+        <div class="series-grid">
+          {heroSeries && <a class="series-main" href={`/products/${heroSeries.data.category}/${heroSeries.id}`}><img src={heroSeries.data.image} alt={heroSeries.data.imageAlt} /><div class="series-overlay"><div class="mini">Collection 079</div><strong>Transparent Series</strong></div></a>}
+          <div class="series-side">
+            {pink && <a class="tile" href={`/products/${pink.data.category}/${pink.id}`}><img src={pink.data.image} alt={pink.data.imageAlt} /><div class="series-overlay"><div class="mini">Collection 077</div><strong>Bump Pink Series</strong></div></a>}
+            {brush && <a class="tile" href={`/products/${brush.data.category}/${brush.id}`}><img src={brush.data.image} alt={brush.data.imageAlt} /><div class="series-overlay"><div class="mini">Collection 078</div><strong>Big Brush Series</strong></div></a>}
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section white">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="copy"><div class="eyebrow">Custom packaging</div><h2>From concept to production.</h2><p class="lead">A clearer workflow makes OEM/ODM capability tangible before the first RFQ.</p></div>
+        </div>
+        <div class="process">
+          <div class="step"><div class="num">01</div><strong>Brief</strong><p>Product type, market, target cost and launch timing.</p></div>
+          <div class="step"><div class="num">02</div><strong>Design</strong><p>Shape, component, color and functional direction.</p></div>
+          <div class="step"><div class="num">03</div><strong>Material</strong><p>Select suitable resins, finishes and applicators.</p></div>
+          <div class="step"><div class="num">04</div><strong>Sampling</strong><p>Prototype and confirm visual and functional details.</p></div>
+          <div class="step"><div class="num">05</div><strong>Production</strong><p>Molding, decoration, printing and automated assembly.</p></div>
+          <div class="step"><div class="num">06</div><strong>QC & Delivery</strong><p>Inspection, packing and preparation for export.</p></div>
+        </div>
+        <p style="margin-top:22px"><a class="btn ghost" href="/custom-packaging/oem-odm">OEM / ODM <span>↗</span></a></p>
+      </div>
+    </section>
+    <section class="section compact">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="copy"><div class="eyebrow">Decoration & finishing</div><h2>Make it unmistakably yours.</h2></div>
+          <a class="btn ghost" href="/custom-packaging/decoration-finishing">All finishes <span>↗</span></a>
+        </div>
+        <div class="finish-grid">
+          <div class="finish"><div class="code">F01</div><strong>Hot Stamping</strong></div>
+          <div class="finish"><div class="code">F02</div><strong>Silk Screen Printing</strong></div>
+          <div class="finish"><div class="code">F03</div><strong>UV Metallizing</strong></div>
+          <div class="finish"><div class="code">F04</div><strong>Matte Finishing</strong></div>
+          <div class="finish"><div class="code">F05</div><strong>UV Coating</strong></div>
+          <div class="finish"><div class="code">F06</div><strong>Gradient / Iridescent</strong></div>
+          <div class="finish"><div class="code">F07</div><strong>Heat / Water Transfer</strong></div>
+          <div class="finish"><div class="code">F08</div><strong>Laser Engraving</strong></div>
+        </div>
+      </div>
+    </section>
+    <section class="section dark">
+      <div class="wrap">
+        <div class="factory-hero">
+          <img src="/assets/factory-building.jpg" alt="EHON Packaging factory in Shantou, Guangdong" />
+          <div class="factory-copy">
+            <div class="eyebrow">Manufacturing capability</div>
+            <h2>Where ideas become production-ready packaging.</h2>
+            <p>EHON operates a modern manufacturing facility in Shantou, Guangdong with injection molding, blow molding, automated assembly, printing, decoration and supporting production equipment.</p>
+            <div class="capabilities"><span>Injection Molding</span><span>Blow Molding</span><span>Automatic Assembly</span><span>Printing</span><span>Robotic Handling</span><span>Decoration</span></div>
+            <a class="btn light" href="/about/factory">Visit the factory page <span>↗</span></a>
+          </div>
+        </div>
+        <div class="factory-gallery">
+          <img src="/assets/production.jpg" alt="EHON production equipment" />
+          <img src="/assets/showroom.jpg" alt="EHON showroom" />
+          <img src="/assets/meeting.jpg" alt="EHON meeting room" />
+        </div>
+      </div>
+    </section>
+    <section class="section white">
+      <div class="wrap sustain-grid">
+        <div class="sustain-visual"><img src="/assets/hero-violet.jpg" alt="Cosmetic packaging collection" /></div>
+        <div>
+          <span class="pill">Sustainability direction</span>
+          <div class="eyebrow">Responsible materials</div>
+          <h2>Beauty packaging with better material choices.</h2>
+          <p class="lead">EHON has incorporated PCR and recycled PET materials into selected programs, for brands that want more resource-conscious packaging.</p>
+          <div class="sustain-list">
+            <div class="sustain-row"><strong>PCR Materials</strong><span>Post-consumer recycled options</span></div>
+            <div class="sustain-row"><strong>Recycled PET</strong><span>Selected packaging programs</span></div>
+            <div class="sustain-row"><strong>Design Consultation</strong><span>Material and finish by project</span></div>
+          </div>
+          <p><a class="btn ghost" href="/custom-packaging/sustainable-packaging">Sustainable packaging <span>↗</span></a></p>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="wrap cert-layout">
+        <div>
+          <div class="eyebrow">Quality you can verify</div>
+          <h2>Certified systems. Documented manufacturing.</h2>
+          <p class="lead">ISO certificates are published so a buyer can read the document, not only the badge.</p>
+          <div class="proof"><div><strong>14</strong><span>Patents</span></div><div><strong>8</strong><span>Trademarks</span></div></div>
+          <p><a class="btn ghost" href="/about/certificates">View certificates <span>↗</span></a></p>
+        </div>
+        <div class="cert-cards">
+          <article class="cert"><img src="/assets/cert-9001.jpg" alt="ISO 9001 certificate" /><p><b>ISO 9001:2015</b><br />Quality Management</p></article>
+          <article class="cert"><img src="/assets/cert-14001.jpg" alt="ISO 14001 certificate" /><p><b>ISO 14001:2015</b><br />Environmental Management</p></article>
+          <article class="cert"><img src="/assets/cert-45001.jpg" alt="ISO 45001 certificate" /><p><b>ISO 45001:2018</b><br />Occupational Health & Safety</p></article>
+        </div>
+      </div>
+    </section>
+    <section class="section white">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="copy"><div class="eyebrow">Resources & activity</div><h2>Useful content buyers can actually search for.</h2></div>
+          <div class="side">Guides, factory facts and exhibition notes written so Google and answer engines can cite them.</div>
+        </div>
+        <div class="insights">
+          {exhibition && (
+            <article class="article">
+              <a href={hrefFor(exhibition)}><img src={exhibition.data.image} alt={exhibition.data.imageAlt} /></a>
+              <div class="article-copy"><span class="tag">Exhibition · 2026</span><h3><a href={hrefFor(exhibition)}>{exhibition.data.title}</a></h3><p>{exhibition.data.description}</p></div>
+            </article>
+          )}
+          <div class="article-list">
+            {guides.map((post) => (
+              <a class="article-mini" href={hrefFor(post)}>
+                <img src={post.data.image} alt={post.data.imageAlt} />
+                <div><span class="tag">Packaging guide</span><strong>{post.data.title}</strong></div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section compact white">
+      <div class="wrap">
+        <div class="eyebrow">FAQ</div>
+        <h2>Answers buyers look up first.</h2>
+        <div class="faq">
+          {homeFaqs.map((faq) => (
+            <details>
+              <summary>{faq.question}</summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+        <p style="margin-top:18px"><a class="btn ghost" href="/resources/faq">All questions <span>↗</span></a></p>
+      </div>
+    </section>
+    <section class="section" id="rfq">
+      <div class="wrap">
+        <div class="cta">
+          <div>
+            <div class="eyebrow" style="color:#938c84">Start a packaging project</div>
+            <h2>Tell us what you want to create.</h2>
+            <p>A qualified brief beats a generic contact form. Ask for the information the sales team actually needs.</p>
+            <div class="hero-trust" style="border-color:#2d2d2d;margin-top:35px">
+              <div class="trust-item"><b>WhatsApp</b><span>{site.whatsappDisplay}</span></div>
+              <div class="trust-item"><b>Email</b><span>{site.email}</span></div>
+            </div>
+          </div>
+          <QuoteForm />
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    const hero = document.querySelector(".home-video-player");
+    if (hero instanceof HTMLVideoElement && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      hero.removeAttribute("autoplay");
+      hero.pause();
+    }
+  </script>
+</Base>

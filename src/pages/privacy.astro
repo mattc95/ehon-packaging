@@ -1,0 +1,12 @@
+---
+import Base from "../layouts/Base.astro";
+import { breadcrumbJsonLd } from "../data/seo";
+---
+<Base title="Privacy" description="How EHON Packaging handles enquiries sent by email, WhatsApp, WeChat or Line." path="/privacy" jsonLd={[breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Privacy", path: "/privacy" }])]}>
+  <main class="section"><div class="wrap prose">
+    <h1>Privacy</h1>
+    <p>The public website is static. Quote forms are not stored on this site. When you submit a brief, your browser opens WhatsApp or an email to yh@styihong.com with the text you entered.</p>
+    <p>If you contact Guangdong EHON Technology Co., Ltd. directly, the sales team uses your name, company, email and project details only to reply to that enquiry.</p>
+    <p>The site does not run advertising trackers. Hosting logs on Cloudflare may include IP address and the page requested, used to deliver the site.</p>
+  </div></main>
+</Base>

@@ -1,0 +1,41 @@
+---
+import { getCollection } from "astro:content";
+import ContentPage from "../../components/ContentPage.astro";
+import { products } from "../../../lib/products";
+
+export async function getStaticPaths() {
+  const models = await getCollection("products", ({ data }) => !data.draft);
+  return products.map((page) => ({
+    params: { category: page.slug },
+    props: {
+      page: {
+        ...page,
+        related: [
+          ...models
+            .filter((model) => model.data.category === page.slug)
+            .slice(0, 2)
+            .map((model) => ({
+              href: `/products/${page.slug}/${model.id}`,
+              label: model.data.title,
+              text: model.data.summary,
+            })),
+          ...page.related,
+        ].slice(0, 6),
+      },
+      models: models.filter((model) => model.data.category === page.slug),
+    },
+  }));
+}
+const { page, models } = Astro.props;
+---
+<ContentPage page={page} crumbs={[{ name: "Home", path: "/" }, { name: "Products", path: "/products" }, { name: page.navLabel, path: page.path }]}>
+  <div class="card-grid" style="margin-top:28px">
+    {models.map((model) => (
+      <a class="card" href={`/products/${page.slug}/${model.id}`}>
+        <img src={model.data.image} alt={model.data.imageAlt} style="height:160px;width:100%;object-fit:contain;margin-bottom:12px" />
+        <h3>{model.data.title}</h3>
+        <p>{model.data.summary}</p>
+      </a>
+    ))}
+  </div>
+</ContentPage>

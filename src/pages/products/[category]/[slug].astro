@@ -1,0 +1,75 @@
+---
+import { getCollection, render } from "astro:content";
+import Base from "../../../layouts/Base.astro";
+import QuoteForm from "../../../components/QuoteForm.astro";
+import { products } from "../../../../lib/products";
+import { breadcrumbJsonLd, faqJsonLd, productJsonLd } from "../../../data/seo";
+
+export async function getStaticPaths() {
+  const models = await getCollection("products", ({ data }) => !data.draft);
+  return models.map((product) => ({
+    params: { category: product.data.category, slug: product.id },
+    props: { product },
+  }));
+}
+const { product } = Astro.props;
+const { Content } = await render(product);
+const category = products.find((item) => item.slug === product.data.category);
+const path = `/products/${product.data.category}/${product.id}`;
+const crumbs = [
+  { name: "Home", path: "/" },
+  { name: "Products", path: "/products" },
+  { name: category?.navLabel || "Category", path: category?.path || "/products" },
+  { name: product.data.title, path },
+];
+const faqs = category?.faqs.slice(0, 2) || [];
+---
+<Base title={product.data.title} description={product.data.description} path={path} image={product.data.image} jsonLd={[breadcrumbJsonLd(crumbs), productJsonLd({ name: product.data.title, description: product.data.description, path, image: product.data.image, category: category?.navLabel || "Cosmetic packaging" }), faqs.length ? faqJsonLd(faqs) : null]}>
+  <main>
+    <section class="hero inner-hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <nav class="crumb" aria-label="Breadcrumb">
+            <a href="/">Home</a><span>/</span>
+            <a href="/products">Products</a><span>/</span>
+            {category && <a href={category.path}>{category.navLabel}</a>}<span>/</span>
+            <span>{product.data.title}</span>
+          </nav>
+          <div class="eyebrow">{category?.navLabel}</div>
+          <h1>{product.data.title}</h1>
+          <p class="sub">{product.data.summary}</p>
+          <a class="btn primary" href="/contact/request-a-quote">Request a Quote <span>↗</span></a>
+        </div>
+        <div class="hero-visual"><img src={product.data.image} alt={product.data.imageAlt} /></div>
+      </div>
+    </section>
+    <section class="section compact white">
+      <div class="wrap">
+        <p class="answer">{product.data.description}</p>
+        <div class="specs" style="margin-top:28px">
+          {product.data.specs.map((spec) => <div><strong>{spec.label}</strong><span>{spec.value}</span></div>)}
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="wrap article-body prose"><Content /></div>
+    </section>
+    <section class="section compact white">
+      <div class="wrap">
+        <div class="eyebrow">FAQ</div>
+        <h2>Questions about this pack.</h2>
+        <div class="faq">
+          {faqs.map((faq) => (
+            <details>
+              <summary>{faq.question}</summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="wrap"><div class="cta"><div><h2>Quote this model.</h2><p>Tell us quantity, color and decoration. We will confirm whether it can run on a current mold.</p></div><QuoteForm /></div></div>
+    </section>
+  </main>
+</Base>

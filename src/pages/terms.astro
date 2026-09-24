@@ -1,0 +1,11 @@
+---
+import Base from "../layouts/Base.astro";
+import { breadcrumbJsonLd } from "../data/seo";
+---
+<Base title="Terms" description="Terms for using the EHON Packaging website and requesting a packaging quotation." path="/terms" jsonLd={[breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Terms", path: "/terms" }])]}>
+  <main class="section"><div class="wrap prose">
+    <h1>Terms</h1>
+    <p>Content on www.ehonpackaging.com describes cosmetic packaging manufactured by Guangdong EHON Technology Co., Ltd. Product photos and collection names are examples. A quotation, sample approval and purchase order define the commercial supply.</p>
+    <p>Specifications such as material, decoration and fit are confirmed on sample. Website copy is not a guarantee of a particular mold, MOQ or lead time.</p>
+  </div></main>
+</Base>

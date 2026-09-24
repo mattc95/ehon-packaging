@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import Base from "../layouts/Base.astro";
+import { breadcrumbJsonLd, articleJsonLd } from "../data/seo";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const section = post.data.section;
+const base = section === "guide"
+  ? { name: "Packaging Guide", path: "/resources/packaging-guide" }
+  : section === "exhibition"
+    ? { name: "Exhibitions", path: "/news/exhibitions" }
+    : { name: "Blog", path: "/resources/blog" };
+const path = `${base.path}/${post.id}`;
+const articleLd = articleJsonLd({
+  title: post.data.title,
+  description: post.data.description,
+  path,
+  image: post.data.image,
+  date: post.data.date,
+});
+---
+<Base title={post.data.title} description={post.data.description} path={path} image={post.data.image} jsonLd={[breadcrumbJsonLd([{ name: "Home", path: "/" }, base, { name: post.data.title, path }]), articleLd]}>
+  <main class="section">
+    <div class="wrap article-layout">
+      <div>
+        <nav class="crumb"><a href="/">Home</a><span>/</span><a href={base.path}>{base.name}</a><span>/</span><span>{post.data.title}</span></nav>
+        <div class="eyebrow">{post.data.date}</div>
+        <h1>{post.data.title}</h1>
+        <p class="lead">{post.data.description}</p>
+      </div>
+      <article class="article-body prose">
+        <img src={post.data.image} alt={post.data.imageAlt} style="border-radius:16px;margin:20px 0;width:100%;max-height:420px;object-fit:cover" />
+        <Content />
+        <p><a class="btn primary" href="/contact/request-a-quote">Request a Quote <span>↗</span></a></p>
+      </article>
+    </div>
+  </main>
+</Base>

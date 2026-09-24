@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+import { products } from "../../lib/products";
+import { customPages, capabilityPages, aboutPages } from "../../lib/company";
+import { breadcrumbJsonLd } from "../data/seo";
+---
+<Base title="Sitemap" description="HTML sitemap of EHON Packaging pages: products, custom packaging, capabilities, about, resources and contact." path="/sitemap" jsonLd={[breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Sitemap", path: "/sitemap" }])]}>
+  <main class="section">
+    <div class="wrap">
+      <h1>Sitemap</h1>
+      <div class="card-grid">
+        <div class="card"><h3>Products</h3><a href="/products">All products</a>{products.map((item) => <a href={item.path}>{item.navLabel}</a>)}</div>
+        <div class="card"><h3>Custom</h3>{customPages.map((item) => <a href={item.path}>{item.navLabel}</a>)}</div>
+        <div class="card"><h3>Capabilities</h3>{capabilityPages.map((item) => <a href={item.path}>{item.navLabel}</a>)}</div>
+        <div class="card"><h3>About</h3>{aboutPages.map((item) => <a href={item.path}>{item.navLabel}</a>)}</div>
+        <div class="card"><h3>Resources</h3><a href="/resources/blog">Blog</a><a href="/resources/packaging-guide">Packaging Guide</a><a href="/resources/faq">FAQ</a><a href="/news/exhibitions">Exhibitions</a><a href="/contact/request-a-quote">Request a Quote</a></div>
+      </div>
+    </div>
+  </main>
+</Base>

@@ -1,0 +1,16 @@
+{
+  "name": "ehon-packaging",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "predev": "mkdir -p public/assets && cp -R assets/. public/assets/",
+    "prebuild": "mkdir -p public/assets && cp -R assets/. public/assets/",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.6.0",
+    "astro": "^5.13.5"
+  }
+}

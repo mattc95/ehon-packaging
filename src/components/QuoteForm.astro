@@ -1,0 +1,54 @@
+---
+import { products } from "../../lib/products";
+import { site, whatsappHref } from "../../lib/site";
+---
+<form class="rfq" id="quote-form">
+  <div class="rfq-grid">
+    <input name="name" aria-label="Name" placeholder="Your name" required />
+    <input name="email" aria-label="Business email" placeholder="Business email" type="email" required />
+    <input name="company" aria-label="Company" placeholder="Company" />
+    <select name="product" aria-label="Product type">
+      <option value="">Product type</option>
+      {products.map((item) => <option value={item.navLabel}>{item.navLabel}</option>)}
+    </select>
+    <input name="quantity" aria-label="Estimated quantity" placeholder="Estimated quantity" />
+    <input name="launch" aria-label="Target launch" placeholder="Target launch date" />
+    <textarea name="details" aria-label="Project details" placeholder="Size, material, color, logo, finish, artwork or sample needs..."></textarea>
+    <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+    <button class="btn primary" type="submit">Submit Project <span>↗</span></button>
+  </div>
+  <p class="fine" id="quote-note">This static site sends your brief on WhatsApp or email. It is not stored on a server.</p>
+  <div class="success" id="quote-success" hidden>
+    <strong>Your brief is ready.</strong>
+    <p>WhatsApp should open in a new tab. If it does not, use the links below.</p>
+    <p><a id="wa-link" href={whatsappHref()}>Continue on WhatsApp</a><br /><a id="mail-link" href={`mailto:${site.email}`}>Email {site.email}</a></p>
+  </div>
+</form>
+<script define:vars={{ whatsapp: site.whatsappE164, email: site.email }}>
+  const form = document.querySelector("#quote-form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
+    if (String(data.get("website") || "")) return;
+    const lines = [
+      "EHON packaging enquiry",
+      `Name: ${data.get("name") || ""}`,
+      `Email: ${data.get("email") || ""}`,
+      `Company: ${data.get("company") || ""}`,
+      `Product: ${data.get("product") || ""}`,
+      `Quantity: ${data.get("quantity") || ""}`,
+      `Launch: ${data.get("launch") || ""}`,
+      `Details: ${data.get("details") || ""}`,
+    ];
+    const text = lines.join("\n");
+    const wa = `https://wa.me/${whatsapp}?text=${encodeURIComponent(text)}`;
+    const mail = `mailto:${email}?subject=${encodeURIComponent("EHON packaging enquiry")}&body=${encodeURIComponent(text)}`;
+    const waLink = document.querySelector("#wa-link");
+    const mailLink = document.querySelector("#mail-link");
+    if (waLink) waLink.setAttribute("href", wa);
+    if (mailLink) mailLink.setAttribute("href", mail);
+    const success = document.querySelector("#quote-success");
+    if (success) success.hidden = false;
+    window.open(wa, "_blank", "noopener");
+  });
+</script>

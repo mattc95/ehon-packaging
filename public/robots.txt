@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /404
+
+Sitemap: https://www.ehonpackaging.com/sitemap-index.xml
+
+# LLM-readable site summary
+# https://www.ehonpackaging.com/llms.txt
+# https://www.ehonpackaging.com/llm.txt

@@ -1,0 +1,25 @@
+---
+import Base from "../../layouts/Base.astro";
+import QuoteForm from "../../components/QuoteForm.astro";
+import { site } from "../../../lib/site";
+import { contactPageJsonLd, breadcrumbJsonLd } from "../../data/seo";
+---
+<Base title="Request a Quote" description="Request a cosmetic packaging quote from EHON. Share product type, quantity, material and finish. Continue on WhatsApp, WeChat, Line or email." path="/contact/request-a-quote" jsonLd={[contactPageJsonLd(), breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Request a Quote", path: "/contact/request-a-quote" }])]}>
+  <main class="section">
+    <div class="wrap">
+      <div class="cta">
+        <div>
+          <div class="eyebrow" style="color:#938c84">Contact</div>
+          <h1>Request a quote.</h1>
+          <p>Tell us the pack, the quantity and the finish. This form prepares a brief and opens WhatsApp. You can also email {site.email} or call {site.phone}.</p>
+          <div class="hero-trust" style="border-color:#2d2d2d;margin-top:28px">
+            <div class="trust-item"><b>WhatsApp</b><span>{site.whatsappDisplay}</span></div>
+            <div class="trust-item"><b>WeChat</b><span>{site.wechatId}</span></div>
+            <div class="trust-item"><b>Line</b><span>{site.lineId}</span></div>
+          </div>
+        </div>
+        <QuoteForm />
+      </div>
+    </div>
+  </main>
+</Base>

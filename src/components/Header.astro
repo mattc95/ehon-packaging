@@ -1,0 +1,88 @@
+---
+import { products } from "../../lib/products";
+import { customPages, capabilityPages, aboutPages } from "../../lib/company";
+const custom = customPages;
+const caps = capabilityPages;
+const about = aboutPages;
+---
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="/" aria-label="EHON Packaging"><img src="/assets/logo.png" alt="EHON Packaging" /></a>
+    <div class="nav-links">
+      <div class="nav-item">
+        <a href="/products">Products</a>
+        <div class="dropdown wide">
+          <div class="dropdown-panel">
+            {products.map((item) => <a href={item.path}>{item.navLabel}</a>)}
+          </div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="/custom-packaging/oem-odm">Custom Packaging</a>
+        <div class="dropdown">
+          <div class="dropdown-panel">
+            {custom.map((item) => <a href={item.path}>{item.navLabel}</a>)}
+          </div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="/capabilities/manufacturing">Capabilities</a>
+        <div class="dropdown">
+          <div class="dropdown-panel">
+            {caps.map((item) => <a href={item.path}>{item.navLabel}</a>)}
+          </div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="/about/our-story">About EHON</a>
+        <div class="dropdown">
+          <div class="dropdown-panel">
+            {about.map((item) => <a href={item.path}>{item.navLabel}</a>)}
+          </div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="/resources/blog">Resources</a>
+        <div class="dropdown">
+          <div class="dropdown-panel">
+            <a href="/resources/blog">Blog / Insights</a>
+            <a href="/resources/packaging-guide">Packaging Guide</a>
+            <a href="/resources/faq">FAQ</a>
+          </div>
+        </div>
+      </div>
+      <a href="/news/exhibitions">News</a>
+    </div>
+    <div class="nav-actions">
+      <span class="lang">EN · Global</span>
+      <a class="btn primary" href="/contact/request-a-quote">Request a Quote <span>↗</span></a>
+      <button class="menu" id="menu-btn" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+  <div class="mobile-panel" id="mobile-panel">
+    <div class="wrap">
+      <div class="group">Products</div>
+      {products.map((item) => <a href={item.path}>{item.navLabel}</a>)}
+      <div class="group">Custom Packaging</div>
+      {custom.map((item) => <a href={item.path}>{item.navLabel}</a>)}
+      <div class="group">Capabilities</div>
+      {caps.map((item) => <a href={item.path}>{item.navLabel}</a>)}
+      <div class="group">About</div>
+      {about.map((item) => <a href={item.path}>{item.navLabel}</a>)}
+      <div class="group">Resources</div>
+      <a href="/resources/blog">Blog / Insights</a>
+      <a href="/resources/packaging-guide">Packaging Guide</a>
+      <a href="/resources/faq">FAQ</a>
+      <a href="/news/exhibitions">Exhibitions</a>
+      <a href="/contact/request-a-quote">Request a Quote</a>
+    </div>
+  </div>
+</nav>
+<script>
+  const btn = document.querySelector("#menu-btn");
+  const panel = document.querySelector("#mobile-panel");
+  btn?.addEventListener("click", () => {
+    const open = panel?.classList.toggle("open");
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+</script>

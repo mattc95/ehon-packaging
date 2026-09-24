@@ -1,0 +1,30 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import { products } from "../../../lib/products";
+import { breadcrumbJsonLd } from "../../data/seo";
+
+const models = await getCollection("products", ({ data }) => !data.draft);
+const jsonLd = [breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Products", path: "/products" }])];
+---
+<Base title="Cosmetic Packaging Products" description="Browse EHON cosmetic packaging by category: lipstick, mascara, eyeliner, lip gloss, eyeshadow, powder, jars, bottles and accessories." path="/products" jsonLd={jsonLd}>
+  <main class="section">
+    <div class="wrap">
+      <nav class="crumb"><a href="/">Home</a><span>/</span><span>Products</span></nav>
+      <div class="eyebrow">Products</div>
+      <h1>Packaging categories and the models inside them.</h1>
+      <p class="lead">Each category is a search page. Each model is a product detail your sourcing team can send with an RFQ.</p>
+      <div class="category-grid" style="margin-top:36px">
+        {products.map((item) => (
+          <a class="cat small" href={item.path}>
+            <div class="cat-media"><img src={item.image} alt={item.imageAlt} /></div>
+            <div class="cat-copy">
+              <strong>{item.navLabel}</strong><span>↗</span>
+              <p>{models.filter((model) => model.data.category === item.slug).length} models</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </main>
+</Base>

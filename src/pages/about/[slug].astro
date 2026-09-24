@@ -1,0 +1,10 @@
+---
+import ContentPage from "../../components/ContentPage.astro";
+import { aboutPages } from "../../../lib/company";
+
+export function getStaticPaths() {
+  return aboutPages.map((page) => ({ params: { slug: page.slug }, props: { page } }));
+}
+const { page } = Astro.props;
+---
+<ContentPage page={page} crumbs={[{ name: "Home", path: "/" }, { name: "About EHON", path: "/about/our-story" }, { name: page.navLabel, path: page.path }]} />

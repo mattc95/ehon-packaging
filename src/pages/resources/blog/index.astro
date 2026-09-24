@@ -1,0 +1,24 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../../layouts/Base.astro";
+import { breadcrumbJsonLd } from "../../../data/seo";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft && data.section === "insights")).sort((a, b) => b.data.date.localeCompare(a.data.date));
+---
+<Base title="Blog and Insights" description="Notes from EHON Packaging on briefing an OEM factory, recycled materials and cosmetic packaging decisions." path="/resources/blog" jsonLd={[breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Blog", path: "/resources/blog" }])]}>
+  <main class="section">
+    <div class="wrap">
+      <nav class="crumb"><a href="/">Home</a><span>/</span><span>Blog</span></nav>
+      <div class="eyebrow">Blog / Insights</div>
+      <h1>Notes for packaging buyers.</h1>
+      <div class="article-list" style="margin-top:28px">
+        {posts.map((post) => (
+          <a class="article-mini" href={`/resources/blog/${post.id}`}>
+            <img src={post.data.image} alt={post.data.imageAlt} />
+            <div><span class="tag">{post.data.date}</span><strong>{post.data.title}</strong></div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </main>
+</Base>

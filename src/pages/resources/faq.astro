@@ -1,0 +1,23 @@
+---
+import Base from "../../layouts/Base.astro";
+import { faqs } from "../../data/faq";
+import { faqJsonLd, breadcrumbJsonLd } from "../../data/seo";
+---
+<Base title="Cosmetic Packaging FAQ" description="Answers about EHON Packaging: factory location, OEM and ODM, certificates, materials, decoration and how to request a quote." path="/resources/faq" jsonLd={[faqJsonLd(faqs), breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "FAQ", path: "/resources/faq" }])]}>
+  <main class="section">
+    <div class="wrap">
+      <nav class="crumb"><a href="/">Home</a><span>/</span><span>FAQ</span></nav>
+      <div class="eyebrow">FAQ</div>
+      <h1>Questions buyers ask before the first sample.</h1>
+      <p class="answer">EHON Packaging is Guangdong EHON Technology Co., Ltd., a cosmetic packaging manufacturer in Shantou since 1992. Use the answers below, or send a project brief if your question is specific to a formula or quantity.</p>
+      <div class="faq" style="margin-top:28px">
+        {faqs.map((faq) => (
+          <details>
+            <summary>{faq.question}</summary>
+            <p>{faq.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </main>
+</Base>
