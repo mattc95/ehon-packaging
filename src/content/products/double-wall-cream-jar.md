@@ -1,5 +1,6 @@
 ---
 title: Double-Wall Cream Jar
+code: EH-CJ-01
 category: cream-jars-lotion-bottles
 description: Custom cream jar for skincare and hybrid beauty, with liner, cap and finishing from EHON.
 image: /assets/jar.jpg

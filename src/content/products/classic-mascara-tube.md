@@ -1,5 +1,6 @@
 ---
 title: Classic Mascara Tube
+code: EH-MS-01
 category: mascara-packaging
 description: Custom mascara tube, cap and wand system manufactured by EHON in Shantou.
 image: /assets/mascara.jpg

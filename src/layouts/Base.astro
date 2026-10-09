@@ -54,6 +54,8 @@ const ogAlternates = (Object.keys(locales) as Locale[]).filter((id) => id !== lo
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     {locale === "ja" && <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />}
     {locale === "zh" && <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />}
+    {locale === "ko" && <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />}
+    <script is:inline>document.documentElement.classList.add("js-ready");</script>
     <script type="application/ld+json" set:html={JSON.stringify(organizationJsonLd)} />
     {blocks.map((block) => <script type="application/ld+json" set:html={JSON.stringify(block)} />)}
   </head>

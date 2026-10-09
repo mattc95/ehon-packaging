@@ -253,51 +253,146 @@ export const customPages: SeoPage[] = [
   },
 ];
 
+export const capabilityNavSlugs = ["sampling-prototyping", "design-engineering", "manufacturing", "quality-control"] as const;
+export const aboutNavSlugs = ["our-story", "factory", "certificates"] as const;
+
 export const capabilityPages: SeoPage[] = [
   {
-    slug: "manufacturing",
-    path: "/capabilities/manufacturing",
-    navLabel: "Manufacturing",
-    title: "Cosmetic Packaging Manufacturing",
+    slug: "sampling-prototyping",
+    path: "/capabilities/sampling-prototyping",
+    navLabel: "Sampling & Prototyping",
+    title: "Stock or Custom Cosmetic Packaging Sampling",
     description:
-      "EHON’s Shantou factory covers injection molding, blow molding, automated assembly, printing, decoration and robotic handling for cosmetic packaging.",
-    h1: "Where ideas become production-ready packaging.",
-    eyebrow: "Manufacturing",
-    lead: "A modern plant in Shantou, Guangdong, with molding, assembly, printing and decoration under one cosmetic packaging operation.",
+      "EHON helps you choose stock packaging or a new custom mold, then handles sampling: no mold fee on stock, tooling when the shape must be exclusive.",
+    h1: "Stock or Custom? We help you choose, then handle the sampling.",
+    eyebrow: "Sampling & Prototyping",
+    lead: "Two paths. One factory samples both, then takes the approved pack into production.",
     answer:
-      "EHON Packaging manufactures cosmetic packaging in Shantou, Guangdong, on a site of more than 40,000 square meters. Capabilities include injection molding, blow molding, automatic assembly, printing, decoration and robotic handling. The company has operated since 1992.",
-    image: "/assets/factory-building.jpg",
-    imageAlt: "EHON Packaging factory in Shantou, Guangdong",
+      "EHON Packaging helps buyers choose between an existing mold and a new one before sampling starts. Stock packaging suits startups, test launches and limited budgets: no mold fee, faster samples, and surface finishes such as hot stamping, silk screen and spray. Custom packaging suits established brands that need an exclusive look or a special function: a mold fee applies, the lead time is longer, and a patent can be filed to protect the design.",
+    image: "/assets/series-transparent.jpg",
+    imageAlt: "Stock and custom cosmetic packaging",
     highlights: [
-      { title: "Injection molding", text: "Caps, cases, compacts and precision components." },
-      { title: "Blow molding", text: "Bottle formats for gloss, liner and lotion projects." },
-      { title: "Automatic assembly", text: "Multi-part packs built as a system." },
-      { title: "Printing & decoration", text: "In-plant finishing after molding." },
-      { title: "Robotic handling", text: "Repeatable movement through production." },
+      { title: "Stock", text: "Use an existing pack. No mold fee, faster sampling, and surface decoration on the current mold." },
+      { title: "Custom", text: "Open a new mold for an exclusive shape or function. Longer lead time, with room to file a patent." },
     ],
     body: [
       {
-        heading: "One site for the steps buyers usually split",
+        heading: "Which path fits the project",
         paragraphs: [
-          "Brands lose time when molding, spray, stamping and assembly sit in different workshops. EHON keeps those steps in its Shantou manufacturing scope so a sample and a bulk order follow the same route.",
-          "The factory address is EHON Industrial Zone, No.2 ZhuJinYiHeng Road, LongHu District, Shantou, Guangdong, China.",
+          "Stock is the right start when the silhouette can come from EHON’s library and the brand lives in color, logo and finish. It suits a first launch, a market test, or a budget that should not carry tooling. Sampling is faster because the mold already exists. Hot stamping, silk screen, spray and other surface processes can still be applied.",
+          "Custom is the right start when a mature brand needs a shape, mechanism or function that no current mold can carry. Tooling is quoted, the calendar is longer, and the approved structure can be the basis of a patent application and a brand barrier. EHON then samples the new tool before bulk.",
         ],
       },
     ],
     faqs: [
       {
-        question: "Where is the EHON factory?",
+        question: "Does stock packaging still allow a logo and color?",
         answer:
-          "EHON Industrial Zone, No.2 ZhuJinYiHeng Road, ZhuJin Industrial Park, LongHu District, Shantou, Guangdong, China.",
+          "Yes. Color, logo and surface finishes such as hot stamping, silk screen and spray are the usual changes on an existing mold. A new outer shape is a custom project.",
       },
       {
-        question: "Which processes are in house?",
+        question: "When is a new mold required?",
         answer:
-          "Injection molding, blow molding, automatic assembly, printing, decoration and robotic handling are part of the published manufacturing scope.",
+          "When the outer shape or a critical function does not exist in EHON’s current molds. That route includes a mold fee and a longer lead time.",
       },
     ],
     related: [
-      { href: "/about/factory", label: "Factory", text: "See the site and visiting context." },
+      { href: "/capabilities/design-engineering", label: "Design & Engineering", text: "When the project needs a new structure." },
+      { href: "/products", label: "Products", text: "See the categories already in the library." },
+      quote,
+    ],
+  },
+  {
+    slug: "design-engineering",
+    path: "/capabilities/design-engineering",
+    navLabel: "Design & Engineering",
+    title: "Cosmetic Packaging Design and Engineering",
+    description:
+      "EHON design and engineering for cosmetic packaging: structural design, 3D modeling, rapid prototyping, mold design and DFM analysis.",
+    h1: "Design and engineering that can be molded.",
+    eyebrow: "Design & Engineering",
+    lead: "Structure, a render, a prototype and a mold plan, checked before steel is cut.",
+    answer:
+      "EHON Packaging designs cosmetic packaging for production in Shantou. The work covers custom structural design, 3D modeling and rendering, rapid prototyping, mold design and fabrication, and DFM analysis so a shape can be molded, decorated and assembled.",
+    image: "/assets/series-pink.png",
+    imageAlt: "Cosmetic packaging design development",
+    highlights: [
+      { title: "Custom Structural Design", text: "Outer form, mechanism and component stack for the formula and the brand." },
+      { title: "3D Modeling & Rendering", text: "A model the team can review before a physical sample." },
+      { title: "Rapid Prototyping", text: "A fast sample to check proportion, fit and hand-feel." },
+      { title: "Mold Design & Fabrication", text: "Tooling designed for the decoration and the assembly that follow." },
+      { title: "DFM Analysis", text: "A manufacturing check before the mold is opened." },
+    ],
+    body: [
+      {
+        heading: "What to send before design starts",
+        paragraphs: [
+          "Product type, target market, fill size, a reference you like, a reference you want to avoid, and whether the project can start from a stock mold. Those facts keep the first structure inside what the factory can sample.",
+          "Rendering is a step, not the approval. Fit, draft and decoration are confirmed on a prototype, then on a tooled sample.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Do I need finished artwork before design starts?",
+        answer: "No. A logo file helps, but structural design can start from the product and the desired feeling. Print and foil files are needed before decorated samples.",
+      },
+      {
+        question: "When does DFM happen?",
+        answer: "Before steel is cut. EHON checks draft, wall, ejection and the decoration the mold must allow, then confirms the result on a sample.",
+      },
+    ],
+    related: [
+      { href: "/capabilities/sampling-prototyping", label: "Sampling & Prototyping", text: "Choose stock or a new mold first." },
+      { href: "/capabilities/manufacturing", label: "Manufacturing & Decoration", text: "How the approved design is produced." },
+      quote,
+    ],
+  },
+  {
+    slug: "manufacturing",
+    path: "/capabilities/manufacturing",
+    navLabel: "Manufacturing & Decoration",
+    title: "Cosmetic Packaging Manufacturing and Decoration",
+    description:
+      "EHON manufacturing and decoration in Shantou: injection molding, blow molding, automatic assembly, hot stamping, silk screen, UV metallizing and other finishes.",
+    h1: "Manufacturing and decoration in one factory.",
+    eyebrow: "Manufacturing & decoration",
+    lead: "Molding, assembly and the surface processes that make the pack recognizable, on one site in Shantou.",
+    answer:
+      "EHON Packaging molds and decorates cosmetic packaging in Shantou. Manufacturing covers injection molding, blow molding and automatic assembly. Decoration covers hot stamping, silk screen printing, UV metallizing, matte finishing, UV coating, gradient and iridescent effects, heat and water transfer, and laser engraving.",
+    image: "/assets/factory-building.jpg",
+    imageAlt: "EHON Packaging factory in Shantou, Guangdong",
+    highlights: [
+      { title: "Injection Molding", text: "Caps, cases, compacts and precision components." },
+      { title: "Blow Molding", text: "Bottles for gloss, liner and lotion projects." },
+      { title: "Automatic Assembly", text: "Multi-part packs built as a system." },
+      { title: "Surface decoration", text: "Stamping, print, metallizing, coating, transfer and laser, matched to the resin." },
+    ],
+    specs: [
+      { label: "Manufacturing", value: "Injection molding, blow molding, automatic assembly" },
+      { label: "Decoration", value: "Hot stamping, silk screen, UV metallizing, matte finishing, UV coating, gradient / iridescent, heat / water transfer, laser engraving" },
+    ],
+    body: [
+      {
+        heading: "Two groups, one route",
+        paragraphs: [
+          "Manufacturing at EHON is injection molding, blow molding and automatic assembly. A sample and a bulk order stay in the same Shantou plant, at EHON Industrial Zone, No.2 ZhuJinYiHeng Road, LongHu District.",
+          "Decoration is specified with the material: hot stamping, silk screen printing, UV metallizing, matte finishing, UV coating, gradient or iridescent effects, heat or water transfer, and laser engraving. The stack is approved on a decorated sample before production.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Are molding and decoration in the same factory?",
+        answer: "Yes. Injection molding, blow molding, assembly and the listed decoration processes are part of the Shantou operation.",
+      },
+      {
+        question: "Can several finishes be combined?",
+        answer: "Often yes, for example spray plus hot stamp. Each extra process affects sampling and cost, so list the full stack in the brief.",
+      },
+    ],
+    related: [
+      { href: "/about/factory", label: "Factory Tour", text: "Equipment on the Shantou site." },
       { href: "/capabilities/quality-control", label: "Quality Control", text: "How output is inspected." },
       quote,
     ],
@@ -308,25 +403,31 @@ export const capabilityPages: SeoPage[] = [
     navLabel: "Quality Control",
     title: "Cosmetic Packaging Quality Control",
     description:
-      "EHON quality control for cosmetic packaging is backed by ISO 9001:2015, ISO 14001:2015 and ISO 45001:2018 management systems.",
-    h1: "Certified systems. Documented manufacturing.",
+      "EHON quality control follows ISO 9001, ISO 14001 and ISO 45001, with incoming, in-process, final and outgoing inspection.",
+    h1: "Certified systems, and an inspection path you can follow.",
     eyebrow: "Quality control",
-    lead: "Inspection is the last step of the workflow, and the certificates are there so buyers can verify the system behind it.",
+    lead: "ISO 9001, ISO 14001 and ISO 45001, then four checks from incoming material to shipment.",
     answer:
-      "EHON Packaging runs quality control as part of cosmetic packaging production in Shantou. The company holds ISO 9001:2015 for quality management, ISO 14001:2015 for environmental management and ISO 45001:2018 for occupational health and safety. Inspection happens before export packing.",
+      "EHON Packaging holds ISO 9001, ISO 14001 and ISO 45001. Quality control on a cosmetic packaging order runs from IQC, incoming inspection, to IPQC, in-process inspection, to FQC, final inspection, to OQC, outgoing inspection.",
     image: "/assets/cert-9001.jpg",
     imageAlt: "ISO 9001 certificate",
     highlights: [
-      { title: "ISO 9001:2015", text: "Quality management system." },
-      { title: "ISO 14001:2015", text: "Environmental management system." },
-      { title: "ISO 45001:2018", text: "Occupational health and safety." },
+      { title: "ISO 9001", text: "Quality management." },
+      { title: "ISO 14001", text: "Environmental management." },
+      { title: "ISO 45001", text: "Occupational health and safety." },
+    ],
+    specs: [
+      { label: "IQC", value: "Incoming inspection" },
+      { label: "IPQC", value: "In-process inspection" },
+      { label: "FQC", value: "Final inspection" },
+      { label: "OQC", value: "Outgoing inspection" },
     ],
     body: [
       {
-        heading: "What QC means on a packaging order",
+        heading: "The inspection path",
         paragraphs: [
-          "For a decorated pack, inspection covers the points the brief made critical: assembly fit, color, logo position, obvious surface defects and pack-out. The management certificates describe the system; the sample and the bulk record describe your order.",
-          "Original certificate images are published on the certificates page so a buyer can read the scope instead of trusting a badge.",
+          "IQC checks incoming material. IPQC checks the process while parts are being molded, decorated or assembled. FQC checks the finished pack. OQC checks the shipment before it leaves.",
+          "Certificate images are published on the certifications page. Ask EHON if a vendor portal needs a dated copy.",
         ],
       },
     ],
@@ -400,29 +501,29 @@ export const aboutPages: SeoPage[] = [
   {
     slug: "our-story",
     path: "/about/our-story",
-    navLabel: "Our Story",
-    title: "Our Story",
+    navLabel: "Company Overview",
+    title: "Company Overview",
     description:
-      "Guangdong EHON Technology Co., Ltd. has designed and manufactured cosmetic packaging in Shantou since 1992 for beauty brands worldwide.",
-    h1: "Packaging made to become part of your brand.",
-    eyebrow: "Our story",
-    lead: "Guangdong EHON Technology Co., Ltd. has integrated design, R&D, manufacturing and sales of cosmetic packaging since 1992.",
+      "Guangdong EHON Technology Co., Ltd. has manufactured cosmetic packaging in Shantou since 1992, on a 40,000㎡ site, and is a National High-Tech Enterprise.",
+    h1: "Company overview",
+    eyebrow: "About EHON",
+    lead: "A cosmetic packaging manufacturer in Shantou since 1992. Quality first, customer oriented.",
     answer:
-      "EHON Packaging is the brand of Guangdong EHON Technology Co., Ltd., a cosmetic packaging manufacturer founded in 1992 in Shantou, Guangdong. The company designs, develops, manufactures and sells packaging for global beauty brands, from lipstick and mascara to jars, bottles and compacts.",
+      "EHON Packaging is Guangdong EHON Technology Co., Ltd., founded in 1992. The factory is 40,000㎡. Core values are Quality First and Customer Oriented. The company is a National High-Tech Enterprise, certificate GR201744007375.",
     image: "/assets/showroom.jpg",
     imageAlt: "EHON showroom",
     highlights: [
-      { title: "1992", text: "Founded in Shantou." },
-      { title: "40,000㎡+", text: "Manufacturing site." },
-      { title: "1,000+", text: "Packaging designs." },
-      { title: "Global", text: "Exports across major beauty markets." },
+      { title: "Founded in 1992", text: "Design, molding, decoration and sales of cosmetic packaging since then." },
+      { title: "40,000㎡ Factory", text: "One site in Shantou for development and production." },
+      { title: "Quality First, Customer Oriented", text: "The operating values buyers should expect on a project." },
+      { title: "National High-Tech Enterprise", text: "GR201744007375." },
     ],
     body: [
       {
-        heading: "A manufacturer with a brand name buyers can search",
+        heading: "What the company does",
         paragraphs: [
-          "EHON is the packaging brand. Guangdong EHON Technology Co., Ltd. is the legal manufacturer. Both names belong on contracts and on this site so sourcing teams, search engines and AI answers resolve to the same company.",
-          "The work has stayed specific: cosmetic packaging, not general plastics. That focus is why the catalog runs from lipstick mechanisms to powder compacts, gloss tubes and skincare jars, with decoration in the same operation.",
+          "EHON designs and manufactures cosmetic packaging: lipstick, mascara, eyeliner, lip gloss, eyeshadow, powder, jars, bottles and the components that complete them. A project can start from a stock mold or from a new tool.",
+          "EHON is the brand. Guangdong EHON Technology Co., Ltd. is the legal manufacturer. Both names belong on a contract.",
         ],
       },
     ],
@@ -437,29 +538,30 @@ export const aboutPages: SeoPage[] = [
       },
     ],
     related: [
-      { href: "/about/factory", label: "Factory", text: "Where the work is done." },
-      { href: "/about/certificates", label: "Certificates", text: "ISO systems you can verify." },
+      { href: "/about/factory", label: "Factory Tour", text: "Equipment on the site." },
+      { href: "/about/certificates", label: "Certifications", text: "ISO certificates you can open." },
       quote,
     ],
   },
   {
     slug: "factory",
     path: "/about/factory",
-    navLabel: "Factory",
-    title: "EHON Factory in Shantou",
+    navLabel: "Factory Tour",
+    title: "EHON Factory Tour",
     description:
-      "Visit the EHON cosmetic packaging factory in LongHu District, Shantou: molding, assembly, printing, showroom and meeting spaces.",
-    h1: "The Shantou factory behind the samples.",
-    eyebrow: "Factory",
-    lead: "More than 40,000 square meters in LongHu District, with production, a showroom and rooms where project briefs actually get decided.",
+      "EHON factory tour: 58 injection molding machines, 6 blow molding machines, ultrasonic welding, automatic assembly lines and supporting equipment in Shantou.",
+    h1: "Factory tour",
+    eyebrow: "Factory tour",
+    lead: "40,000㎡ in LongHu District, Shantou. The equipment below is what a visit is there to see.",
     answer:
-      "The EHON factory is in EHON Industrial Zone, No.2 ZhuJinYiHeng Road, LongHu District, Shantou, Guangdong, China. The site covers more than 40,000 square meters and includes injection molding, blow molding, assembly, printing, decoration, a showroom and meeting space.",
+      "The EHON factory is in EHON Industrial Zone, No.2 ZhuJinYiHeng Road, LongHu District, Shantou, Guangdong. Injection molding runs on 58 high-precision machines. Blow molding runs on 6 machines. Assembly includes 8 ultrasonic welding machines, automatic lipstick lines, and mascara and lip gloss rod lines. Supporting equipment includes a fully automatic central feeding system, robotic arms and automatic printing machines.",
     image: "/assets/factory-building.jpg",
     imageAlt: "EHON factory building",
     highlights: [
-      { title: "Production", text: "Molding, assembly and decoration equipment." },
-      { title: "Showroom", text: "Collections reviewed in person." },
-      { title: "Meetings", text: "A place to lock a brief with the team." },
+      { title: "Injection Molding", text: "58 sets of high-precision injection molding machines." },
+      { title: "Blow Molding", text: "6 sets of blow molding machines." },
+      { title: "Assembly", text: "8 ultrasonic welding machines, automatic lipstick lines, and mascara and lip gloss rod lines." },
+      { title: "Supporting Equipment", text: "Fully automatic central feeding, robotic arms and automatic printing machines." },
     ],
     body: [
       {
@@ -491,12 +593,12 @@ export const aboutPages: SeoPage[] = [
   {
     slug: "certificates",
     path: "/about/certificates",
-    navLabel: "Certificates",
-    title: "ISO Certificates",
+    navLabel: "Certifications",
+    title: "Certifications",
     description:
       "View EHON Packaging ISO 9001:2015, ISO 14001:2015 and ISO 45001:2018 certificates for the Shantou cosmetic packaging factory.",
-    h1: "Certificates you can open, not just badges.",
-    eyebrow: "Certificates",
+    h1: "Certifications",
+    eyebrow: "Certifications",
     lead: "Three management-system certificates for quality, environment, and occupational health and safety.",
     answer:
       "Guangdong EHON Technology Co., Ltd. publishes ISO 9001:2015, ISO 14001:2015 and ISO 45001:2018 certificates for its cosmetic packaging operation. The images on this page are the documents buyers can inspect.",

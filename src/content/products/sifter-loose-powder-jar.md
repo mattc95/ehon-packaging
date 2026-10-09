@@ -1,5 +1,6 @@
 ---
 title: Sifter Loose Powder Jar
+code: EH-LP-01
 category: loose-powder-packaging
 description: Loose powder jar with sifter and overcap, molded and decorated by EHON Packaging.
 image: /assets/loose-powder.jpg

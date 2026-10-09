@@ -25,11 +25,12 @@ const label = (slug: string, fallback: string) => getPageCopy(locale, slug)?.nav
       </div>
       <div class="foot-col">
         <strong>{ui.footer.company}</strong>
-        <a href={href("/custom-packaging/oem-odm")}>{ui.footer.oem}</a>
-        <a href={href("/custom-packaging/decoration-finishing")}>{ui.footer.decoration}</a>
-        <a href={href("/capabilities/manufacturing")}>{ui.footer.manufacturing}</a>
-        <a href={href("/capabilities/quality-control")}>{ui.footer.quality}</a>
-        <a href={href("/about/factory")}>{ui.footer.factory}</a>
+        <a href={href("/capabilities/sampling-prototyping")}>{label("sampling-prototyping", "Sampling & Prototyping")}</a>
+        <a href={href("/capabilities/manufacturing")}>{label("manufacturing", "Manufacturing & Decoration")}</a>
+        <a href={href("/capabilities/quality-control")}>{label("quality-control", "Quality Control")}</a>
+        <a href={href("/about/our-story")}>{label("our-story", "Company Overview")}</a>
+        <a href={href("/about/factory")}>{label("factory", "Factory Tour")}</a>
+        <a href={href("/about/certificates")}>{label("certificates", "Certifications")}</a>
         <a href={href("/resources/faq")}>{ui.footer.faq}</a>
       </div>
       <div class="foot-col">

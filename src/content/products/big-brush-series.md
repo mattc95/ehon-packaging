@@ -1,5 +1,6 @@
 ---
 title: Big Brush Series
+code: EH-078
 category: mascara-packaging
 description: EHON Big Brush Series for applicator-led mascara and eye packaging.
 image: /assets/series-brush.png

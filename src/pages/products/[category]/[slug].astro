@@ -4,6 +4,7 @@ import Base from "../../../layouts/Base.astro";
 import QuoteForm from "../../../components/QuoteForm.astro";
 import { products } from "../../../../lib/products";
 import { breadcrumbJsonLd, faqJsonLd, productJsonLd } from "../../../data/seo";
+import { getUi } from "../../../i18n";
 
 export async function getStaticPaths() {
   const models = await getCollection("products", ({ data }) => !data.draft);
@@ -23,6 +24,7 @@ const crumbs = [
   { name: product.data.title, path },
 ];
 const faqs = category?.faqs.slice(0, 2) || [];
+const chrome = getUi("en").chrome;
 ---
 <Base title={product.data.title} description={product.data.description} path={path} image={product.data.image} jsonLd={[breadcrumbJsonLd(crumbs), productJsonLd({ name: product.data.title, description: product.data.description, path, image: product.data.image, category: category?.navLabel || "Cosmetic packaging" }), faqs.length ? faqJsonLd(faqs) : null]}>
   <main>
@@ -36,6 +38,7 @@ const faqs = category?.faqs.slice(0, 2) || [];
             <span>{product.data.title}</span>
           </nav>
           <div class="eyebrow">{category?.navLabel}</div>
+          <p class="product-code">{chrome.productNo} {product.data.code}</p>
           <h1>{product.data.title}</h1>
           <p class="sub">{product.data.summary}</p>
           <a class="btn primary" href="/contact/request-a-quote">Request a Quote <span>↗</span></a>
@@ -47,8 +50,11 @@ const faqs = category?.faqs.slice(0, 2) || [];
       <div class="wrap">
         <p class="answer">{product.data.description}</p>
         <div class="specs" style="margin-top:28px">
-          {product.data.specs.map((spec) => <div><strong>{spec.label}</strong><span>{spec.value}</span></div>)}
+          <div><strong>{chrome.productNo}</strong><span>{product.data.code}</span></div>
+          <div><strong>{chrome.capacity}</strong><span>{chrome.capacityValue}</span></div>
+          <div><strong>{chrome.dimensions}</strong><span>{chrome.dimensionsValue}</span></div>
         </div>
+        <p class="decoration-note">{chrome.decorationNote}</p>
       </div>
     </section>
     <section class="section">

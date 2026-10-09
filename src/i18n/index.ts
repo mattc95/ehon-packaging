@@ -6,6 +6,10 @@ import { ptBr } from "./pt-br";
 import { ja } from "./ja";
 import { de } from "./de";
 import { zh } from "./zh";
+import { ko } from "./ko";
+import { it } from "./it";
+import { ru } from "./ru";
+import { tr } from "./tr";
 
 const catalogs: Record<Exclude<Locale, "en">, Catalog> = {
   zh,
@@ -13,6 +17,10 @@ const catalogs: Record<Exclude<Locale, "en">, Catalog> = {
   "pt-br": ptBr,
   ja,
   de,
+  ko,
+  it,
+  ru,
+  tr,
 };
 
 export function getUi(locale: Locale): UiCopy {

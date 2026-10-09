@@ -61,7 +61,7 @@ export const organizationJsonLd = {
       email: site.email,
       contactType: "sales",
       areaServed: "Worldwide",
-      availableLanguage: ["English", "Chinese", "Spanish", "Portuguese", "Japanese", "German"],
+      availableLanguage: ["English", "Chinese", "Spanish", "Portuguese", "Japanese", "German", "Korean", "Italian", "Russian", "Turkish"],
     },
   ],
   knowsAbout: [

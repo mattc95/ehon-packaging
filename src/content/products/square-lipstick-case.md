@@ -1,5 +1,6 @@
 ---
 title: Square Lipstick Case
+code: EH-LS-02
 category: lipstick-packaging
 description: Square lipstick packaging with sharp geometry, custom color and foil or print from EHON Packaging.
 image: /assets/lipstick.jpg

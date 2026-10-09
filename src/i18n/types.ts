@@ -90,6 +90,12 @@ export type UiCopy = {
     showroomAlt: string;
     meetingAlt: string;
     models: string;
+    productNo: string;
+    capacity: string;
+    dimensions: string;
+    capacityValue: string;
+    dimensionsValue: string;
+    decorationNote: string;
   };
   form: {
     name: string;
@@ -185,6 +191,18 @@ export type UiCopy = {
     ctaEyebrow: string;
     ctaH: string;
     ctaP: string;
+    pathsH: string;
+    pathsLead: string;
+    stockTitle: string;
+    stockFor: string;
+    stockPoints: string[];
+    customTitle: string;
+    customFor: string;
+    customPoints: string[];
+    categoriesH: string;
+    scrollPrev: string;
+    scrollNext: string;
+    morePlus: string;
   };
   listings: {
     productsTitle: string;

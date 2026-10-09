@@ -1,6 +1,6 @@
 ---
 import { products } from "../../lib/products";
-import { customPages, capabilityPages, aboutPages } from "../../lib/company";
+import { capabilityPages, aboutPages, capabilityNavSlugs, aboutNavSlugs } from "../../lib/company";
 import { localizePath, locales, localeIds, type Locale } from "../../lib/i18n";
 import { getUi, getPageCopy } from "../i18n";
 
@@ -13,6 +13,8 @@ const ui = getUi(locale);
 const href = (value: string) => localizePath(value, locale);
 const label = (slug: string, fallback: string) => getPageCopy(locale, slug)?.navLabel || fallback;
 const current = locales[locale];
+const capabilityNav = capabilityNavSlugs.map((slug) => capabilityPages.find((item) => item.slug === slug)).filter((item) => item !== undefined);
+const aboutNav = aboutNavSlugs.map((slug) => aboutPages.find((item) => item.slug === slug)).filter((item) => item !== undefined);
 ---
 <nav class="nav">
   <div class="wrap nav-inner">
@@ -27,18 +29,10 @@ const current = locales[locale];
         </div>
       </div>
       <div class="nav-item">
-        <a href={href("/custom-packaging/oem-odm")}>{ui.nav.custom}</a>
+        <a href={href("/capabilities/sampling-prototyping")}>{ui.nav.capabilities}</a>
         <div class="dropdown">
           <div class="dropdown-panel">
-            {customPages.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
-          </div>
-        </div>
-      </div>
-      <div class="nav-item">
-        <a href={href("/capabilities/manufacturing")}>{ui.nav.capabilities}</a>
-        <div class="dropdown">
-          <div class="dropdown-panel">
-            {capabilityPages.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
+            {capabilityNav.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
           </div>
         </div>
       </div>
@@ -46,15 +40,14 @@ const current = locales[locale];
         <a href={href("/about/our-story")}>{ui.nav.about}</a>
         <div class="dropdown">
           <div class="dropdown-panel">
-            {aboutPages.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
+            {aboutNav.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
           </div>
         </div>
       </div>
       <div class="nav-item">
-        <a href={href("/resources/blog")}>{ui.nav.resources}</a>
+        <a href={href("/resources/packaging-guide")}>{ui.nav.resources}</a>
         <div class="dropdown">
           <div class="dropdown-panel">
-            <a href={href("/resources/blog")}>{ui.nav.blog}</a>
             <a href={href("/resources/packaging-guide")}>{ui.nav.guide}</a>
             <a href={href("/resources/faq")}>{ui.nav.faq}</a>
           </div>
@@ -92,14 +85,11 @@ const current = locales[locale];
       ))}
       <div class="group">{ui.nav.products}</div>
       {products.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
-      <div class="group">{ui.nav.custom}</div>
-      {customPages.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
       <div class="group">{ui.nav.capabilities}</div>
-      {capabilityPages.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
+      {capabilityNav.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
       <div class="group">{ui.nav.about}</div>
-      {aboutPages.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
+      {aboutNav.map((item) => <a href={href(item.path)}>{label(item.slug, item.navLabel)}</a>)}
       <div class="group">{ui.nav.resources}</div>
-      <a href={href("/resources/blog")}>{ui.nav.blog}</a>
       <a href={href("/resources/packaging-guide")}>{ui.nav.guide}</a>
       <a href={href("/resources/faq")}>{ui.nav.faq}</a>
       <a href={href("/news/exhibitions")}>{ui.nav.exhibitions}</a>

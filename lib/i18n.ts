@@ -1,6 +1,6 @@
-export const localeIds = ["en", "zh", "es", "pt-br", "ja", "de"] as const;
+export const localeIds = ["en", "zh", "es", "pt-br", "ja", "de", "ko", "it", "ru", "tr"] as const;
 export type Locale = (typeof localeIds)[number];
-export const translatedLocaleIds = ["zh", "es", "pt-br", "ja", "de"] as const;
+export const translatedLocaleIds = ["zh", "es", "pt-br", "ja", "de", "ko", "it", "ru", "tr"] as const;
 export type TranslatedLocale = (typeof translatedLocaleIds)[number];
 
 export type LocaleMeta = {
@@ -79,6 +79,46 @@ export const locales: Record<Locale, LocaleMeta> = {
     short: "DE",
     switcher: "DE · Deutschland, Österreich, Schweiz",
   },
+  ko: {
+    id: "ko",
+    htmlLang: "ko",
+    ogLocale: "ko_KR",
+    prefix: "/ko",
+    hreflang: ["ko"],
+    label: "한국어",
+    short: "KO",
+    switcher: "KO · 한국",
+  },
+  it: {
+    id: "it",
+    htmlLang: "it",
+    ogLocale: "it_IT",
+    prefix: "/it",
+    hreflang: ["it"],
+    label: "Italiano",
+    short: "IT",
+    switcher: "IT · Italia",
+  },
+  ru: {
+    id: "ru",
+    htmlLang: "ru",
+    ogLocale: "ru_RU",
+    prefix: "/ru",
+    hreflang: ["ru"],
+    label: "Русский",
+    short: "RU",
+    switcher: "RU · Россия",
+  },
+  tr: {
+    id: "tr",
+    htmlLang: "tr",
+    ogLocale: "tr_TR",
+    prefix: "/tr",
+    hreflang: ["tr"],
+    label: "Türkçe",
+    short: "TR",
+    switcher: "TR · Türkiye",
+  },
 };
 
 const prefixed = translatedLocaleIds.map((id) => locales[id].prefix.slice(1));
@@ -134,4 +174,8 @@ export const inLanguageName: Record<Locale, string> = {
   "pt-br": "Portuguese",
   ja: "Japanese",
   de: "German",
+  ko: "Korean",
+  it: "Italian",
+  ru: "Russian",
+  tr: "Turkish",
 };

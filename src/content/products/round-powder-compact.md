@@ -1,5 +1,6 @@
 ---
 title: Round Powder Compact
+code: EH-PC-01
 category: powder-compacts
 description: Round pressed-powder compact with godet, mirror and decorative lid, made by EHON.
 image: /assets/powder.jpg

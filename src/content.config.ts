@@ -5,6 +5,7 @@ const products = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/products" }),
   schema: z.object({
     title: z.string(),
+    code: z.string(),
     category: z.string(),
     description: z.string(),
     image: z.string(),

@@ -1,5 +1,6 @@
 ---
 title: Bump Pink Series
+code: EH-077
 category: lipstick-packaging
 description: EHON Bump Pink Series, a coordinated pink cosmetic packaging collection.
 image: /assets/series-pink.png

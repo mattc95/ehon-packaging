@@ -1,5 +1,6 @@
 ---
 title: Lotion Bottle
+code: EH-LB-01
 category: cream-jars-lotion-bottles
 description: Lotion bottle with cap or pump-ready neck, manufactured by EHON for skincare lines.
 image: /assets/new-jar.jpg

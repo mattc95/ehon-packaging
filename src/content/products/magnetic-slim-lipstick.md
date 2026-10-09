@@ -1,5 +1,6 @@
 ---
 title: Magnetic Slim Lipstick Case
+code: EH-LS-01
 category: lipstick-packaging
 description: Slim magnetic lipstick case from EHON, with custom color, logo and finishing on an existing platform or new tooling.
 image: /assets/lipstick.jpg

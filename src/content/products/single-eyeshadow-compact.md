@@ -1,5 +1,6 @@
 ---
 title: Single Eyeshadow Compact
+code: EH-ES-01
 category: eyeshadow-packaging
 description: Single-pan eyeshadow compact with mirror and custom lid finishing from EHON Packaging.
 image: /assets/eyeshadow.jpg

@@ -5,7 +5,7 @@ import ArticleView from "../../components/ArticleView.astro";
 import QuoteForm from "../../components/QuoteForm.astro";
 import Base from "../../layouts/Base.astro";
 import { products, getProduct } from "../../../lib/products";
-import { getCustom, getCapability, getAbout } from "../../../lib/company";
+import { getCustom, getCapability, getAbout, capabilityNavSlugs, aboutNavSlugs } from "../../../lib/company";
 import { site } from "../../../lib/site";
 import { applyPage } from "../../i18n/apply";
 import { getArticleCopy, getFaqs, getModelCopy, getUi } from "../../i18n";
@@ -114,6 +114,7 @@ const article = articleBase ? posts.find((post) => post.id === slug.split("/").a
               <span>{modelCopy(model.id)?.title || model.data.title}</span>
             </nav>
             <div class="eyebrow">{applyPage(category, locale).navLabel}</div>
+            <p class="product-code">{ui.chrome.productNo} {model.data.code}</p>
             <h1>{modelCopy(model.id)?.title || model.data.title}</h1>
             <p class="sub">{modelCopy(model.id)?.summary || model.data.summary}</p>
             <a class="btn primary" href={href("/contact/request-a-quote")}>{ui.chrome.quote} <span>↗</span></a>
@@ -125,8 +126,11 @@ const article = articleBase ? posts.find((post) => post.id === slug.split("/").a
         <div class="wrap">
           <p class="answer">{modelCopy(model.id)?.description || model.data.description}</p>
           <div class="specs" style="margin-top:28px">
-            {(modelCopy(model.id)?.specs || model.data.specs).map((spec) => <div><strong>{spec.label}</strong><span>{spec.value}</span></div>)}
+            <div><strong>{ui.chrome.productNo}</strong><span>{model.data.code}</span></div>
+            <div><strong>{ui.chrome.capacity}</strong><span>{ui.chrome.capacityValue}</span></div>
+            <div><strong>{ui.chrome.dimensions}</strong><span>{ui.chrome.dimensionsValue}</span></div>
           </div>
+          <p class="decoration-note">{ui.chrome.decorationNote}</p>
         </div>
       </section>
       <section class="section">
@@ -250,8 +254,8 @@ const article = articleBase ? posts.find((post) => post.id === slug.split("/").a
       <div class="card-grid">
         <div class="card"><h3>{ui.footer.products}</h3><a href={href("/products")}>{ui.chrome.products}</a>{products.map((item) => <a href={href(item.path)}>{applyPage(item, locale).navLabel}</a>)}</div>
         <div class="card"><h3>{ui.listings.custom}</h3><a href={href("/custom-packaging/oem-odm")}>OEM / ODM</a><a href={href("/custom-packaging/custom-design")}>{applyPage(getCustom("custom-design")!, locale).navLabel}</a><a href={href("/custom-packaging/decoration-finishing")}>{applyPage(getCustom("decoration-finishing")!, locale).navLabel}</a><a href={href("/custom-packaging/materials")}>{applyPage(getCustom("materials")!, locale).navLabel}</a><a href={href("/custom-packaging/sustainable-packaging")}>{applyPage(getCustom("sustainable-packaging")!, locale).navLabel}</a></div>
-        <div class="card"><h3>{ui.listings.capabilities}</h3><a href={href("/capabilities/manufacturing")}>{applyPage(getCapability("manufacturing")!, locale).navLabel}</a><a href={href("/capabilities/quality-control")}>{applyPage(getCapability("quality-control")!, locale).navLabel}</a><a href={href("/capabilities/rd-tooling")}>{applyPage(getCapability("rd-tooling")!, locale).navLabel}</a></div>
-        <div class="card"><h3>{ui.listings.about}</h3><a href={href("/about/our-story")}>{applyPage(getAbout("our-story")!, locale).navLabel}</a><a href={href("/about/factory")}>{applyPage(getAbout("factory")!, locale).navLabel}</a><a href={href("/about/certificates")}>{applyPage(getAbout("certificates")!, locale).navLabel}</a><a href={href("/about/patents-innovation")}>{applyPage(getAbout("patents-innovation")!, locale).navLabel}</a></div>
+        <div class="card"><h3>{ui.listings.capabilities}</h3>{capabilityNavSlugs.map((slug) => { const page = getCapability(slug); return page ? <a href={href(page.path)}>{applyPage(page, locale).navLabel}</a> : null; })}</div>
+        <div class="card"><h3>{ui.listings.about}</h3>{aboutNavSlugs.map((slug) => { const page = getAbout(slug); return page ? <a href={href(page.path)}>{applyPage(page, locale).navLabel}</a> : null; })}</div>
         <div class="card"><h3>{ui.listings.resources}</h3><a href={href("/resources/blog")}>{ui.nav.blog}</a><a href={href("/resources/packaging-guide")}>{ui.nav.guide}</a><a href={href("/resources/faq")}>{ui.nav.faq}</a><a href={href("/news/exhibitions")}>{ui.nav.exhibitions}</a><a href={href("/contact/request-a-quote")}>{ui.nav.quote}</a></div>
       </div>
     </div></main>

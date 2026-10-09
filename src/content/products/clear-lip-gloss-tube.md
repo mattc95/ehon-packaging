@@ -1,5 +1,6 @@
 ---
 title: Clear Lip Gloss Tube
+code: EH-LG-01
 category: lip-gloss-packaging
 description: Clear and frosted lip gloss tubes with doe-foot applicators, manufactured and decorated by EHON.
 image: /assets/lipgloss.jpg

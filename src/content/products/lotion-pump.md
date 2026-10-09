@@ -1,5 +1,6 @@
 ---
 title: Lotion Pump
+code: EH-AC-01
 category: accessories
 description: Cosmetic pump and fitment matched to EHON jars and bottles.
 image: /assets/accessory.jpg

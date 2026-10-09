@@ -1,5 +1,6 @@
 ---
 title: Transparent Series
+code: EH-079
 category: lip-gloss-packaging
 description: EHON Transparent Series, a clear cosmetic packaging collection across gloss and related components.
 image: /assets/series-transparent.jpg
