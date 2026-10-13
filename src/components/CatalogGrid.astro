@@ -1,0 +1,123 @@
+---
+import type { Locale } from "../../lib/i18n";
+import { localizePath } from "../../lib/i18n";
+import { catalogDisplayName, catalogSearchText, catalogText, subcategoryLabel, type CatalogItem } from "../../lib/catalog";
+import { getUi } from "../i18n";
+
+interface Props {
+  items: CatalogItem[];
+  locale?: Locale;
+  heading?: string;
+  subcategories?: string[];
+  variant?: "grid" | "search";
+}
+const { items, locale = "en", heading, subcategories = [], variant = "grid" } = Astro.props;
+const ui = getUi(locale);
+const href = (path: string) => localizePath(path, locale);
+const index = items.map((item) => ({
+  href: href(`/products/${item.category}/${item.slug}`),
+  code: item.code,
+  title: catalogDisplayName(item, locale),
+  size: item.size,
+  image: item.images.list || item.images.main,
+  q: catalogSearchText(item, locale),
+  sub: item.subcategory,
+}));
+---
+<section class:list={["catalog", variant === "search" && "catalog-search"]} data-catalog>
+  <div class="catalog-bar">
+    <div>
+      {heading && <h2>{heading}</h2>}
+      <p class="catalog-meta"><span data-catalog-count>{items.length}</span> {ui.chrome.models}</p>
+    </div>
+    <div class="catalog-tools">
+      {subcategories.length > 1 && (
+        <div class="catalog-chips" data-catalog-chips>
+          <button type="button" class="is-on" data-sub="">{ui.chrome.catalogAll}</button>
+          {subcategories.map((sub) => (
+            <button type="button" data-sub={sub}>{subcategoryLabel(sub, locale)}</button>
+          ))}
+        </div>
+      )}
+      <label class="catalog-search-field">
+        <span class="visually-hidden">{ui.chrome.catalogSearch}</span>
+        <input type="search" data-catalog-q placeholder={ui.chrome.catalogSearch} />
+      </label>
+    </div>
+  </div>
+  {variant === "grid" ? (
+    <div class="catalog-grid" data-catalog-grid>
+      {items.map((item) => (
+        <a
+          class="catalog-card"
+          href={href(`/products/${item.category}/${item.slug}`)}
+          data-q={catalogSearchText(item, locale)}
+          data-sub={item.subcategory}
+        >
+          <div class="catalog-media">
+            <img src={item.images.list || item.images.main} alt={catalogDisplayName(item, locale)} loading="lazy" />
+          </div>
+          <strong>{item.code || catalogDisplayName(item, locale)}</strong>
+          {item.title && item.title !== item.code && <span class="catalog-title">{catalogText(item.title, locale)}</span>}
+          {item.size && <span>{item.size}</span>}
+        </a>
+      ))}
+    </div>
+  ) : (
+    <div class="catalog-grid" data-catalog-grid hidden></div>
+  )}
+  <p class="catalog-empty" data-catalog-empty hidden>{ui.chrome.catalogEmpty}</p>
+  <script type="application/json" data-catalog-index set:html={JSON.stringify(index)}></script>
+</section>
+<script>
+  document.querySelectorAll<HTMLElement>("[data-catalog]").forEach((root) => {
+    const input = root.querySelector<HTMLInputElement>("[data-catalog-q]");
+    const count = root.querySelector("[data-catalog-count]");
+    const empty = root.querySelector<HTMLElement>("[data-catalog-empty]");
+    const grid = root.querySelector<HTMLElement>("[data-catalog-grid]");
+    const payload = root.querySelector("[data-catalog-index]");
+    const cards = [...root.querySelectorAll<HTMLElement>(".catalog-card")];
+    const items = payload ? JSON.parse(payload.textContent || "[]") as { href: string; code: string; title: string; size: string; image: string; q: string; sub: string }[] : [];
+    const isSearch = root.classList.contains("catalog-search");
+    let sub = "";
+
+    function esc(value: string) {
+      return value.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char] || char));
+    }
+    function cardHtml(item: (typeof items)[number]) {
+      return `<a class="catalog-card" href="${esc(item.href)}"><div class="catalog-media"><img src="${esc(item.image)}" alt="${esc(item.title)}" loading="lazy" /></div><strong>${esc(item.code || item.title)}</strong>${item.title && item.title !== item.code ? `<span class="catalog-title">${esc(item.title)}</span>` : ""}${item.size ? `<span>${esc(item.size)}</span>` : ""}</a>`;
+    }
+
+    function apply() {
+      const q = (input?.value || "").trim().toLowerCase();
+      if (isSearch && grid) {
+        const matches = items.filter((item) => (!sub || item.sub === sub) && (!q || item.q.includes(q)));
+        const show = q.length >= 1 || !!sub;
+        grid.hidden = !show;
+        grid.innerHTML = show ? matches.slice(0, 60).map(cardHtml).join("") : "";
+        if (count) count.textContent = show ? String(matches.length) : String(items.length);
+        if (empty) empty.hidden = !show || matches.length > 0;
+        return;
+      }
+      let visible = 0;
+      for (const card of cards) {
+        const okSub = !sub || card.dataset.sub === sub;
+        const okQ = !q || (card.dataset.q || "").includes(q);
+        const on = okSub && okQ;
+        card.hidden = !on;
+        if (on) visible += 1;
+      }
+      if (count) count.textContent = String(visible);
+      if (empty) empty.hidden = visible > 0;
+    }
+
+    input?.addEventListener("input", apply);
+    root.querySelectorAll<HTMLButtonElement>("[data-catalog-chips] button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        sub = btn.dataset.sub || "";
+        root.querySelectorAll("[data-catalog-chips] button").forEach((other) => other.classList.toggle("is-on", other === btn));
+        apply();
+      });
+    });
+  });
+</script>

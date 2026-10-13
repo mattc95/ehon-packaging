@@ -5,6 +5,9 @@ import ArticleView from "../../components/ArticleView.astro";
 import QuoteForm from "../../components/QuoteForm.astro";
 import Base from "../../layouts/Base.astro";
 import { products, getProduct } from "../../../lib/products";
+import { catalog, catalogByCategory, catalogCount, catalogSubcategories, getCatalogItem } from "../../../lib/catalog";
+import CatalogGrid from "../../components/CatalogGrid.astro";
+import CatalogDetail from "../../components/CatalogDetail.astro";
 import { getCustom, getCapability, getAbout, capabilityNavSlugs, aboutNavSlugs } from "../../../lib/company";
 import { site } from "../../../lib/site";
 import { applyPage } from "../../i18n/apply";
@@ -28,6 +31,9 @@ export async function getStaticPaths() {
   ]);
   for (const page of products) slugs.add(`products/${page.slug}`);
   for (const model of models) slugs.add(`products/${model.data.category}/${model.id}`);
+  for (const item of catalog) slugs.add(`products/${item.category}/${item.slug}`);
+  slugs.add("products/eyeliner-packaging");
+  slugs.add("products/eyeliner-packaging/liquid-eyeliner-bottle");
   for (const page of (await import("../../../lib/company")).customPages) slugs.add(page.path.slice(1));
   for (const page of (await import("../../../lib/company")).capabilityPages) slugs.add(page.path.slice(1));
   for (const page of (await import("../../../lib/company")).aboutPages) slugs.add(page.path.slice(1));
@@ -44,12 +50,19 @@ if (!isTranslatedLocale(localeParam)) return Astro.redirect("/");
 const locale: TranslatedLocale = localeParam;
 const ui = getUi(locale);
 const href = (path: string) => localizePath(path, locale);
+if (slug === "products/eyeliner-packaging/liquid-eyeliner-bottle") {
+  return Astro.redirect(href("/products/mascara-packaging/liquid-eyeliner-bottle"), 301);
+}
+if (slug === "products/eyeliner-packaging" || slug.startsWith("products/eyeliner-packaging/")) {
+  return Astro.redirect(href("/products/mascara-packaging"), 301);
+}
 const models = await getCollection("products", ({ data }) => !data.draft);
 const posts = await getCollection("blog", ({ data }) => !data.draft);
 const modelCopy = (id: string) => getModelCopy(locale, id);
 
 const category = slug.startsWith("products/") ? getProduct(slug.split("/")[1] || "") : undefined;
 const model = slug.split("/").length === 3 && slug.startsWith("products/") ? models.find((item) => item.id === slug.split("/")[2] && item.data.category === slug.split("/")[1]) : undefined;
+const catalogItem = slug.split("/").length === 3 && slug.startsWith("products/") ? getCatalogItem(slug.split("/")[1] || "", slug.split("/")[2] || "") : undefined;
 const custom = slug.startsWith("custom-packaging/") ? getCustom(slug.split("/")[1] || "") : undefined;
 const capability = slug.startsWith("capabilities/") ? getCapability(slug.split("/")[1] || "") : undefined;
 const about = slug.startsWith("about/") ? getAbout(slug.split("/")[1] || "") : undefined;
@@ -64,13 +77,14 @@ const article = articleBase ? posts.find((post) => post.id === slug.split("/").a
         <div class="eyebrow">{ui.nav.products}</div>
         <h1>{ui.listings.productsH}</h1>
         <p class="lead">{ui.listings.productsLead}</p>
+        <CatalogGrid items={catalog} locale={locale} variant="search" heading={ui.chrome.catalog} />
         <div class="category-grid" style="margin-top:36px">
           {products.map((item) => (
             <a class="cat small" href={href(item.path)}>
               <div class="cat-media"><img src={item.image} alt={applyPage(item, locale).imageAlt} /></div>
               <div class="cat-copy">
                 <strong>{applyPage(item, locale).navLabel}</strong><span>↗</span>
-                <p>{models.filter((model) => model.data.category === item.slug).length} {ui.chrome.models}</p>
+                <p>{catalogCount(item.slug) || models.filter((model) => model.data.category === item.slug).length} {ui.chrome.models}</p>
               </div>
             </a>
           ))}
@@ -79,7 +93,7 @@ const article = articleBase ? posts.find((post) => post.id === slug.split("/").a
     </main>
   </Base>
 )}
-{category && !model && (
+{category && !model && !catalogItem && (
   <ContentPage page={applyPage(category, locale)} crumbs={[{ name: ui.chrome.home, path: href("/") }, { name: ui.chrome.products, path: href("/products") }, { name: applyPage(category, locale).navLabel, path: href(category.path) }]} locale={locale}>
     <div class="card-grid" style="margin-top:28px">
       {models.filter((item) => item.data.category === category.slug).map((item) => (
@@ -90,8 +104,12 @@ const article = articleBase ? posts.find((post) => post.id === slug.split("/").a
         </a>
       ))}
     </div>
+    {catalogByCategory(category.slug).length > 0 && (
+      <CatalogGrid items={catalogByCategory(category.slug)} locale={locale} heading={ui.chrome.catalog} subcategories={catalogSubcategories(category.slug)} />
+    )}
   </ContentPage>
 )}
+{catalogItem && <CatalogDetail item={catalogItem} locale={locale} />}
 {model && category && (
   <Base title={modelCopy(model.id)?.title || model.data.title} description={modelCopy(model.id)?.description || model.data.description} path={`/products/${model.data.category}/${model.id}`} image={model.data.image} locale={locale} jsonLd={[
     breadcrumbJsonLd([

@@ -3,8 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "predev": "mkdir -p public/assets && cp -R assets/. public/assets/",
-    "prebuild": "mkdir -p public/assets && cp -R assets/. public/assets/",
+    "predev": "mkdir -p public/assets public/catalog && cp -R assets/. public/assets/ && rsync -a data/styihong/images/ public/catalog/",
+    "prebuild": "mkdir -p public/assets public/catalog && cp -R assets/. public/assets/ && rsync -a data/styihong/images/ public/catalog/",
+    "catalog:build": "python3 scripts/build_catalog.py",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview"

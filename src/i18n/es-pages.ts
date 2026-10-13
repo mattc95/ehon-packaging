@@ -60,7 +60,7 @@ export const pages: Record<string, PageCopy> = {
     ],
   },
   "mascara-packaging": {
-    navLabel: "Envases para máscara",
+    navLabel: "Máscara y delineador",
     title: "Fabricante de envases para máscara de pestañas",
     description: "Tubos, tapas y cepillos de máscara a medida, de EHON Packaging. Defina capacidad, cuello, aplicador y decoración para proyectos OEM u ODM.",
     h1: "Tubos y cepillos de máscara diseñados como un solo sistema.",
@@ -99,7 +99,7 @@ export const pages: Record<string, PageCopy> = {
       },
     ],
     related: [
-      { label: "Envases para delineador", text: "Lápices y componentes de delineador líquido." },
+      { label: "Envases para sombras", text: "Paletas y compactos individuales." },
       { label: "Accesorios", text: "Cepillos, tapas y piezas de apoyo." },
       quote,
     ],

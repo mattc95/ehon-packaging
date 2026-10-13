@@ -6,8 +6,10 @@ import { getPageCopy, getUi } from "../i18n";
 
 interface Props {
   locale?: Locale;
+  product?: string;
+  details?: string;
 }
-const { locale = "en" } = Astro.props;
+const { locale = "en", product = "", details = "" } = Astro.props;
 const ui = getUi(locale);
 const form = ui.form;
 ---
@@ -18,11 +20,14 @@ const form = ui.form;
     <input name="company" aria-label={form.company} placeholder={form.company} />
     <select name="product" aria-label={form.product}>
       <option value="">{form.product}</option>
-      {products.map((item) => <option value={getPageCopy(locale, item.slug)?.navLabel || item.navLabel}>{getPageCopy(locale, item.slug)?.navLabel || item.navLabel}</option>)}
+      {products.map((item) => {
+        const label = getPageCopy(locale, item.slug)?.navLabel || item.navLabel;
+        return <option value={label} selected={product === label}>{label}</option>;
+      })}
     </select>
     <input name="quantity" aria-label={form.quantity} placeholder={form.quantity} />
     <input name="launch" aria-label={form.launch} placeholder={form.launch} />
-    <textarea name="details" aria-label={form.details} placeholder={form.details}></textarea>
+    <textarea name="details" aria-label={form.details} placeholder={form.details}>{details}</textarea>
     <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
     <button class="btn primary" type="submit">{form.submit} <span>↗</span></button>
   </div>

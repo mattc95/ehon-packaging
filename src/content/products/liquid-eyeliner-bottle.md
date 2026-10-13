@@ -1,7 +1,7 @@
 ---
 title: Liquid Eyeliner Bottle
 code: EH-EL-01
-category: eyeliner-packaging
+category: mascara-packaging
 description: Liquid eyeliner bottle and cap from EHON, with tip fit and decoration for eye collections.
 image: /assets/hero-black.jpg
 imageAlt: Liquid eyeliner bottle

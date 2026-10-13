@@ -60,7 +60,7 @@ export const pages: Record<string, PageCopy> = {
     ],
   },
   "mascara-packaging": {
-    navLabel: "Mascara-Verpackung",
+    navLabel: "Mascara & Eyeliner",
     title: "Hersteller von Mascara-Verpackungen",
     description: "Individuelle Mascara-Tuben, Verschlüsse und Bürsten von EHON Packaging. Definieren Sie Füllmenge, Hals, Applikator und Dekoration für OEM- oder ODM-Projekte.",
     h1: "Mascara-Tuben und Bürsten – als ein System konzipiert.",
@@ -99,7 +99,7 @@ export const pages: Record<string, PageCopy> = {
       },
     ],
     related: [
-      { label: "Eyeliner-Verpackung", text: "Stifte und Komponenten für Flüssig-Eyeliner." },
+      { label: "Lidschatten-Verpackung", text: "Paletten und Einzelcompacts." },
       { label: "Zubehör", text: "Bürsten, Verschlüsse und Ergänzungsteile." },
       quote,
     ],

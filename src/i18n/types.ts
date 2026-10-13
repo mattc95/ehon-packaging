@@ -96,6 +96,16 @@ export type UiCopy = {
     capacityValue: string;
     dimensionsValue: string;
     decorationNote: string;
+    catalog: string;
+    catalogSearch: string;
+    catalogEmpty: string;
+    catalogAll: string;
+    catalogCraft: string;
+    catalogParts: string;
+    catalogKind: string;
+    catalogUpdated: string;
+    catalogMore: string;
+    featuredModels: string;
   };
   form: {
     name: string;

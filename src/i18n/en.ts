@@ -64,7 +64,17 @@ export const ui: UiCopy = {
     capacityValue: "Matched to your target fill. Confirmed on sample.",
     dimensionsValue: "Issued with the component drawing.",
     decorationNote:
-      "Color and logo can be produced according to customer requirements; colorful and divers decoration: metallizing, spray lacquering, soft touch, uv coating.",
+      "Color and logo can be customized. Surface finishes include vacuum metallizing, spray coating, soft-touch and UV topcoat; printing includes hot stamping and silk screen.",
+    catalog: "Model library",
+    catalogSearch: "Search product no. or size",
+    catalogEmpty: "No models match that search.",
+    catalogAll: "All",
+    catalogCraft: "Decoration",
+    catalogParts: "Components",
+    catalogKind: "Type",
+    catalogUpdated: "Updated",
+    catalogMore: "More models in this category.",
+    featuredModels: "Featured models",
   },
   form: {
     name: "Your name",

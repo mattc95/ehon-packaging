@@ -26,13 +26,13 @@ collections:
         options:
           - lipstick-packaging
           - mascara-packaging
-          - eyeliner-packaging
           - lip-gloss-packaging
           - eyeshadow-packaging
           - powder-compacts
           - loose-powder-packaging
           - cream-jars-lotion-bottles
           - accessories
+          - complete-sets
       - { label: Description, name: description, widget: text }
       - { label: Image, name: image, widget: image }
       - { label: Image alt, name: imageAlt, widget: string }

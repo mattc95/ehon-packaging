@@ -60,7 +60,7 @@ export const pages: Record<string, PageCopy> = {
     ],
   },
   "mascara-packaging": {
-    navLabel: "マスカラ容器",
+    navLabel: "マスカラ／アイライナー",
     title: "マスカラ容器メーカー｜化粧品容器",
     description: "カスタムマスカラのチューブ・キャップ・ブラシをEHON Packagingが製造。容量・ネック・アプリケーター・加飾をOEM/ODMで指定できます。",
     h1: "チューブとブラシを一つのシステムとして設計したマスカラ。",
@@ -99,7 +99,7 @@ export const pages: Record<string, PageCopy> = {
       },
     ],
     related: [
-      { label: "アイライナー容器", text: "ペンシルとリキッドアイライナー部品。" },
+      { label: "アイシャドウ容器", text: "パレットとシングルコンパクト。" },
       { label: "アクセサリー", text: "ブラシ、キャップ、サポート部品。" },
       quote,
     ],

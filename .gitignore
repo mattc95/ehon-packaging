@@ -4,6 +4,7 @@ source
 dist
 .astro
 public/assets
+public/catalog
 out
 .DS_Store
 *.log

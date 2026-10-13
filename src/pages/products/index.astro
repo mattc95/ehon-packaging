@@ -1,10 +1,14 @@
 ---
 import { getCollection } from "astro:content";
 import Base from "../../layouts/Base.astro";
+import CatalogGrid from "../../components/CatalogGrid.astro";
 import { products } from "../../../lib/products";
+import { catalog, catalogCount } from "../../../lib/catalog";
 import { breadcrumbJsonLd } from "../../data/seo";
+import { getUi } from "../../i18n";
 
 const models = await getCollection("products", ({ data }) => !data.draft);
+const ui = getUi("en");
 const jsonLd = [breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Products", path: "/products" }])];
 ---
 <Base title="Cosmetic Packaging Products" description="Browse EHON cosmetic packaging by category: lipstick, mascara, eyeliner, lip gloss, eyeshadow, powder, jars, bottles and accessories." path="/products" jsonLd={jsonLd}>
@@ -13,14 +17,15 @@ const jsonLd = [breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Products
       <nav class="crumb"><a href="/">Home</a><span>/</span><span>Products</span></nav>
       <div class="eyebrow">Products</div>
       <h1>Packaging categories and the models inside them.</h1>
-      <p class="lead">Each category is a search page. Each model is a product detail your sourcing team can send with an RFQ.</p>
+      <p class="lead">Each category is a search page. Search the library by product number, or open a category to browse the full set.</p>
+      <CatalogGrid items={catalog} locale="en" variant="search" heading={ui.chrome.catalog} />
       <div class="category-grid" style="margin-top:36px">
         {products.map((item) => (
           <a class="cat small" href={item.path}>
             <div class="cat-media"><img src={item.image} alt={item.imageAlt} /></div>
             <div class="cat-copy">
               <strong>{item.navLabel}</strong><span>↗</span>
-              <p>{models.filter((model) => model.data.category === item.slug).length} models</p>
+              <p>{catalogCount(item.slug) || models.filter((model) => model.data.category === item.slug).length} {ui.chrome.models}</p>
             </div>
           </a>
         ))}

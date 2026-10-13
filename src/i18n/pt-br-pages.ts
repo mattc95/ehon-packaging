@@ -60,7 +60,7 @@ export const pages: Record<string, PageCopy> = {
     ],
   },
   "mascara-packaging": {
-    navLabel: "Embalagens para máscara",
+    navLabel: "Máscara e delineador",
     title: "Fabricante de embalagens para máscara para cílios",
     description: "Tubos, tampas e escovas de máscara sob medida, da EHON Packaging. Defina capacidade, gargalo, aplicador e decoração para projetos OEM ou ODM.",
     h1: "Tubos e escovas de máscara projetados como um só sistema.",
@@ -99,7 +99,7 @@ export const pages: Record<string, PageCopy> = {
       },
     ],
     related: [
-      { label: "Embalagens para delineador", text: "Lápis e componentes de delineador líquido." },
+      { label: "Embalagens para sombra", text: "Paletas e compactos individuais." },
       { label: "Acessórios", text: "Escovas, tampas e peças de apoio." },
       quote,
     ],

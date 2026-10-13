@@ -1,0 +1,141 @@
+---
+import type { Locale } from "../../lib/i18n";
+import { localizePath } from "../../lib/i18n";
+import {
+  catalogDescription,
+  catalogDisplayName,
+  catalogGallery,
+  catalogText,
+  relatedCatalog,
+  subcategoryLabel,
+  type CatalogItem,
+} from "../../lib/catalog";
+import { applyPage } from "../i18n/apply";
+import { getUi } from "../i18n";
+import { products } from "../../lib/products";
+import QuoteForm from "./QuoteForm.astro";
+import Base from "../layouts/Base.astro";
+import { breadcrumbJsonLd, faqJsonLd, productJsonLd } from "../data/seo";
+
+interface Props {
+  item: CatalogItem;
+  locale?: Locale;
+}
+const { item, locale = "en" } = Astro.props;
+const ui = getUi(locale);
+const href = (path: string) => localizePath(path, locale);
+const category = products.find((page) => page.slug === item.category);
+const categoryPage = category ? applyPage(category, locale) : undefined;
+const name = catalogDisplayName(item, locale);
+const description = catalogDescription(item, locale);
+const craft = catalogText(item.craft, locale);
+const accessories = catalogText(item.accessories, locale);
+const extraNote = catalogText(item.description, locale);
+const path = `/products/${item.category}/${item.slug}`;
+const images = catalogGallery(item);
+const related = relatedCatalog(item);
+const crumbs = [
+  { name: ui.chrome.home, path: href("/") },
+  { name: ui.chrome.products, path: href("/products") },
+  { name: categoryPage?.navLabel || item.category, path: href(category?.path || "/products") },
+  { name, path: href(path) },
+];
+const specs = [
+  { label: ui.chrome.productNo, value: item.code || name },
+  item.size ? { label: ui.chrome.dimensions, value: item.size } : null,
+  craft ? { label: ui.chrome.catalogCraft, value: craft } : null,
+  accessories ? { label: ui.chrome.catalogParts, value: accessories } : null,
+  item.subcategory ? { label: ui.chrome.catalogKind, value: subcategoryLabel(item.subcategory, locale) } : null,
+  item.updatedAt ? { label: ui.chrome.catalogUpdated, value: item.updatedAt } : null,
+].filter((row): row is { label: string; value: string } => !!row);
+const preset = [item.code && `${ui.chrome.productNo} ${item.code}`, item.size && `${ui.chrome.dimensions}: ${item.size}`, name !== item.code ? name : ""]
+  .filter(Boolean)
+  .join(" · ");
+---
+<Base title={`${name} | ${categoryPage?.navLabel || "EHON"}`} description={description} path={path} image={item.images.main || item.images.list} locale={locale} jsonLd={[
+  breadcrumbJsonLd(crumbs),
+  productJsonLd({ name, description, path: href(path), image: item.images.main || item.images.list, category: categoryPage?.navLabel || "Cosmetic packaging" }),
+  categoryPage ? faqJsonLd(categoryPage.faqs.slice(0, 2)) : null,
+]}>
+  <main>
+    <section class="hero inner-hero catalog-hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <nav class="crumb" aria-label="Breadcrumb">
+            <a href={href("/")}>{ui.chrome.home}</a><span>/</span>
+            <a href={href("/products")}>{ui.chrome.products}</a><span>/</span>
+            {category && <a href={href(category.path)}>{categoryPage?.navLabel}</a>}<span>/</span>
+            <span>{name}</span>
+          </nav>
+          <div class="eyebrow">{categoryPage?.navLabel}</div>
+          {item.code && <p class="product-code">{ui.chrome.productNo} {item.code}</p>}
+          <h1>{name}</h1>
+          <p class="sub">{description}</p>
+          <a class="btn primary" href={href("/contact/request-a-quote")}>{ui.chrome.quote} <span>↗</span></a>
+        </div>
+        <div class="hero-visual catalog-visual">
+          <img src={item.images.main || item.images.list} alt={name} />
+        </div>
+      </div>
+    </section>
+    <section class="section compact white">
+      <div class="wrap">
+        {images.length > 1 && (
+          <div class="catalog-thumbs">
+            {images.map((src) => <img src={src} alt={name} />)}
+          </div>
+        )}
+        <div class="specs" style="margin-top:28px">
+          {specs.map((row) => (
+            <div><strong>{row.label}</strong><span>{row.value}</span></div>
+          ))}
+        </div>
+        {extraNote && <p class="decoration-note">{extraNote}</p>}
+        {!craft && <p class="decoration-note">{ui.chrome.decorationNote}</p>}
+      </div>
+    </section>
+    {related.length > 0 && (
+      <section class="section compact">
+        <div class="wrap">
+          <div class="eyebrow">{ui.chrome.catalog}</div>
+          <h2>{ui.chrome.catalogMore}</h2>
+          <div class="catalog-grid catalog-grid-related">
+            {related.map((other) => (
+              <a class="catalog-card" href={href(`/products/${other.category}/${other.slug}`)}>
+                <div class="catalog-media">
+                  <img src={other.images.list || other.images.main} alt={catalogDisplayName(other, locale)} loading="lazy" />
+                </div>
+                <strong>{other.code || catalogDisplayName(other, locale)}</strong>
+                {other.size && <span>{other.size}</span>}
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+    {categoryPage && (
+      <section class="section compact white">
+        <div class="wrap">
+          <div class="eyebrow">{ui.chrome.faq}</div>
+          <h2>{ui.chrome.aboutPack}</h2>
+          <div class="faq">
+            {categoryPage.faqs.slice(0, 2).map((faq) => (
+              <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+    <section class="section">
+      <div class="wrap">
+        <div class="cta">
+          <div>
+            <h2>{ui.chrome.quoteModel}</h2>
+            <p>{ui.chrome.quoteModelLead}</p>
+          </div>
+          <QuoteForm locale={locale} product={categoryPage?.navLabel} details={preset} />
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>

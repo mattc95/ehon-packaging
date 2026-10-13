@@ -1,6 +1,7 @@
 import { getCollection } from "astro:content";
 import { site } from "../../lib/site";
 import { products } from "../../lib/products";
+import { catalogCount } from "../../lib/catalog";
 import { customPages, capabilityPages, aboutPages } from "../../lib/company";
 import { faqs } from "../data/faq";
 
@@ -23,7 +24,7 @@ export async function buildLlmsText() {
     "",
     "## Categories",
     "",
-    ...products.map((item) => `- [${item.navLabel}](${url(item.path)}): ${item.description}`),
+    ...products.map((item) => `- [${item.navLabel}](${url(item.path)}): ${item.description} ${catalogCount(item.slug)} library models.`),
     "",
     "## Product details",
     "",

@@ -1,81 +1,101 @@
 ---
 import { getCollection, render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 import Base from "../../../layouts/Base.astro";
 import QuoteForm from "../../../components/QuoteForm.astro";
+import CatalogDetail from "../../../components/CatalogDetail.astro";
 import { products } from "../../../../lib/products";
+import { catalog, type CatalogItem } from "../../../../lib/catalog";
 import { breadcrumbJsonLd, faqJsonLd, productJsonLd } from "../../../data/seo";
 import { getUi } from "../../../i18n";
 
 export async function getStaticPaths() {
   const models = await getCollection("products", ({ data }) => !data.draft);
-  return models.map((product) => ({
-    params: { category: product.data.category, slug: product.id },
-    props: { product },
-  }));
+  return [
+    ...models.map((product) => ({
+      params: { category: product.data.category, slug: product.id },
+      props: { product, catalogItem: null as CatalogItem | null },
+    })),
+    ...catalog.map((item) => ({
+      params: { category: item.category, slug: item.slug },
+      props: { product: null as CollectionEntry<"products"> | null, catalogItem: item },
+    })),
+  ];
 }
-const { product } = Astro.props;
-const { Content } = await render(product);
-const category = products.find((item) => item.slug === product.data.category);
-const path = `/products/${product.data.category}/${product.id}`;
-const crumbs = [
-  { name: "Home", path: "/" },
-  { name: "Products", path: "/products" },
-  { name: category?.navLabel || "Category", path: category?.path || "/products" },
-  { name: product.data.title, path },
-];
+
+interface Props {
+  product: CollectionEntry<"products"> | null;
+  catalogItem: CatalogItem | null;
+}
+const { product, catalogItem } = Astro.props as Props;
+const rendered = product ? await render(product) : null;
+const Content = rendered?.Content;
+const category = product ? products.find((item) => item.slug === product.data.category) : undefined;
+const path = product ? `/products/${product.data.category}/${product.id}` : "";
+const crumbs = product
+  ? [
+      { name: "Home", path: "/" },
+      { name: "Products", path: "/products" },
+      { name: category?.navLabel || "Category", path: category?.path || "/products" },
+      { name: product.data.title, path },
+    ]
+  : [];
 const faqs = category?.faqs.slice(0, 2) || [];
 const chrome = getUi("en").chrome;
 ---
-<Base title={product.data.title} description={product.data.description} path={path} image={product.data.image} jsonLd={[breadcrumbJsonLd(crumbs), productJsonLd({ name: product.data.title, description: product.data.description, path, image: product.data.image, category: category?.navLabel || "Cosmetic packaging" }), faqs.length ? faqJsonLd(faqs) : null]}>
-  <main>
-    <section class="hero inner-hero">
-      <div class="wrap hero-grid">
-        <div class="hero-copy">
-          <nav class="crumb" aria-label="Breadcrumb">
-            <a href="/">Home</a><span>/</span>
-            <a href="/products">Products</a><span>/</span>
-            {category && <a href={category.path}>{category.navLabel}</a>}<span>/</span>
-            <span>{product.data.title}</span>
-          </nav>
-          <div class="eyebrow">{category?.navLabel}</div>
-          <p class="product-code">{chrome.productNo} {product.data.code}</p>
-          <h1>{product.data.title}</h1>
-          <p class="sub">{product.data.summary}</p>
-          <a class="btn primary" href="/contact/request-a-quote">Request a Quote <span>↗</span></a>
+{catalogItem && <CatalogDetail item={catalogItem} locale="en" />}
+{product && Content && (
+  <Base title={product.data.title} description={product.data.description} path={path} image={product.data.image} jsonLd={[breadcrumbJsonLd(crumbs), productJsonLd({ name: product.data.title, description: product.data.description, path, image: product.data.image, category: category?.navLabel || "Cosmetic packaging" }), faqs.length ? faqJsonLd(faqs) : null]}>
+    <main>
+      <section class="hero inner-hero">
+        <div class="wrap hero-grid">
+          <div class="hero-copy">
+            <nav class="crumb" aria-label="Breadcrumb">
+              <a href="/">Home</a><span>/</span>
+              <a href="/products">Products</a><span>/</span>
+              {category && <a href={category.path}>{category.navLabel}</a>}<span>/</span>
+              <span>{product.data.title}</span>
+            </nav>
+            <div class="eyebrow">{category?.navLabel}</div>
+            <p class="product-code">{chrome.productNo} {product.data.code}</p>
+            <h1>{product.data.title}</h1>
+            <p class="sub">{product.data.summary}</p>
+            <a class="btn primary" href="/contact/request-a-quote">Request a Quote <span>↗</span></a>
+          </div>
+          <div class="hero-visual"><img src={product.data.image} alt={product.data.imageAlt} /></div>
         </div>
-        <div class="hero-visual"><img src={product.data.image} alt={product.data.imageAlt} /></div>
-      </div>
-    </section>
-    <section class="section compact white">
-      <div class="wrap">
-        <p class="answer">{product.data.description}</p>
-        <div class="specs" style="margin-top:28px">
-          <div><strong>{chrome.productNo}</strong><span>{product.data.code}</span></div>
-          <div><strong>{chrome.capacity}</strong><span>{chrome.capacityValue}</span></div>
-          <div><strong>{chrome.dimensions}</strong><span>{chrome.dimensionsValue}</span></div>
+      </section>
+      <section class="section compact white">
+        <div class="wrap">
+          <p class="answer">{product.data.description}</p>
+          <div class="specs" style="margin-top:28px">
+            <div><strong>{chrome.productNo}</strong><span>{product.data.code}</span></div>
+            <div><strong>{chrome.capacity}</strong><span>{chrome.capacityValue}</span></div>
+            <div><strong>{chrome.dimensions}</strong><span>{chrome.dimensionsValue}</span></div>
+          </div>
+          <p class="decoration-note">{chrome.decorationNote}</p>
         </div>
-        <p class="decoration-note">{chrome.decorationNote}</p>
-      </div>
-    </section>
-    <section class="section">
-      <div class="wrap article-body prose"><Content /></div>
-    </section>
-    <section class="section compact white">
-      <div class="wrap">
-        <div class="eyebrow">FAQ</div>
-        <h2>Questions about this pack.</h2>
-        <div class="faq">
-          {faqs.map((faq) => (
-            <details>
-              <summary>{faq.question}</summary>
-              <p>{faq.answer}</p>
-            </details>
-          ))}
+      </section>
+      <section class="section">
+        <div class="wrap article-body prose"><Content /></div>
+      </section>
+      <section class="section compact white">
+        <div class="wrap">
+          <div class="eyebrow">FAQ</div>
+          <h2>Questions about this pack.</h2>
+          <div class="faq">
+            {faqs.map((faq) => (
+              <details>
+                <summary>{faq.question}</summary>
+                <p>{faq.answer}</p>
+              </details>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
-    <section class="section">
-      <div class="wrap"><div class="cta"><div><h2>Quote this model.</h2><p>Tell us quantity, color and decoration. We will confirm whether it can run on a current mold.</p></div><QuoteForm /></div></div>
-    </section>
-  </main>
-</Base>
+      </section>
+      <section class="section">
+        <div class="wrap"><div class="cta"><div><h2>Quote this model.</h2><p>Tell us quantity, color and decoration. We will confirm whether it can run on a current mold.</p></div><QuoteForm /></div></div>
+      </section>
+    </main>
+  </Base>
+)}

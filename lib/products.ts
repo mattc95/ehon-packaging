@@ -69,15 +69,15 @@ export const products: SeoPage[] = [
   {
     slug: "mascara-packaging",
     path: "/products/mascara-packaging",
-    navLabel: "Mascara Packaging",
-    title: "Custom Mascara Packaging Manufacturer",
+    navLabel: "Mascara & Eyeliner",
+    title: "Custom Mascara and Eyeliner Packaging Manufacturer",
     description:
-      "Custom mascara tubes, caps and wands from EHON Packaging. Specify capacity, neck, applicator and decoration for OEM or ODM beauty projects.",
-    h1: "Mascara tubes and wands engineered as one system.",
-    eyebrow: "Mascara packaging",
-    lead: "EHON manufactures mascara packaging as a matched tube, cap and applicator system, so the brush, seal and decoration are specified together.",
+      "Custom mascara and eyeliner tubes from EHON Packaging. Specify capacity, neck, applicator, tip and decoration for OEM or ODM beauty projects.",
+    h1: "Mascara and eyeliner tubes engineered as one system.",
+    eyebrow: "Mascara & eyeliner",
+    lead: "EHON manufactures mascara and liquid eyeliner packaging as a matched tube, cap and applicator system, so the brush or tip, seal and decoration are specified together.",
     answer:
-      "EHON Packaging manufactures custom mascara tubes in Shantou for global beauty brands. Buyers can define capacity, neck, wand and cap, then add color and finishing. Sampling checks seal, applicator fit and decoration before production.",
+      "EHON Packaging manufactures custom mascara and eyeliner tubes in Shantou for global beauty brands. Buyers can define capacity, neck, wand or tip and cap, then add color and finishing. Sampling checks seal, applicator fit and decoration before production.",
     image: "/assets/mascara.jpg",
     imageAlt: "Mascara and eyeliner packaging tubes",
     highlights: [
@@ -113,60 +113,8 @@ export const products: SeoPage[] = [
       },
     ],
     related: [
-      { href: "/products/eyeliner-packaging", label: "Eyeliner Packaging", text: "Pencils and liquid liner components." },
-      { href: "/products/accessories", label: "Accessories", text: "Wands, caps and supporting parts." },
-      quote,
-    ],
-  },
-  {
-    slug: "eyeliner-packaging",
-    path: "/products/eyeliner-packaging",
-    navLabel: "Eyeliner Packaging",
-    title: "Custom Eyeliner Packaging Manufacturer",
-    description:
-      "EHON supplies custom eyeliner packaging, including liquid liner bottles and pencil mechanisms, with matched caps, tips and decoration.",
-    h1: "Eyeliner packaging for liquid liners and pencil systems.",
-    eyebrow: "Eyeliner packaging",
-    lead: "Liquid liner bottles and pencil mechanisms need a precise tip, a stable cap and a finish that matches the rest of the eye story.",
-    answer:
-      "EHON Packaging manufactures custom eyeliner packaging for liquid liners and pencil formats. Projects specify bottle or mechanism, cap, tip and decoration. The factory in Shantou handles molding, finishing, assembly and inspection for export brands.",
-    image: "/assets/hero-black.jpg",
-    imageAlt: "Dark-toned cosmetic packaging suitable for eyeliner lines",
-    highlights: [
-      { title: "Liquid liner", text: "Bottle, cap and felt or brush tip specified as a set." },
-      { title: "Pencil systems", text: "Mechanism and shell for twist-up eye pencils." },
-      { title: "Line-up matching", text: "Color and metal or matte finishes aligned with mascara." },
-    ],
-    specs: [
-      { label: "Formats", value: "Liquid bottle, twist pencil" },
-      { label: "Critical fit", value: "Tip, cap, seal" },
-      { label: "Customization", value: "Shape, color, logo, finish" },
-      { label: "Next step", value: "Sampling before bulk decoration" },
-    ],
-    body: [
-      {
-        heading: "Precision before decoration",
-        paragraphs: [
-          "Eyeliner packaging fails when the tip, wiper or mechanism is chosen after the artwork. EHON asks for formula type, claimed stroke and preferred format first, then proposes a component stack that can be decorated.",
-          "Brands launching a full eye capsule can pair eyeliner with mascara tubes and eyeshadow compacts from the same finishing family.",
-        ],
-      },
-    ],
-    faqs: [
-      {
-        question: "Do you make both liquid eyeliner bottles and pencils?",
-        answer:
-          "Yes. Tell us which format the formula requires. Liquid liners focus on bottle, cap and tip; pencils focus on the mechanism and shell.",
-      },
-      {
-        question: "Can eyeliner packaging match an existing mascara color?",
-        answer:
-          "Yes. Share a reference color or drawdown. Spray, masterbatch and decoration are matched as closely as the resin and finish allow, then confirmed on sample.",
-      },
-    ],
-    related: [
-      { href: "/products/mascara-packaging", label: "Mascara Packaging", text: "Matched tubes for the eye line." },
       { href: "/products/eyeshadow-packaging", label: "Eyeshadow Packaging", text: "Palettes and single compacts." },
+      { href: "/products/accessories", label: "Accessories", text: "Wands, caps and supporting parts." },
       quote,
     ],
   },
@@ -477,6 +425,56 @@ export const products: SeoPage[] = [
     related: [
       { href: "/products/cream-jars-lotion-bottles", label: "Cream Jars & Lotion Bottles", text: "Primary packs these parts complete." },
       { href: "/products/mascara-packaging", label: "Mascara Packaging", text: "Wands and caps for mascara." },
+      quote,
+    ],
+  },
+  {
+    slug: "complete-sets",
+    path: "/products/complete-sets",
+    navLabel: "Complete Sets",
+    title: "Complete Cosmetic Packaging Sets",
+    description:
+      "Coordinated EHON packaging sets that keep lipstick, gloss, mascara and compacts in one color and finish language.",
+    h1: "Complete sets for a line that has to look like one brand.",
+    eyebrow: "Complete sets",
+    lead: "Color-matched collections from the EHON library, used when a lipstick, gloss or compact must ship as one story.",
+    answer:
+      "EHON Packaging keeps complete-set platforms in the Shantou library so a brand can start from a coordinated color and finish, then confirm which lipstick, gloss, mascara or compact in that family fits the formula.",
+    image: "/catalog/1416/main.jpg",
+    imageAlt: "EHON complete cosmetic packaging set",
+    highlights: [
+      { title: "One finish language", text: "Spray, metallizing and two-tone assemblies already matched across the set." },
+      { title: "Faster briefing", text: "Start from a library look, then lock the models that fit each formula." },
+      { title: "Export-ready", text: "The same decoration route can move from sampling to assembled production." },
+    ],
+    specs: [
+      { label: "What is in a set", value: "Lip, eye, face or mixed SKUs in one colorway" },
+      { label: "Customization", value: "Color, logo, finish on the existing family" },
+      { label: "Path", value: "Library platform, then sampling" },
+      { label: "Factory", value: "Shantou, Guangdong, since 1992" },
+    ],
+    body: [
+      {
+        heading: "Use a set when the line has to match",
+        paragraphs: [
+          "A complete set is useful when the brief is a collection, not a single component. EHON shows the colorway first, then the buyer picks the models inside it that the formulas actually need.",
+          "Logo and finishing are still approved on physical samples. The advantage is that the spray, foil and two-tone work already exist as a family.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "Can we take only some items from a complete set?",
+        answer: "Yes. The set is a starting color and finish language. Quote the models you need, not the whole photograph.",
+      },
+      {
+        question: "Can the set color be changed?",
+        answer: "Usually yes. Share a target color or drawdown. EHON will confirm the new spray or metallizing on sample before production.",
+      },
+    ],
+    related: [
+      { href: "/products/lipstick-packaging", label: "Lipstick Packaging", text: "Cases that often lead a coordinated line." },
+      { href: "/products/lip-gloss-packaging", label: "Lip Gloss Packaging", text: "Tubes that can share the same finish." },
       quote,
     ],
   },
