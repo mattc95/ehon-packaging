@@ -9,6 +9,8 @@ export default defineConfig({
   output: "static",
   integrations: [
     sitemap({
+      // Each URL carries many hreflang alternates, so the default single file exceeds Cloudflare's 25 MiB limit.
+      entryLimit: 5000,
       filter: (page) => !page.includes("/admin") && !page.includes("/404"),
       serialize(item) {
         const path = new URL(item.url).pathname;
